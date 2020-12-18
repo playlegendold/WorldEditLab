@@ -1,0 +1,19 @@
+{
+  "name": "worldeditlab",
+  "version": "0.0.1",
+  "description": "A fancy and simple UI for up- & downloading schematics and heightmaps",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/playlegend/WorldEditLab.git"
+  },
+  "author": "playlegend.net",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/playlegend/WorldEditLab/issues"
+  },
+  "homepage": "https://github.com/playlegend/WorldEditLab#readme"
+}
