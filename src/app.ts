@@ -2,6 +2,9 @@ import express, { Application } from 'express';
 import initPages from './pages';
 
 const app: Application = express();
+
+app.use(express.static('public'));
+
 app.set('view engine', 'ejs');
 initPages(app);
 
