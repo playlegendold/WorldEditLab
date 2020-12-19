@@ -2,9 +2,11 @@
   "name": "worldeditlab",
   "version": "0.0.1",
   "description": "A fancy and simple UI for up- & downloading schematics and heightmaps",
-  "main": "dist/index.js",
+  "main": "dist/app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node .",
+    "build": "tsc",
+    "lint": "npx eslint ."
   },
   "repository": {
     "type": "git",
@@ -15,5 +17,13 @@
   "bugs": {
     "url": "https://github.com/playlegend/WorldEditLab/issues"
   },
-  "homepage": "https://github.com/playlegend/WorldEditLab#readme"
+  "homepage": "https://github.com/playlegend/WorldEditLab#readme",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.10.0",
+    "@typescript-eslint/parser": "^4.10.0",
+    "eslint": "^7.16.0",
+    "eslint-config-airbnb-typescript": "^12.0.0",
+    "eslint-plugin-import": "^2.22.1",
+    "typescript": "^4.1.3"
+  }
 }
