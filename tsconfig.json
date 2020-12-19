@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "target": "ES6",
     "outDir": "./dist",
     "strict": true,
     "moduleResolution": "node",
@@ -9,7 +10,8 @@
     "baseUrl": "./",
     "paths": {
       "@*": ["src/*"]
-    }
+    },
+    "allowSyntheticDefaultImports": true
   },
   "include": [
     "src/**/*.ts",
