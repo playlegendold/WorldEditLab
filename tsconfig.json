@@ -1,17 +1,23 @@
 {
   "compilerOptions": {
-    "target": "ES6",
-    "outDir": "./dist",
-    "strict": true,
+    "target": "ES2018",
+    "module": "commonjs",
+    "outDir": "dist",
+    "rootDir": ".",
+    "lib": ["ES2018"],
     "moduleResolution": "node",
+    "strict": true,
     "skipLibCheck": true,
     "sourceMap": true,
     "resolveJsonModule": true,
-    "baseUrl": "./",
-    "paths": {
-      "@*": ["src/*"]
-    },
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "allowUnreachableCode": false,
+    "allowUnusedLabels": false,
+    "declaration": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmitOnError": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitReturns": true,
   },
   "include": [
     "src/**/*.ts",

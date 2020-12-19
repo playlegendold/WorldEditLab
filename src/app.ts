@@ -1,11 +1,9 @@
-import express, { Application, Request, Response } from 'express';
+import express, { Application } from 'express';
+import initPages from './pages';
 
 const app: Application = express();
 app.set('view engine', 'ejs');
-
-app.get('/', (req: Request, res: Response) => {
-  res.render('index', { message: 'Welcome to WorldEditLab!' });
-});
+initPages(app);
 
 app.listen(8080, () => {
   console.log('App is listening on port 8080!');
