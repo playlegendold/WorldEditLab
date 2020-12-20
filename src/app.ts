@@ -1,5 +1,6 @@
 import express, { Application } from 'express';
 import initPages from './pages';
+import './shared/database';
 
 const app: Application = express();
 

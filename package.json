@@ -42,6 +42,8 @@
     "ejs": "^3.1.5",
     "express": "^4.17.1",
     "passport": "^0.4.1",
-    "passport-custom": "^1.1.1"
+    "passport-custom": "^1.1.1",
+    "sequelize": "^6.3.5",
+    "sqlite3": "^5.0.0"
   }
 }
