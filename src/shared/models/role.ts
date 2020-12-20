@@ -1,6 +1,5 @@
-export enum Rule {
+export enum Role {
   GUEST,
   USER,
   ADMIN,
 }
-export default Rule;

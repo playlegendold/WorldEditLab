@@ -1,7 +1,7 @@
 import {
   DataTypes, Model, Sequelize,
 } from 'sequelize';
-import Role from './role';
+import { Role } from './role';
 import { hashPassword } from '../auth/password';
 
 interface UserAttributes {

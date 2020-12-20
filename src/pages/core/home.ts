@@ -16,5 +16,3 @@ export const handleHomeView = (req: Request, res: Response) => {
 
   res.render('index', responseData);
 };
-
-export default {};

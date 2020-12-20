@@ -7,5 +7,3 @@ export const buildDefaultResponse = (req: Request): ResponseData => ({
   },
   data: {},
 });
-
-export default buildDefaultResponse;

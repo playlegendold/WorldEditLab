@@ -1,3 +1,1 @@
-export interface Strategy {
-  init(): void;
-}
+export * from './local';

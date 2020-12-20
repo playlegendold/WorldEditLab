@@ -5,11 +5,13 @@
   "main": "dist/app.js",
   "scripts": {
     "start": "node .",
-    "build": "npm run build:tsc && npm run build:css",
+    "serve": "concurrently -r \"yarn serve:tsc\" \"yarn serve:css\"",
+    "serve:css": "yarn build:css -- -w",
+    "serve:tsc": "tsc-watch -p ./src --onSuccess \"node .\"",
+    "build": "yarn build:tsc && yarn build:css",
     "build:tsc": "tsc",
     "build:css": "postcss assets/styles/tailwind.css -o public/styles/style.css",
-    "lint": "npx eslint .",
-    "dev": "tsc-watch -p ./src --onSuccess \"node .\""
+    "lint:ts": "npx eslint ."
   },
   "repository": {
     "type": "git",
@@ -30,6 +32,7 @@
     "@typescript-eslint/eslint-plugin": "^4.10.0",
     "@typescript-eslint/parser": "^4.10.0",
     "autoprefixer": "^10.1.0",
+    "concurrently": "^5.3.0",
     "cssnano": "^4.1.10",
     "eslint": "^7.16.0",
     "eslint-config-airbnb-typescript": "^12.0.0",
@@ -37,6 +40,8 @@
     "postcss": "^8.2.1",
     "postcss-cli": "^8.3.1",
     "postcss-import": "^14.0.0",
+    "stylelint": "^13.8.0",
+    "stylelint-config-standard": "^20.0.0",
     "tailwindcss": "^2.0.2",
     "tsc-watch": "^4.2.9",
     "typescript": "^4.1.3"

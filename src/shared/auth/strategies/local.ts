@@ -2,14 +2,17 @@ import passport from 'passport';
 import passportCustom, { VerifiedCallback } from 'passport-custom';
 import { Request } from 'express';
 import { User } from '../../models';
-import { Strategy } from './index';
 import { verifyPassword } from '../password';
 
 const CustomStrategy = passportCustom.Strategy;
 
+export interface Strategy {
+  init(): void;
+}
+
 export const LOCAL_SQLITE_STRATEGY = 'local_sqlite';
 
-export default () => ({
+export const localStrategy = () => ({
   init() {
     passport.use(
       LOCAL_SQLITE_STRATEGY,
