@@ -1,7 +1,6 @@
 import passport from 'passport';
 import passportCustom, { VerifiedCallback } from 'passport-custom';
 import { Request } from 'express';
-import { Error } from 'sequelize';
 import { User } from '../../models';
 import { Strategy } from './index';
 import { verifyPassword } from '../password';
@@ -21,14 +20,14 @@ export default () => ({
           },
         }).then((user) => {
           if (user == null || user.password == null) {
-            callback(new Error('invalid username or password'), null);
+            callback(new Error('Invalid username or password'), null);
             return;
           }
 
           if (verifyPassword(reg.body.password as string, user.password)) {
             callback(null, user);
           } else {
-            callback(new Error('invalid username or password'), null);
+            callback(new Error('Invalid username or password'), null);
           }
         }).catch((err) => {
           callback(err);
@@ -37,19 +36,15 @@ export default () => ({
     );
 
     passport.serializeUser((user: User, done) => {
-      done(null, user.name);
+      done(null, JSON.stringify(user));
     });
 
-    passport.deserializeUser((name: string, done) => {
-      User.findOne({
-        where: {
-          name,
-        },
-      }).then((user) => {
-        done(null, user);
-      }).catch((err) => {
-        done(err, null);
-      });
+    passport.deserializeUser((userJSON: string, done) => {
+      if (userJSON !== '') {
+        done(null, JSON.parse(userJSON));
+      } else {
+        done(new Error('invalid user json object'), null);
+      }
     });
   },
 } as Strategy);
