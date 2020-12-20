@@ -1,8 +1,22 @@
-import { DataTypes, Model, Sequelize } from 'sequelize';
+import {
+  DataTypes, Model, Sequelize,
+} from 'sequelize';
 import Role from './role';
-import { hashPassword } from '../auth';
+import { hashPassword } from '../auth/password';
 
-export class User extends Model {}
+interface UserAttributes {
+  name: string;
+  password: string;
+  role: Role;
+}
+
+export class User extends Model<UserAttributes> implements UserAttributes {
+  public name!: string;
+
+  public password!: string;
+
+  public role!: Role;
+}
 
 export const initUser = async (sequelize: Sequelize) => {
   User.init({

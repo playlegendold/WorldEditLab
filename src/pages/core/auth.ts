@@ -1,7 +1,11 @@
 import { Request, Response } from 'express';
+import { buildDefaultResponse } from '../../shared/response';
 
-export const handleLoginRequest = (req: Request, res: Response) => {
-  res.send({});
+export const handleSignInRequest = (req: Request, res: Response) => {
+  res.redirect('/');
 };
 
-export default {};
+export const handleSignInView = (req: Request, res: Response) => {
+  const responseData = buildDefaultResponse(req);
+  res.render('sign-in', responseData);
+};

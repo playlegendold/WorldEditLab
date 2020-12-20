@@ -1,14 +1,13 @@
-import { Application, Request, Response } from 'express';
-import { handleLoginRequest } from './auth';
+import { Application } from 'express';
+import passport from 'passport';
+import { handleSignInRequest, handleSignInView } from './auth';
+import { LOCAL_SQLITE_STRATEGY } from '../../shared/auth/strategies/local';
+import { handleHomeView } from './home';
 
 const init = (app: Application) => {
-  app.get('/', (req: Request, res: Response) => {
-    res.render('index', { message: 'Welcome to WorldEditLab!' });
-  });
-  app.get('/sign-in', (req: Request, res: Response) => {
-    res.render('sign-in');
-  });
-  app.post('/sign-in', handleLoginRequest);
+  app.get('/', handleHomeView);
+  app.get('/sign-in', handleSignInView);
+  app.post('/sign-in', passport.authenticate(LOCAL_SQLITE_STRATEGY), handleSignInRequest);
 };
 
 export default init;

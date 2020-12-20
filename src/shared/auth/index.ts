@@ -1,11 +1,15 @@
-import bcrypt, { genSaltSync } from 'bcrypt';
+import { Application } from 'express';
+import expressSession from 'express-session';
+import passport from 'passport';
+import localStrategy from './strategies/local';
 
-export const hashPassword = (password: string): string => {
-  const salt = genSaltSync(10);
-  return bcrypt.hashSync(password, salt);
+export const initAuth = (app: Application) => {
+  app.use(expressSession({ secret: 'thisisatestsecret', resave: true, saveUninitialized: true }));
+  app.use(passport.initialize());
+  app.use(passport.session());
+
+  const strategy = localStrategy();
+  strategy.init();
 };
 
-export const verifyPassword = (
-  password: string,
-  hashedPassword: string,
-): boolean => bcrypt.compareSync(password, hashedPassword);
+export default initAuth;

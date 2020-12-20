@@ -7,6 +7,10 @@
         <img src="/images/logo.png" style="height: 40px; margin-top: 10px; margin-bottom: 10px;" alt="logo">
     </a>
     <div class="header-container-right">
-        <a href="/sign-in" class="header-link">Sign In</a>
+        <% if (!header.username) { %>
+            <a href="/sign-in" class="header-link">Sign In</a>
+        <% } else { %>
+                <a class="header-link">Welcome, <%= header.username %></a>
+        <% } %>
     </div>
 </div>
