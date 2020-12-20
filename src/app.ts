@@ -1,8 +1,11 @@
 import express, { Application } from 'express';
 import bodyParser from 'body-parser';
+import dotenv from 'dotenv';
 import initPages from './pages';
 import './shared/database';
 import { initAuth } from './shared/auth';
+
+dotenv.config();
 
 const app: Application = express();
 
@@ -14,6 +17,7 @@ initAuth(app);
 app.set('view engine', 'ejs');
 initPages(app);
 
-app.listen(8080, () => {
-  console.log('App is listening on port 8080!');
+const { PORT = 8080 } = process.env;
+app.listen(PORT, () => {
+  console.log(`App is listening on port ${PORT}!`);
 });
