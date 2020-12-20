@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import passport from 'passport';
 import { buildDefaultResponse } from '../../shared/response';
-import { LOCAL_SQLITE_STRATEGY } from '../../shared/auth/strategies/local';
+import { LOCAL_SQLITE_STRATEGY } from '../../shared/auth/strategies';
 import { User } from '../../shared/models';
 
 export const handleLoginRequest = (req: Request, res: Response, next: NextFunction) => {

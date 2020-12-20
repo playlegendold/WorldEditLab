@@ -11,7 +11,9 @@
     "build": "yarn build:tsc && yarn build:css",
     "build:tsc": "tsc",
     "build:css": "postcss assets/styles/tailwind.css -o public/styles/style.css",
-    "lint:ts": "npx eslint ."
+    "lint": "yarn lint:ts && yarn lint:css",
+    "lint:ts": "npx eslint .",
+    "lint:css": "npx stylelint \"assets/**/*.css\""
   },
   "repository": {
     "type": "git",
