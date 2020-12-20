@@ -12,7 +12,7 @@ export const initUser = async (sequelize: Sequelize) => {
       allowNull: false,
     },
     password: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(60),
     },
     role: {
       type: DataTypes.INTEGER,
