@@ -1,8 +1,8 @@
 import { Application } from 'express';
-import home from './core';
+import core from './core';
 
 const initPages = (app: Application) => {
-  home(app);
+  app.use('/', core);
 };
 
 export default initPages;

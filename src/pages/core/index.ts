@@ -1,11 +1,10 @@
-import { Application } from 'express';
+import { Router } from 'express';
 import { handleLoginRequest, handleLoginView } from './auth';
 import { handleHomeView } from './home';
 
-const init = (app: Application) => {
-  app.get('/', handleHomeView);
-  app.get('/login', handleLoginView);
-  app.post('/login', handleLoginRequest);
-};
+const router = Router();
+router.get('/', handleHomeView);
+router.get('/login', handleLoginView);
+router.post('/login', handleLoginRequest);
 
-export default init;
+export default router;
