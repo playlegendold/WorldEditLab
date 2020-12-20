@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('partials/head'); %>
+</head>
+<body>
+<header class="header">
+    <%- include('partials/header'); %>
+</header>
+<div class="sign-in-container">
+    <div>
+        <h1 class="sign-in-title"> Sign In </h1>
+        <form method="post">
+            <div class="sign-in-input-field">
+                <div>
+                    <span><i class="fas fa-user-circle"></i></span>
+                </div>
+                <input type="text" name="username" placeholder="Username"/>
+            </div>
+            <div class="sign-in-input-field">
+                <div>
+                    <span><i class="fas fa-lock"></i></span>
+                </div>
+                <input type="password" name="password" placeholder="Password"/>
+            </div>
+            <button type="submit"> Sign In </button>
+        </form>
+    </div>
+</div>
+</body>
+</html>
