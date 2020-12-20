@@ -3,7 +3,7 @@ module.exports = {
     enabled: true,
     content: [
       './views/**/*.ejs',
-      './views/*.ejs'
+      './views/*.ejs',
     ],
   },
   darkMode: false, // or 'media' or 'class'
