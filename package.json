@@ -9,7 +9,7 @@
     "serve:css": "yarn build:css -- -w",
     "serve:tsc": "tsc-watch -p ./src --onSuccess \"node .\"",
     "build": "yarn build:tsc && yarn build:css",
-    "build:tsc": "tsc",
+    "build:tsc": "tsc -p ./src",
     "build:css": "postcss assets/styles/tailwind.css -o public/styles/style.css",
     "lint": "yarn lint:ts && yarn lint:css",
     "lint:ts": "npx eslint .",
