@@ -6,6 +6,7 @@ on:
       - prod
       - feature/*
       - bugfix/*
+      - '**'
     tags:
       - 'v*.*.*'
     pull_request:
