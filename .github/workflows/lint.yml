@@ -1,0 +1,39 @@
+name: WorldEditLab
+on:
+  push:
+    branches:
+      - '**'
+    tags:
+      - 'v*.*.*'
+    pull_request:
+jobs:
+  lint_css:
+    name: "Lint CSS"
+    runs-on: self-hosted
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - name: Install Yarn
+        run: npm install -g yarn
+      - name: Install modules
+        run: yarn install
+      - name: Run ESLint
+        run: yarn run lint:css
+  lint_ts:
+    name: "Lint TS"
+    runs-on: self-hosted
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - name: Install Yarn
+        run: npm install -g yarn
+      - name: Install modules
+        run: yarn install
+      - name: Run ESLint
+        run: yarn run lint:ts
