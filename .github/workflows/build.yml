@@ -1,4 +1,4 @@
-name: Release WorldEditLab to Docker Hub
+name: WorldEditLab
 on:
   push:
     branches:
@@ -6,9 +6,30 @@ on:
       - prod
     tags:
       - 'v*.*.*'
+    pull_request:
 jobs:
-  main:
+  lint_css:
+    name: "WorldEditLab Lint CSS"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install modules
+        run: yarn install
+      - name: Run ESLint
+        run: yarn lint:css
+  lint_ts:
+    name: "WorldEditLab Lint TS"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install modules
+        run: yarn install
+      - name: Run ESLint
+        run: yarn lint:ts
+  release:
+    name: "WorldEditLab Release"
     runs-on: self-hosted
+    needs: [lint_css, lint_ts]
     steps:
       - name: Checkout
         uses: actions/checkout@v2
