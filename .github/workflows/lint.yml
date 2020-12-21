@@ -1,0 +1,29 @@
+name: WorldEditLab
+on:
+  push:
+    branches:
+      - '**'
+    tags:
+      - 'v*.*.*'
+    pull_request:
+jobs:
+  lint_css:
+    name: "Lint CSS"
+    runs-on: self-hosted
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install modules
+        run: yarn install
+      - name: Run ESLint
+        run: yarn lint:css
+  lint_ts:
+    name: "Lint TS"
+    runs-on: self-hosted
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install modules
+        run: yarn install
+      - name: Run ESLint
+        run: yarn lint:ts
