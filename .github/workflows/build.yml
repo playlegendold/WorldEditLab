@@ -13,6 +13,7 @@ on:
 jobs:
   lint_css:
     name: 'WorldEditLab Lint CSS'
+    runs-on: self-hosted
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -22,6 +23,7 @@ jobs:
         run: yarn lint:css
   lint_ts:
     name: 'WorldEditLab Lint TS'
+    runs-on: self-hosted
     steps:
       - name: Checkout
         uses: actions/checkout@v2
