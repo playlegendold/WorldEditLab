@@ -2,7 +2,8 @@ name: Release WorldEditLab to Docker Hub
 on:
   push:
     branches:
-      - '**'
+      - dev
+      - prod
     tags:
       - 'v*.*.*'
 jobs:
