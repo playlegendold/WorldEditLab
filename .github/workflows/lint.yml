@@ -13,17 +13,23 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
       - name: Install modules
         run: yarn install
       - name: Run ESLint
-        run: yarn lint:css
+        run: yarn run lint:css
   lint_ts:
     name: "Lint TS"
     runs-on: self-hosted
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
       - name: Install modules
         run: yarn install
       - name: Run ESLint
-        run: yarn lint:ts
+        run: yarn run lint:ts
