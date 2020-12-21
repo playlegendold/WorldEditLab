@@ -7,5 +7,29 @@
 <header class="header">
     <%- include('partials/header'); %>
 </header>
+
+<div class="container mx-auto py-6 px-4">
+    <h1 class="text-3xl py-4 border-b mb-10">Schematics</h1>
+    <%
+    var tableData = {
+      columns: [
+        { title: 'Name', key: 'name' },
+        { title: 'Uploaded By', key: 'uploaded_by' },
+        { title: 'Uploaded At', key: 'uploaded_at' },
+        { title: '', func: (item) => (`<a href="${item.url}">Downloadlink</a>`)}
+      ],
+      data: [
+        {
+          id: '2f0985b3-b85b-4975-8f0c-9873ed9b9e9f',
+          name: 'Test Schematic',
+          uploaded_by: 'Max Mustermann',
+          uploaded_at: 1608572568665,
+          url: 'http://localhost:8080/dl/s/2f0985b3-b85b-4975-8f0c-9873ed9b9e9f'
+        }
+      ]
+    };
+    %>
+    <%- include('partials/table', tableData)%>
+</div>
 </body>
 </html>
