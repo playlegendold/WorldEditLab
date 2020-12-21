@@ -6,13 +6,12 @@ on:
       - prod
       - feature/*
       - bugfix/*
-      - hotfix/*
     tags:
       - 'v*.*.*'
     pull_request:
 jobs:
   lint_css:
-    name: "WorldEditLab Lint CSS"
+    name: 'WorldEditLab Lint CSS'
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -21,7 +20,7 @@ jobs:
       - name: Run ESLint
         run: yarn lint:css
   lint_ts:
-    name: "WorldEditLab Lint TS"
+    name: 'WorldEditLab Lint TS'
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -30,15 +29,20 @@ jobs:
       - name: Run ESLint
         run: yarn lint:ts
   release:
-    name: "WorldEditLab Release"
+    name: 'WorldEditLab Release'
     runs-on: self-hosted
     needs: [lint_css, lint_ts]
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+      - name: Extract branch name
+        shell: bash
+        run: echo '##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})'
+        id: extract_branch
       - name: Docker meta
         id: docker_meta
         uses: crazy-max/ghaction-docker-meta@v1
+        if: ${{ !contains(${{ steps.extract_branch.outputs.branch }}, 'feature') || !contains(${{ steps.extract_branch.outputs.branch }}, 'bugfix') }}
         with:
           images: playlegend/worldeditlab
           tag-semver: |
@@ -46,10 +50,13 @@ jobs:
             {{major}}.{{minor}}
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
+        if: ${{ !contains(${{ steps.extract_branch.outputs.branch }}, 'feature') || !contains(${{ steps.extract_branch.outputs.branch }}, 'bugfix') }}
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
+        if: ${{ !contains(${{ steps.extract_branch.outputs.branch }}, 'feature') || !contains(${{ steps.extract_branch.outputs.branch }}, 'bugfix') }}
       - name: Cache Docker layers
         uses: actions/cache@v2
+        if: ${{ !contains(${{ steps.extract_branch.outputs.branch }}, 'feature') || !contains(${{ steps.extract_branch.outputs.branch }}, 'bugfix') }}
         with:
           path: /tmp/.buildx-cache
           key: ${{ runner.os }}-buildx-${{ github.sha }}
@@ -57,12 +64,14 @@ jobs:
             ${{ runner.os }}-buildx-
       - name: Login to DockerHub
         uses: docker/login-action@v1
+        if: ${{ !contains(${{ steps.extract_branch.outputs.branch }}, 'feature') || !contains(${{ steps.extract_branch.outputs.branch }}, 'bugfix') }}
         with:
           username: ${{ secrets.dockerHubUser }}
           password: ${{ secrets.dockerHubToken }}
       - name: Build and push
         id: docker_build
         uses: docker/build-push-action@v2
+        if: ${{ !contains(${{ steps.extract_branch.outputs.branch }}, 'feature') || !contains(${{ steps.extract_branch.outputs.branch }}, 'bugfix') }}
         with:
           context: .
           file: ./Dockerfile
@@ -73,4 +82,3 @@ jobs:
           cache-to: type=local,dest=/tmp/.buildx-cache
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
-
