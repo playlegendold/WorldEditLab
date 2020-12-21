@@ -6,7 +6,7 @@ on:
       - prod
     tags:
       - 'v*.*.*'
-    pull_request:
+    pullrequest:
 jobs:
   lint_css:
     name: "WorldEditLab Lint CSS"
