@@ -19,5 +19,5 @@
 }
 
 .header-link {
-  @apply mr-5 hover:text-blue-400 cursor-pointer border-b border-transparent;
+  @apply mr-5 hover:text-prime cursor-pointer border-b border-transparent;
 }

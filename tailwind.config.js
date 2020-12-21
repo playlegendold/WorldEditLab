@@ -8,7 +8,11 @@ module.exports = {
   },
   darkMode: false, // or 'media' or 'class'
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        prime: '#F67036',
+      },
+    },
   },
   variants: {
     extend: {},
