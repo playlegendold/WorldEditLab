@@ -1,5 +1,5 @@
 import { Sequelize } from 'sequelize';
-import { initUser } from '../models';
+import { initSchematic, initUser } from '../models';
 
 const sequelize = new Sequelize({
   dialect: 'sqlite',
@@ -10,6 +10,7 @@ const sequelize = new Sequelize({
 sequelize.authenticate().then(() => {
   console.log('Database connection has been established successfully.');
   initUser(sequelize);
+  initSchematic(sequelize);
 
   sequelize.sync({});
 }).catch((error) => {
