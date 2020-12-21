@@ -4,9 +4,12 @@ on:
     branches:
       - dev
       - prod
+      - feature/*
+      - bugfix/*
+      - hotfix/*
     tags:
       - 'v*.*.*'
-    pullrequest:
+    pull_request:
 jobs:
   lint_css:
     name: "WorldEditLab Lint CSS"
