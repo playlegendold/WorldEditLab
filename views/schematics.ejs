@@ -14,19 +14,11 @@
     var tableData = {
       columns: [
         { title: 'Name', key: 'name' },
-        { title: 'Uploaded By', key: 'uploaded_by' },
-        { title: 'Uploaded At', key: 'uploaded_at' },
-        { title: '', func: (item) => (`<a href="${item.url}">Downloadlink</a>`)}
+        { title: 'Uploaded By', func: (item) => (item.uploadedBy ? item.uploadedBy.name : '-') },
+        { title: 'Uploaded At', key: 'createdAt' },
+        { title: '', func: (item) => (`<a href="${data.baseURL}/dl/s/${item.uuid}">Downloadlink</a>`)}
       ],
-      data: [
-        {
-          id: '2f0985b3-b85b-4975-8f0c-9873ed9b9e9f',
-          name: 'Test Schematic',
-          uploaded_by: 'Max Mustermann',
-          uploaded_at: 1608572568665,
-          url: 'http://localhost:8080/dl/s/2f0985b3-b85b-4975-8f0c-9873ed9b9e9f'
-        }
-      ]
+      content: JSON.parse(data.tableData)
     };
     %>
     <%- include('partials/table', tableData)%>

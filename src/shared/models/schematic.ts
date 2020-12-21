@@ -6,7 +6,7 @@ import { Access } from './access';
 interface SchematicAttributes {
   uuid: string;
   name: string;
-  uploadedBy: number;
+  uploadedById?: number;
   access: Access;
   rawData: string;
 }
@@ -16,7 +16,7 @@ export class Schematic extends Model<SchematicAttributes> implements SchematicAt
 
   public name!: string;
 
-  public uploadedBy!: number;
+  public uploadedById!: number;
 
   public access!: Access;
 
@@ -33,11 +33,6 @@ export const initSchematic = async (sequelize: Sequelize) => {
     },
     name: {
       type: DataTypes.STRING(32),
-    },
-    uploadedBy: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      defaultValue: -1,
     },
     access: {
       type: DataTypes.INTEGER,
