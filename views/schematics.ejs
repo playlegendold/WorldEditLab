@@ -27,7 +27,7 @@
       columns: [
         { title: 'Name', key: 'name' },
         { title: 'Uploaded By', func: (item) => (item.uploadedBy ? item.uploadedBy.name : '-') },
-        { title: 'Uploaded At', key: 'createdAt' },
+        { title: 'Uploaded At', func: (item) => (new Date(item.createdAt).toLocaleDateString())},
         { title: '', func: (item) => (`<a href="${data.baseURL}/dl/s/${item.uuid}">Downloadlink</a>`)}
       ],
       content: JSON.parse(data.tableData)
