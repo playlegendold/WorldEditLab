@@ -22,6 +22,7 @@ export const handleIndexUpload = async (req: Request, res: Response) => {
   if (name.length > 32) name = name.substr(0, 32);
 
   if (name.length <= 3) {
+    res.status(400);
     res.send({ success: false, message: 'Invalid schematic name' });
     return;
   }
