@@ -1,14 +1,15 @@
 import {
   DataTypes, Model, Sequelize,
 } from 'sequelize';
+import { Buffer } from 'buffer';
 import { Access } from './access';
 
 interface SchematicAttributes {
-  uuid: string;
+  uuid?: string;
   name: string;
   uploadedById?: number;
   access: Access;
-  rawData: string;
+  rawData: Buffer;
 }
 
 export class Schematic extends Model<SchematicAttributes> implements SchematicAttributes {
@@ -20,7 +21,7 @@ export class Schematic extends Model<SchematicAttributes> implements SchematicAt
 
   public access!: Access;
 
-  public rawData!: string;
+  public rawData!: Buffer;
 }
 
 export const initSchematic = async (sequelize: Sequelize) => {

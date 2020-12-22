@@ -1,17 +1,15 @@
 const WEL = (() => {
 
-  const uploadNewSchematic = (file, onSuccess, onFail, onProgress) => {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const request = new XMLHttpRequest();
-      request.onload = onSuccess;
-      request.onerror = onFail;
-      request.onabort = onFail;
-      request.onprogress = onProgress;
-      request.open('POST', '/schematics');
-      request.send(e.target.result);
-    };
-    reader.readAsBinaryString(file);
+  const uploadNewSchematic = ({ file }, onSuccess, onFail, onProgress) => {
+    const request = new XMLHttpRequest();
+    request.open('POST', '/schematics');
+    request.onload = onSuccess;
+    request.onerror = onFail;
+    request.onabort = onFail;
+    request.onprogress = onProgress;
+    const formData = new FormData();
+    formData.append('schematic', file, file.name);
+    request.send(formData);
   }
 
   const registerSchematicModal = () => {
@@ -36,7 +34,7 @@ const WEL = (() => {
     uploadButton.innerText = 'Upload';
     uploadButton.addEventListener('click', () => {
       console.log(input.files);
-      uploadNewSchematic(input.files[0], () => {
+      uploadNewSchematic({file: input.files[0]}, () => {
         toggleModal();
         window.location.reload();
       }, () => {
