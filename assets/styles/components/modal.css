@@ -4,8 +4,6 @@ body.modal-active {
 }
 
 .modal {
-  transition: opacity 0.25s ease;
-
   @apply opacity-0 pointer-events-none fixed w-full h-full top-0 left-0 flex items-center justify-center;
 }
 
@@ -31,6 +29,14 @@ body.modal-active {
 
 .modal-head > p {
   @apply text-2xl font-bold;
+}
+
+.modal-body > input {
+  @apply w-full p-3 mb-4 rounded-lg;
+}
+
+.modal-body > input[type='text'] {
+  @apply bg-gray-100;
 }
 
 .modal-foot {

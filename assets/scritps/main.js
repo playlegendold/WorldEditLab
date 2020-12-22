@@ -1,6 +1,6 @@
 const WEL = (() => {
 
-  const uploadNewSchematic = ({ file }, onSuccess, onFail, onProgress) => {
+  const uploadNewSchematic = ({ file, name }, onSuccess, onFail, onProgress) => {
     const request = new XMLHttpRequest();
     request.open('POST', '/schematics');
     request.onload = onSuccess;
@@ -8,7 +8,7 @@ const WEL = (() => {
     request.onabort = onFail;
     request.onprogress = onProgress;
     const formData = new FormData();
-    formData.append('schematic', file, file.name);
+    formData.append('schematic', file, name);
     request.send(formData);
   }
 
@@ -23,9 +23,15 @@ const WEL = (() => {
     const modalTitle = document.querySelector('.modal-head > p');
     modalTitle.innerText = 'Upload new schematic';
 
-    const input = document.createElement('input');
-    input.type = 'file';
-    document.querySelector('.modal-body').append(input);
+    const inputName = document.createElement('input');
+    inputName.type = 'text';
+    inputName.maxLength = 32;
+    inputName.placeholder = 'Schematic name';
+    document.querySelector('.modal-body').append(inputName);
+
+    const inputFile = document.createElement('input');
+    inputFile.type = 'file';
+    document.querySelector('.modal-body').append(inputFile);
 
     const modalFoot = document.querySelector('.modal-foot');
 
@@ -33,8 +39,24 @@ const WEL = (() => {
     uploadButton.className = 'modal-btn-prime';
     uploadButton.innerText = 'Upload';
     uploadButton.addEventListener('click', () => {
-      console.log(input.files);
-      uploadNewSchematic({file: input.files[0]}, () => {
+      let failed = false;
+
+      if (inputFile.files.length === 0) {
+        inputFile.style.background = '#ffc1c1';
+        failed = true;
+      }
+
+      if (inputName.value.length <= 3) {
+        inputName.style.background = '#ffc1c1';
+        failed = true;
+      }
+
+      if (failed) return;
+
+      uploadNewSchematic({
+        file: inputFile.files[0],
+        name: inputName.value,
+      }, () => {
         toggleModal();
         window.location.reload();
       }, () => {

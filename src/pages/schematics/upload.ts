@@ -18,8 +18,13 @@ export const handleIndexUpload = async (req: Request, res: Response) => {
     return;
   }
 
-  let name = file.name.substr(0, file.name.indexOf('.'));
+  let { name } = file;
   if (name.length > 32) name = name.substr(0, 32);
+
+  if (name.length <= 3) {
+    res.send({ success: false, message: 'Invalid schematic name' });
+    return;
+  }
 
   const schematic = Schematic.build({
     name,
