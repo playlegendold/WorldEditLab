@@ -5,12 +5,14 @@
   "main": "dist/app.js",
   "scripts": {
     "start": "node .",
-    "serve": "concurrently -r \"yarn serve:tsc\" \"yarn serve:css\"",
-    "serve:css": "yarn build:css -- -w",
+    "serve": "concurrently -r \"yarn serve:tsc\" \"yarn serve:css\" \"yarn serve:js\"",
+    "serve:css": "postcss -w assets/styles/tailwind.css -o public/styles/style.css",
     "serve:tsc": "tsc-watch -p ./src --onSuccess \"node .\"",
+    "serve:js": "babel -w assets/scritps --out-dir public/scripts",
     "build": "yarn build:tsc && yarn build:css",
     "build:tsc": "tsc -p ./src",
     "build:css": "postcss assets/styles/tailwind.css -o public/styles/style.css",
+    "build:js": "babel assets/scritps --out-dir public/scripts",
     "lint": "yarn lint:ts && yarn lint:css",
     "lint:ts": "npx eslint .",
     "lint:css": "npx stylelint \"assets/**/*.css\""
@@ -26,6 +28,9 @@
   },
   "homepage": "https://github.com/playlegend/WorldEditLab#readme",
   "devDependencies": {
+    "@babel/cli": "^7.12.10",
+    "@babel/core": "^7.12.10",
+    "@babel/preset-env": "^7.12.11",
     "@types/bcrypt": "^3.0.0",
     "@types/ejs": "^3.0.5",
     "@types/express": "^4.17.9",
