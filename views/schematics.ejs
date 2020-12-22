@@ -36,12 +36,7 @@
     %>
     <%- include('partials/table', tableData); %>
 </div>
-<%
-
-var model = {
-  title: 'Upload new schematic'
-};
-%>
-<%- include('partials/modal', model); %>
+<%- include('partials/modal'); %>
+<script>WEL.registerSchematicModal();</script>
 </body>
 </html>

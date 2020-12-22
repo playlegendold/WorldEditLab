@@ -9,7 +9,7 @@
     "serve:css": "postcss -w assets/styles/tailwind.css -o public/styles/style.css",
     "serve:tsc": "tsc-watch -p ./src --onSuccess \"node .\"",
     "serve:js": "babel -w assets/scritps --out-dir public/scripts",
-    "build": "yarn build:tsc && yarn build:css",
+    "build": "yarn build:tsc && build:js && yarn build:css",
     "build:tsc": "tsc -p ./src",
     "build:css": "postcss assets/styles/tailwind.css -o public/styles/style.css",
     "build:js": "babel assets/scritps --out-dir public/scripts",
