@@ -10,19 +10,20 @@
 
 <div class="container mx-auto py-6">
     <h1 class="text-3xl py-4 border-b mb-10">Schematics</h1>
+    <% if (header.username) { %>
     <div class="mb-4 flex justify-between items-center">
         <div class="flex-1 pr-4 mb-4"></div>
         <div>
             <div class="shadow rounded-lg flex">
                 <div class="relative">
-                    <button class="rounded-lg inline-flex items-center bg-green-600 text-white hover:bg-green-700 py-2 px-2 md:px-4">
+                    <button class="modal-open rounded-lg inline-flex items-center bg-green-600 text-white hover:bg-green-700 py-2 px-2 md:px-4">
                         <span>Upload</span>
                     </button>
                 </div>
             </div>
         </div>
     </div>
-    <%
+    <% }
     var tableData = {
       columns: [
         { title: 'Name', key: 'name' },
@@ -33,7 +34,14 @@
       content: JSON.parse(data.tableData)
     };
     %>
-    <%- include('partials/table', tableData)%>
+    <%- include('partials/table', tableData); %>
 </div>
+<%
+
+var model = {
+  title: 'Upload new schematic'
+};
+%>
+<%- include('partials/modal', model); %>
 </body>
 </html>
