@@ -1,4 +1,4 @@
-const WEL = (() => {
+global.WEL = (() => {
 
   const uploadNewSchematic = ({ file, name }, onFinished, onFail = null, onProgress = null) => {
     const request = new XMLHttpRequest();
