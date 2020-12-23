@@ -1,15 +1,14 @@
-<div class="overflow-x-auto bg-white rounded-lg shadow overflow-y-auto relative">
-    <table class="border-collapse table-auto w-full whitespace-no-wrap bg-white table-striped relative">
+<div class="table">
+    <table>
         <thead>
-        <tr class="text-left">
-            <th class="py-2 px-3 sticky top-0 border-b border-gray-200 bg-gray-100">
-                <label
-                        class="text-teal-500 inline-flex justify-between items-center hover:bg-gray-200 px-2 py-2 rounded-lg cursor-pointer">
-                    <input type="checkbox" class="form-checkbox focus:outline-none focus:shadow-outline">
+        <tr>
+            <th class="table-checkbox">
+                <label>
+                    <input type="checkbox">
                 </label>
             </th>
             <% for (var i = 0; i < columns.length; i++) { %>
-                <th class="bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs">
+                <th>
                     <%= columns[i].title %>
                 </th>
             <% } %>
@@ -18,19 +17,19 @@
         <tbody>
         <% for (var iContent = 0; iContent < content.length; iContent++) { %>
             <tr>
-                <td class="border-dashed border-t border-gray-200 px-3">
-                    <label class="text-teal-500 inline-flex justify-between items-center hover:bg-gray-200 px-2 py-2 rounded-lg cursor-pointer">
-                        <input type="checkbox" class="form-checkbox rowCheckbox focus:outline-none focus:shadow-outline">
+                <td class="table-checkbox">
+                    <label>
+                        <input type="checkbox" >
                     </label>
                 </td>
             <% for (var iColumn = 0; iColumn < columns.length; iColumn++) { %>
                 <% if (columns[iColumn].key !== undefined) { %>
-                    <td class="border-dashed border-t border-gray-200 userId">
-                        <span class="text-gray-700 px-6 py-3 flex items-center"><%= content[iContent][columns[iColumn].key] %></span>
+                    <td>
+                        <span><%= content[iContent][columns[iColumn].key] %></span>
                     </td>
                 <% } else if (columns[iColumn].func !== undefined) { %>
-                    <td class="border-dashed border-t border-gray-200 userId">
-                        <span class="text-gray-700 px-6 py-3 flex items-center"><%- columns[iColumn].func(content[iContent]) %></span>
+                    <td>
+                        <span><%- columns[iColumn].func(content[iContent]) %></span>
                     </td>
                 <% } %>
             <% } %>

@@ -1,0 +1,39 @@
+.table {
+  @apply overflow-x-auto bg-white rounded-lg shadow overflow-y-auto relative w-full;
+}
+
+.table > table {
+  @apply border-collapse table-auto w-full bg-white relative;
+}
+
+.table > table > thead > tr {
+  @apply text-left;
+}
+
+.table > table > thead > tr > .table-checkbox {
+  @apply py-2 px-3 sticky top-0 border-b border-gray-200 bg-gray-100;
+}
+
+.table .table-checkbox > label {
+  @apply inline-flex justify-between items-center hover:bg-gray-200 px-2 py-2 rounded-lg cursor-pointer;
+}
+
+.table .table-checkbox > label > input {
+  @apply focus:outline-none;
+}
+
+.table > table > thead > tr > th:not(.table-checkbox) {
+  @apply bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs;
+}
+
+.table > table > tbody > tr > .table-checkbox {
+  @apply px-3;
+}
+
+.table > table > tbody > tr > td {
+  @apply border-dashed border-t border-gray-200;
+}
+
+.table > table > tbody > tr > td > span {
+  @apply text-gray-700 px-6 py-3 flex items-center;
+}
