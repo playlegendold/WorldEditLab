@@ -34,7 +34,7 @@
 <span class="actionhub">
     <i class="fas fa-link" onclick="WEL.copyToClipboard('${data.baseURL}/dl/s/${item.uuid}')"></i>
     <i class="fas fa-arrow-down" onclick="location.href='${data.baseURL}/dl/s/${item.uuid}'"></i>
-    <i class="fas fa-wrench" onclick="alert('Work in progress')"></i>
+    <i class="fas fa-wrench" onclick="WEL.sendNotification('Work in progress')"></i>
 </span>`)
             }
         ],
@@ -45,5 +45,6 @@
 </div>
 <%- include('partials/modal'); %>
 <script>WEL.registerSchematicModal();</script>
+<%- include('partials/foot'); %>
 </body>
 </html>
