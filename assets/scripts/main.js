@@ -1,9 +1,9 @@
 import { sendNotification } from './notification';
 import { copyToClipboard } from './clipboard';
-import { registerSchematicModal } from './schematicModal';
+import { openSchematicUploadModal } from './schematicModal';
 
 global.WEL = {
-  registerSchematicModal,
+  openSchematicUploadModal,
   copyToClipboard,
   sendNotification,
 };
