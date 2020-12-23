@@ -116,8 +116,11 @@ const WEL = (() => {
 
     try {
       const successful = document.execCommand('copy');
-      const msg = successful ? 'successful' : 'unsuccessful';
-      console.log('Fallback: Copying text command was ' + msg);
+      if (successful) {
+        sendNotification('Copied!', 'success', 1000);
+      } else {
+        console.error('Fallback: Copy command failed')
+      }
     } catch (err) {
       console.error('Fallback: Oops, unable to copy', err);
     }
@@ -131,7 +134,7 @@ const WEL = (() => {
       return;
     }
     navigator.clipboard.writeText(text).then(function() {
-      console.log('Async: Copying to clipboard was successful!');
+      sendNotification('Copied!', 'success', 1000);
     }, function(err) {
       console.error('Async: Could not copy text: ', err);
     });
