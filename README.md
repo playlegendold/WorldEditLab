@@ -30,7 +30,7 @@
   <li>
     <a href="#getting-started">Getting Started</a>
     <ul>
-      <li><a href="#usage-with-docker">Usage with docker</a></li>
+      <li><a href="#usage-with-docker">Usage With Docker</a></li>
       <li><a href="#dev-environment">Dev Environment</a></li>
     </ul>
   </li>
@@ -57,7 +57,7 @@ Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod 
 
 Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et.
 
-### Usage with docker
+### Usage With Docker
 
 Here is an example using docker-compose.yml:
   ```yaml
@@ -81,12 +81,17 @@ Here is an example using docker-compose.yml:
 npm install -g yarn
 ```
 
-#### Run dev environment
+#### Downloading all dependencies
+```shell
+yarn install
+```
+
+#### Compiles and hot-reloads for development
 ```shell
 yarn serve
 ```
 
-#### Build project
+#### Compiles and minifies for production
 ```shell
 yarn build
 ```
@@ -96,7 +101,7 @@ yarn build
 yarn start
 ```
 
-#### Lint code
+#### Lint files
 ```shell
 yarn lint
 ```
