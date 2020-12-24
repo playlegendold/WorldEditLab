@@ -19,26 +19,25 @@
 </p>
 
 <!-- TABLE OF CONTENTS -->
-<details open="open">
-  <summary>Table of Contents</summary>
-  <ol>
-    <li>
-      <a href="#about-the-project">About The Project</a>
-      <ul>
-        <li><a href="#built-with">Built With</a></li>
-      </ul>
-    </li>
-    <li>
-      <a href="#getting-started">Getting Started</a>
-      <ul>
-        <li><a href="#usage-with-docker">Usage with docker</a></li>
-      </ul>
-    </li>
-    <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#license">License</a></li>
-    <li><a href="#contact">Contact</a></li>
-  </ol>
-</details>
+## Table of Contents</summary>
+<ol>
+  <li>
+    <a href="#about-the-project">About The Project</a>
+    <ul>
+      <li><a href="#built-with">Built With</a></li>
+    </ul>
+  </li>
+  <li>
+    <a href="#getting-started">Getting Started</a>
+    <ul>
+      <li><a href="#usage-with-docker">Usage with docker</a></li>
+      <li><a href="#dev-environment">Dev Environment</a></li>
+    </ul>
+  </li>
+  <li><a href="#contributing">Contributing</a></li> 
+  <li><a href="#license">License</a></li>
+  <li><a href="#contact">Contact</a></li>
+</ol>
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
@@ -72,6 +71,35 @@ Here is an example using docker-compose.yml:
       - COOKIE_SECRET="your_session_secret"
       - BASE_URL="http://foobar.com:8080"     
   ```
+
+### Dev Environment 
+
+#### Prerequirements
+
+- yarn
+```shell
+npm install -g yarn
+```
+
+#### Run dev environment
+```shell
+yarn serve
+```
+
+#### Build project
+```shell
+yarn build
+```
+
+#### Run project
+```shell
+yarn start
+```
+
+#### Lint code
+```shell
+yarn lint
+```
 
 <!-- CONTRIBUTING -->
 ## Contributing
