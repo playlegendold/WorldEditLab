@@ -3,6 +3,12 @@ import {
 } from 'sequelize';
 import { Buffer } from 'buffer';
 import { Access } from './access';
+import { User } from './user';
+
+export enum SchematicFormat {
+  SCHEM,
+  SCHEMATIC,
+}
 
 interface SchematicAttributes {
   uuid?: string;
@@ -10,6 +16,7 @@ interface SchematicAttributes {
   uploadedById?: number;
   access: Access;
   rawData: Buffer;
+  format: number;
 }
 
 export class Schematic extends Model<SchematicAttributes> implements SchematicAttributes {
@@ -22,6 +29,12 @@ export class Schematic extends Model<SchematicAttributes> implements SchematicAt
   public access!: Access;
 
   public rawData!: Buffer;
+
+  public format!: number;
+
+  public createdAt!: Date;
+
+  public uploadedBy!: User;
 }
 
 export const initSchematic = async (sequelize: Sequelize) => {
@@ -42,6 +55,10 @@ export const initSchematic = async (sequelize: Sequelize) => {
     },
     rawData: {
       type: DataTypes.BLOB,
+    },
+    format: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
     },
   }, {
     sequelize,

@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
 import { UploadedFile } from 'express-fileupload';
-import { Access, Schematic, User } from '../../shared/models';
+import {
+  Access, Schematic, SchematicFormat, User,
+} from '../../shared/models';
 
 export const handleIndexUpload = async (req: Request, res: Response) => {
   const { user } = req;
@@ -18,12 +20,24 @@ export const handleIndexUpload = async (req: Request, res: Response) => {
     return;
   }
 
-  let { name } = file;
-  if (name.length > 32) name = name.substr(0, 32);
+  const args = file.name.split('.');
+  if (args.length !== 2) {
+    res.status(400);
+    res.send({ success: false, message: 'Invalid file name' });
+    return;
+  }
 
-  if (name.length <= 3) {
+  const [name, type] = args;
+
+  if (name.length <= 3 || name.length > 32) {
     res.status(400);
     res.send({ success: false, message: 'Invalid schematic name' });
+    return;
+  }
+
+  if (type !== 'schematic' && type !== 'schem') {
+    res.status(400);
+    res.send({ success: false, message: 'Invalid schematic type' });
     return;
   }
 
@@ -32,6 +46,7 @@ export const handleIndexUpload = async (req: Request, res: Response) => {
     rawData: file.data,
     access: Access.INTERNAL,
     uploadedById: (user as User).id,
+    format: type === 'schem' ? SchematicFormat.SCHEM : SchematicFormat.SCHEMATIC,
   });
 
   schematic.save().then(() => {

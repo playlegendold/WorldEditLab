@@ -9,7 +9,7 @@ const uploadNewSchematic = ({ file, name }, onFinished, onFail = null, onProgres
   request.onabort = onFail;
   request.onprogress = onProgress;
   const formData = new FormData();
-  formData.append('schematic', file, name);
+  formData.append('schematic', file, `${name}.${file.name.split('.').pop()}`);
   request.send(formData);
 }
 

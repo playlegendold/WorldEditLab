@@ -11,7 +11,7 @@ export const handleIndexView = async (req: Request, res: Response) => {
   const user = req.user as User;
 
   const searchOptions: FindOptions = {
-    attributes: ['uuid', 'name', 'createdAt'],
+    attributes: ['uuid', 'name', 'createdAt', 'access', 'uploadedById'],
   };
 
   if (isLoggedIn) {
@@ -30,9 +30,21 @@ export const handleIndexView = async (req: Request, res: Response) => {
     };
   }
 
+  const rawResponse = await Schematic.findAll(searchOptions);
+  const response = rawResponse.map((row) => (
+    {
+      uuid: row.uuid,
+      name: row.name,
+      createdAt: row.createdAt,
+      access: row.access,
+      uploadedBy: row.uploadedBy ? row.uploadedBy.name : undefined,
+      write: row.access === Access.PRIVATE || row.uploadedById === user?.id,
+    }
+  ));
+
   responseData.data = {
     baseURL: process.env.BASE_URL,
-    tableData: JSON.stringify(await Schematic.findAll(searchOptions)),
+    tableData: response,
   };
 
   res.render('schematics', responseData);

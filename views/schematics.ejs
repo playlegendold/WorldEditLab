@@ -27,18 +27,29 @@
     var tableData = {
         columns: [
             {title: 'Name', key: 'name'},
-            {title: 'Uploaded By', func: (item) => (item.uploadedBy ? item.uploadedBy.name : '-')},
-            {title: 'Uploaded At', func: (item) => (new Date(item.createdAt).toLocaleDateString())},
+            {title: 'Uploaded By', func: (item) => (item.uploadedBy ? item.uploadedBy : '-')},
+            {title: 'Uploaded At', func: (item) => (item.createdAt.toLocaleDateString())},
             {
-                title: '', func: (item) => (`
+                title: '', func: (item) => {
+                  if (item.write) {
+                    return `
 <span class="actionhub">
     <i class="fas fa-link" onclick="WEL.copyToClipboard('${data.baseURL}/dl/s/${item.uuid}')"></i>
     <i class="fas fa-arrow-down" onclick="location.href='${data.baseURL}/dl/s/${item.uuid}'"></i>
+    <i class="fas fa-trash-alt" onclick="WEL.openConfirmModal('Do you really want to delete the schematic?', () => {WEL.deleteSchematic('${item.uuid}')})"></i>
     <i class="fas fa-wrench" onclick="WEL.sendNotification('Work in progress')"></i>
-</span>`)
+</span>`;
+                  } else {
+                      return `
+<span class="actionhub">
+    <i class="fas fa-link" onclick="WEL.copyToClipboard('${data.baseURL}/dl/s/${item.uuid}')"></i>
+    <i class="fas fa-arrow-down" onclick="location.href='${data.baseURL}/dl/s/${item.uuid}'"></i>
+</span>`;
+                  }
+                }
             }
         ],
-        content: JSON.parse(data.tableData)
+        content: data.tableData
     };
     %>
     <%- include('partials/table', tableData); %>
