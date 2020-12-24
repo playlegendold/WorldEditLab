@@ -84,3 +84,18 @@ export const openSchematicUploadModal = () => {
     ],
   });
 };
+
+export const deleteSchematic = (uuid) => {
+  const request = new XMLHttpRequest();
+  request.open('DELETE', `/schematics/${uuid}`);
+  request.onload = (event) => {
+    const result = JSON.parse(request.response);
+    if (result.success) {
+      sendNotification('Schematic successfully deleted!', 'success', 2000);
+      location.reload();
+    } else {
+      sendNotification('Schematic deletion failed! ' + result.message, 'error', 4000);
+    }
+  };
+  request.send();
+};
