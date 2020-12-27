@@ -67,8 +67,12 @@ export const openSchematicUploadModal = () => {
             name: modal.name.value,
           }, (event) => {
             if (event.target.status === 200) {
+              sendNotification(
+                'Successfully uploaded',
+                'success',
+                2000);
               modal.close();
-              window.location.reload();
+              tableSchematic.addRow(JSON.parse(event.target.response).row);
             } else {
               sendNotification(
                 `Upload failed: ${JSON.parse(event.target.response).message}`,

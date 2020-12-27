@@ -5,7 +5,7 @@ import {
 } from '../../shared/models';
 
 export const handleIndexUpload = async (req: Request, res: Response) => {
-  const { user } = req;
+  const user = req.user as User;
   if (!user) {
     res.status(403);
     res.send({ success: false, message: 'Forbidden' });
@@ -50,6 +50,16 @@ export const handleIndexUpload = async (req: Request, res: Response) => {
   });
 
   schematic.save().then(() => {
-    res.send({ success: true });
+    res.send({
+      success: true,
+      row: {
+        uuid: schematic.uuid,
+        name: schematic.name,
+        createdAt: schematic.createdAt,
+        access: schematic.access,
+        uploadedBy: user.name,
+        write: schematic.access === Access.PRIVATE || schematic.uploadedById === user?.id,
+      },
+    });
   });
 };
