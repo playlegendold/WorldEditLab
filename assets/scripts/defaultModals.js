@@ -10,7 +10,7 @@ export const openConfirmModal = (question, callbackIfOK) => {
         click: 'close',
       },
       {
-        name: 'OK',
+        name: 'Yes',
         primary: true,
         click: (modal) => {
           callbackIfOK();
