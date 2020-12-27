@@ -24,48 +24,49 @@
                 </div>
             </div>
         </div>
-    <% }
-    var tableData = {
-        columns: [
+    <% } %>
+    <div id="schematic-table" class="table"></div>
+    <script>
+        var tableSchematic = WEL.newTable('#schematic-table', {
+          rowKey: 'uuid',
+          columns: [
             {title: 'Name', key: 'name'},
             {title: 'Uploaded By', func: (item) => (item.uploadedBy ? item.uploadedBy : '-')},
-            {title: 'Uploaded At', func: (item) => (item.createdAt.toLocaleDateString())},
+            {title: 'Uploaded At', func: (item) => (new Date(item.createdAt).toLocaleDateString('en-EN'))},
             {
-                title: 'Access', func: (item) => {
-                    switch (item.access) {
-                        case 0:
-                            return 'Public';
-                        case 1:
-                            return 'Internal';
-                        case 2:
-                            return 'Private';
-                    }
+              title: 'Access', func: (item) => {
+                switch (item.access) {
+                  case 0:
+                    return 'Public';
+                  case 1:
+                    return 'Internal';
+                  case 2:
+                    return 'Private';
                 }
+              },
             },
             {
-                title: '', func: (item) => {
-                    if (item.write) {
-                        return `
-<span class="actionhub">
-    <i class="fas fa-link" onclick="WEL.copyToClipboard('${data.baseURL}/dl/s/${item.uuid}')"></i>
-    <i class="fas fa-arrow-down" onclick="location.href='${data.baseURL}/dl/s/${item.uuid}'"></i>
-    <i class="fas fa-trash-alt" onclick="WEL.openConfirmModal('Do you really want to delete the schematic?', () => {WEL.deleteSchematic('${item.uuid}')})"></i>
-    <i class="fas fa-wrench" onclick="WEL.sendNotification('Work in progress')"></i>
-</span>`;
-                    } else {
-                        return `
-<span class="actionhub">
-    <i class="fas fa-link" onclick="WEL.copyToClipboard('${data.baseURL}/dl/s/${item.uuid}')"></i>
-    <i class="fas fa-arrow-down" onclick="location.href='${data.baseURL}/dl/s/${item.uuid}'"></i>
-</span>`;
-                    }
+              title: '', func: (item) => {
+                if (item.write) {
+                  return '<span class="actionhub">' +
+                            '<i class="fas fa-link" onclick="WEL.copyToClipboard(\'<%= data.baseURL %>/dl/s/' + item.uuid + '\')"></i>' +
+                            '<i class="fas fa-arrow-down" onclick="location.href=\'<%= data.baseURL %>/dl/s/' + item.uuid + '\'"></i>' +
+                            '<i class="fas fa-trash-alt" onclick="WEL.openConfirmModal(\'Do you really want to delete the schematic?\', () => {' +
+                                'WEL.deleteSchematic(\''+ item.uuid + '\')})"></i>' +
+                            '<i class="fas fa-wrench" onclick="WEL.sendNotification(\'Work in progress\')"></i>' +
+                        '</span>';
+                } else {
+                  return '<span class="actionhub">' +
+                            '<i class="fas fa-link" onclick="WEL.copyToClipboard(\'<%= data.baseURL %>/dl/s/' + item.uuid + '\')"></i>' +
+                            '<i class="fas fa-arrow-down" onclick="location.href=\'<%= data.baseURL %>/dl/s/' + item.uuid + '\'"></i>' +
+                         '</span>';
                 }
-            }
-        ],
-        content: data.tableData
-    };
-    %>
-    <%- include('partials/table', tableData); %>
+              },
+            },
+          ],
+        });
+        tableSchematic.setData(JSON.parse('<%- data.tableData %>'));
+    </script>
 </div>
 <%- include('partials/foot'); %>
 </body>

@@ -44,7 +44,7 @@ export const handleIndexView = async (req: Request, res: Response) => {
 
   responseData.data = {
     baseURL: process.env.BASE_URL,
-    tableData: response,
+    tableData: JSON.stringify(response),
   };
 
   res.render('schematics', responseData);

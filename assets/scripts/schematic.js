@@ -92,7 +92,7 @@ export const deleteSchematic = (uuid) => {
     const result = JSON.parse(request.response);
     if (result.success) {
       sendNotification('Schematic successfully deleted!', 'success', 2000);
-      location.reload();
+      tableSchematic.deleteRow(uuid);
     } else {
       sendNotification('Schematic deletion failed! ' + result.message, 'error', 4000);
     }
