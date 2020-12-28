@@ -1,6 +1,4 @@
-import {
-  DataTypes, Model, Sequelize,
-} from 'sequelize';
+import { DataTypes, Model, Sequelize } from 'sequelize';
 import { Role } from './role';
 import { hashPassword } from '../auth/password';
 
@@ -11,7 +9,7 @@ interface UserAttributes {
   role: Role;
 }
 
-export class User extends Model<UserAttributes> implements UserAttributes {
+export class User extends Model implements UserAttributes {
   public id!: number;
 
   public name!: string;

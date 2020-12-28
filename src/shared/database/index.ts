@@ -1,6 +1,6 @@
 import { Sequelize } from 'sequelize';
 import {
-  initSchematic, initUser, Schematic, User,
+  initSchematic, initSchematicCategory, initUser, Schematic, SchematicCategory, User,
 } from '../models';
 
 const sequelize = new Sequelize({
@@ -13,8 +13,10 @@ sequelize.authenticate().then(() => {
   console.log('Database connection has been established successfully.');
   initUser(sequelize);
   initSchematic(sequelize);
+  initSchematicCategory(sequelize);
 
   Schematic.belongsTo(User, { as: 'uploadedBy' });
+  Schematic.belongsTo(SchematicCategory, { as: 'category' });
 
   sequelize.sync({});
 }).catch((error) => {

@@ -4,6 +4,7 @@ import {
 import { Buffer } from 'buffer';
 import { Access } from './access';
 import { User } from './user';
+import { SchematicCategory } from './schematicCategory';
 
 export enum SchematicFormat {
   SCHEM,
@@ -13,18 +14,19 @@ export enum SchematicFormat {
 interface SchematicAttributes {
   uuid?: string;
   name: string;
-  uploadedById?: number;
   access: Access;
   rawData: Buffer;
   format: number;
+
+  // References
+  uploadedById?: number;
+  categoryId?: number;
 }
 
-export class Schematic extends Model<SchematicAttributes> implements SchematicAttributes {
+export class Schematic extends Model implements SchematicAttributes {
   public uuid!: string;
 
   public name!: string;
-
-  public uploadedById!: number;
 
   public access!: Access;
 
@@ -34,7 +36,15 @@ export class Schematic extends Model<SchematicAttributes> implements SchematicAt
 
   public createdAt!: Date;
 
+  // References
+  public uploadedById!: number;
+
+  public categoryId!: number;
+
+  // Linked Models
   public uploadedBy!: User;
+
+  public category!: SchematicCategory;
 }
 
 export const initSchematic = async (sequelize: Sequelize) => {

@@ -2,7 +2,10 @@ import { Request, Response } from 'express';
 import { Op } from 'sequelize';
 import { FindOptions } from 'sequelize/types/lib/model';
 import { buildDefaultResponse } from '../../shared/response';
-import { Access, Schematic, User } from '../../shared/models';
+import {
+  Access, Schematic, SchematicCategory, User,
+} from '../../shared/models';
+import { createResponseFromRow } from './shared';
 
 export const handleIndexView = async (req: Request, res: Response) => {
   const responseData = buildDefaultResponse(req);
@@ -23,24 +26,33 @@ export const handleIndexView = async (req: Request, res: Response) => {
         uploadedById: user.id,
       },
     };
-    searchOptions.include = 'uploadedBy';
+    searchOptions.include = [
+      {
+        model: User,
+        attributes: ['name'],
+        as: 'uploadedBy',
+      },
+      {
+        model: SchematicCategory,
+        attributes: ['name'],
+        as: 'category',
+      },
+    ];
   } else {
     searchOptions.where = {
       access: Access.PUBLIC,
     };
+    searchOptions.include = [
+      {
+        model: SchematicCategory,
+        attributes: ['name'],
+        as: 'category',
+      },
+    ];
   }
 
   const rawResponse = await Schematic.findAll(searchOptions);
-  const response = rawResponse.map((row) => (
-    {
-      uuid: row.uuid,
-      name: row.name,
-      createdAt: row.createdAt,
-      access: row.access,
-      uploadedBy: row.uploadedBy ? row.uploadedBy.name : undefined,
-      write: row.access === Access.PRIVATE || row.uploadedById === user?.id,
-    }
-  ));
+  const response = rawResponse.map((row) => (createResponseFromRow(row, user)));
 
   responseData.data = {
     baseURL: process.env.BASE_URL,

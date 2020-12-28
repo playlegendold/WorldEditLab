@@ -3,6 +3,7 @@ import { UploadedFile } from 'express-fileupload';
 import {
   Access, Schematic, SchematicFormat, User,
 } from '../../shared/models';
+import { createResponseFromRow } from './shared';
 
 export const handleIndexUpload = async (req: Request, res: Response) => {
   const user = req.user as User;
@@ -52,14 +53,7 @@ export const handleIndexUpload = async (req: Request, res: Response) => {
   schematic.save().then(() => {
     res.send({
       success: true,
-      row: {
-        uuid: schematic.uuid,
-        name: schematic.name,
-        createdAt: schematic.createdAt,
-        access: schematic.access,
-        uploadedBy: user.name,
-        write: schematic.access === Access.PRIVATE || schematic.uploadedById === user?.id,
-      },
+      row: createResponseFromRow(schematic, user),
     });
   });
 };
