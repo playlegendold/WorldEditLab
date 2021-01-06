@@ -41,7 +41,7 @@ export const localStrategy = () => ({
       }),
     );
 
-    passport.serializeUser((user: User, done) => {
+    passport.serializeUser((user: {}, done) => {
       done(null, JSON.stringify(user));
     });
 
@@ -49,7 +49,7 @@ export const localStrategy = () => ({
       if (userJSON !== '') {
         done(null, JSON.parse(userJSON));
       } else {
-        done(new Error('invalid user json object'), null);
+        done(new Error('invalid user json object'), undefined);
       }
     });
   },
