@@ -87,6 +87,10 @@ export const newTable = (selector, setup) => {
     table.data.forEach((row) => row.select(table.selectAllInput.checked));
   });
 
+  if (setup.clickHandler !== undefined) {
+    table.dom.addEventListener('click', setup.clickHandler);
+  }
+
   const render = () => {
     const box = document.querySelector(selector);
     table.tbody.innerHTML = '';
