@@ -96,7 +96,7 @@ export const openSchematicEditModal = (infoJSON, categories) => {
     <option value="2" ${info.access === 2 ? 'selected' : ''}>Private</option>`;
 
   const categoriesDom = categories.map((category) => {
-    return `<option value="${category.id}">${category.name}</option>`;
+    return `<option value="${category.id}" ${info.category === category.id ? 'selected' : ''}>${category.name}</option>`;
   });
 
   openModal({
@@ -153,7 +153,35 @@ export const openSchematicEditModal = (infoJSON, categories) => {
         name: 'Save',
         primary: true,
         click: (modal, event) => {
-          modal.close();
+          const patch = {
+            name: modal.name.value,
+            access: parseInt(modal.access.value),
+            category: parseInt(modal.category.value),
+          };
+
+          const request = new XMLHttpRequest();
+          request.open('PUT', `/schematics/${info.uuid}`);
+          request.setRequestHeader('Content-Type', 'application/json');
+          request.onload = (event) => {
+            if (request.status === 200) {
+              const result = JSON.parse(request.response);
+              if (result.success) {
+                sendNotification('Schematic successfully updated!', 'success', 2000);
+                tableSchematic.updateRow({
+                  uuid: info.uuid,
+                  name: patch.name,
+                  access: patch.access,
+                  category: patch.category,
+                });
+                modal.close();
+              } else {
+                sendNotification('Schematic update failed! ' + result.message, 'error', 4000);
+              }
+            } else {
+              sendNotification(`Request Error: ${request.status} ${request.statusText}`, 'error', 4000);
+            }
+          };
+          request.send(JSON.stringify(patch));
         },
       },
     ],
@@ -164,12 +192,16 @@ export const deleteSchematic = (uuid) => {
   const request = new XMLHttpRequest();
   request.open('DELETE', `/schematics/${uuid}`);
   request.onload = (event) => {
-    const result = JSON.parse(request.response);
-    if (result.success) {
-      sendNotification('Schematic successfully deleted!', 'success', 2000);
-      tableSchematic.deleteRow(uuid);
+    if (request.status === 200) {
+      const result = JSON.parse(request.response);
+      if (result.success) {
+        sendNotification('Schematic successfully deleted!', 'success', 2000);
+        tableSchematic.deleteRow(uuid);
+      } else {
+        sendNotification('Schematic deletion failed! ' + result.message, 'error', 4000);
+      }
     } else {
-      sendNotification('Schematic deletion failed! ' + result.message, 'error', 4000);
+      sendNotification('Error: ' + request.statusText, 'error', 4000);
     }
   };
   request.send();

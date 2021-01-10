@@ -1,5 +1,5 @@
 import express, { Application } from 'express';
-import { urlencoded } from 'body-parser';
+import { urlencoded, json } from 'body-parser';
 import dotenv from 'dotenv';
 import fileUpload from 'express-fileupload';
 import { initPages } from './pages';
@@ -18,6 +18,7 @@ app.use(fileUpload({
   },
 }));
 app.use(urlencoded({ extended: true }));
+app.use(json());
 
 initAuth(app);
 
