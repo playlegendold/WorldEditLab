@@ -11,5 +11,5 @@ export const createResponseFromRow = (row: Schematic, user: User) => ({
   write: row.access === Access.PRIVATE
     || row.uploadedById === user?.id
     || user?.role === Role.ADMIN,
-  category: row.category?.name,
+  category: row.categoryId,
 });

@@ -14,7 +14,7 @@ export const handleIndexView = async (req: Request, res: Response) => {
   const user = req.user as User;
 
   const searchOptions: FindOptions = {
-    attributes: ['uuid', 'name', 'createdAt', 'access', 'uploadedById'],
+    attributes: ['uuid', 'name', 'createdAt', 'access', 'uploadedById', 'categoryId'],
   };
 
   if (isLoggedIn) {
@@ -32,31 +32,23 @@ export const handleIndexView = async (req: Request, res: Response) => {
         attributes: ['name'],
         as: 'uploadedBy',
       },
-      {
-        model: SchematicCategory,
-        attributes: ['name'],
-        as: 'category',
-      },
     ];
   } else {
     searchOptions.where = {
       access: Access.PUBLIC,
     };
-    searchOptions.include = [
-      {
-        model: SchematicCategory,
-        attributes: ['name'],
-        as: 'category',
-      },
-    ];
   }
 
+  const responseCategories = await SchematicCategory.findAll({ attributes: ['id', 'name'] });
   const rawResponse = await Schematic.findAll(searchOptions);
   const response = rawResponse.map((row) => (createResponseFromRow(row, user)));
 
   responseData.data = {
     baseURL: process.env.BASE_URL,
-    tableData: JSON.stringify(response),
+    runtimeData: JSON.stringify({
+      table: response,
+      categories: responseCategories,
+    }),
   };
 
   res.render('schematics', responseData);

@@ -1,7 +1,7 @@
-import { sendNotification } from './notification';
-import { openModal } from './modal';
+import {sendNotification} from './notification';
+import {openModal} from './modal';
 
-const uploadNewSchematic = ({ file, name }, onFinished, onFail = null, onProgress = null) => {
+const uploadNewSchematic = ({file, name}, onFinished, onFail = null, onProgress = null) => {
   const request = new XMLHttpRequest();
   request.open('POST', '/schematics');
   request.onload = onFinished;
@@ -83,6 +83,77 @@ export const openSchematicUploadModal = () => {
               'Upload failed: Connection aborted!',
               'error');
           });
+        },
+      },
+    ],
+  });
+};
+
+export const openSchematicEditModal = (infoJSON, categories) => {
+  const info = JSON.parse(infoJSON);
+  const accessOptions = `<option value="0" ${info.access === 0 ? 'selected' : ''}>Public</option>
+    <option value="1" ${info.access === 1 ? 'selected' : ''}>Internal</option>
+    <option value="2" ${info.access === 2 ? 'selected' : ''}>Private</option>`;
+
+  const categoriesDom = categories.map((category) => {
+    return `<option value="${category.id}">${category.name}</option>`;
+  });
+
+  openModal({
+    title: 'Schematic',
+    content: [
+      {
+        type: 'label',
+        attr: {
+          innerText: 'Name',
+        },
+      },
+      {
+        key: 'name',
+        type: 'input',
+        attr: {
+          maxLength: 32,
+          placeholder: 'Name',
+          value: info.name
+        },
+      },
+      {
+        type: 'label',
+        attr: {
+          innerText: 'Access',
+        },
+      },
+      {
+        key: 'access',
+        type: 'select',
+        attr: {
+          innerHTML: accessOptions,
+        },
+      },
+      {
+        type: 'label',
+        attr: {
+          innerText: 'Category',
+        },
+      },
+      {
+        key: 'category',
+        type: 'select',
+        attr: {
+          innerHTML: categoriesDom,
+        },
+      }
+    ],
+    buttons: [
+      {
+        name: 'Cancel',
+        click: 'close',
+      },
+      {
+        name: 'Save',
+        primary: true,
+        click: (modal, event) => {
+          modal.close();
         },
       },
     ],

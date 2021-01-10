@@ -31,12 +31,13 @@ body.modal-active {
   @apply text-2xl font-bold;
 }
 
-.modal-body > input {
-  @apply w-full p-3 mb-4 rounded-lg;
+.modal-body > input,
+.modal-body > select {
+  @apply w-full p-3 mb-2 rounded-lg bg-gray-100 outline-none;
 }
 
-.modal-body > input[type='text'] {
-  @apply bg-gray-100;
+.modal-body > label {
+  @apply text-xs;
 }
 
 .modal-foot {

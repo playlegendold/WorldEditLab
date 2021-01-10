@@ -27,12 +27,23 @@
     <% } %>
     <div id="schematic-table" class="table"></div>
     <script>
+      var data = JSON.parse('<%- data.runtimeData %>');
+      var schematicCategories = data.categories;
+
       var tableSchematic = WEL.newTable('#schematic-table', {
         rowKey: 'uuid',
         columns: [
           {title: 'Name', key: 'name'},
-          {title: 'Uploaded By', func: function (item) {return item.uploadedBy ? item.uploadedBy : '-'}},
-          {title: 'Uploaded At', func: function (item) {return new Date(item.createdAt).toLocaleDateString('en-EN')}},
+          {
+            title: 'Uploaded By', func: function (item) {
+              return item.uploadedBy ? item.uploadedBy : '-'
+            }
+          },
+          {
+            title: 'Uploaded At', func: function (item) {
+              return new Date(item.createdAt).toLocaleDateString('en-EN')
+            }
+          },
           {
             title: 'Access', func: function (item) {
               switch (item.access) {
@@ -45,7 +56,15 @@
               }
             },
           },
-          {title: 'Category', key: 'category'},
+          {title: 'Category', func: function (item) {
+            for (var i = 0; i < schematicCategories.length; i++) {
+              var category = schematicCategories[i];
+              if (category.id === item.category) {
+                return category.name;
+              }
+            }
+            return 'Unknown';
+            }},
           {
             title: '', func: function (item) {
               if (item.write) {
@@ -53,7 +72,12 @@
                   '<i class="fas fa-link" data-clipboard="<%= data.baseURL %>/dl/s/' + item.uuid + '"></i>' +
                   '<i class="fas fa-arrow-down" data-href="<%= data.baseURL %>/dl/s/' + item.uuid + '"></i>' +
                   '<i class="fas fa-trash-alt" data-delete-schematic="' + item.uuid + '"></i>' +
-                  '<i class="fas fa-wrench" data-notification="Work in progress"></i>' +
+                  '<i class="fas fa-wrench" data-edit-schematic=\''+ JSON.stringify({
+                    uuid: item.uuid,
+                    name: item.name,
+                    category: item.category,
+                    access: item.access,
+                  }) +'\'></i>' +
                   '</span>';
               } else {
                 return '<span class="actionhub">' +
@@ -78,12 +102,14 @@
             WEL.sendNotification(data.notification, data.notificationStatus, data.notificationDuration);
           } else if (data.deleteSchematic !== undefined) {
             WEL.openConfirmModal('Do you really want to delete the schematic?', function () {
-                WEL.deleteSchematic(data.deleteSchematic);
+              WEL.deleteSchematic(data.deleteSchematic);
             });
+          } else if (data.editSchematic !== undefined) {
+            WEL.openSchematicEditModal(data.editSchematic, schematicCategories);
           }
         },
       });
-      tableSchematic.setData(JSON.parse('<%- data.tableData %>'));
+      tableSchematic.setData(data.table);
     </script>
 </div>
 <%- include('partials/foot'); %>
