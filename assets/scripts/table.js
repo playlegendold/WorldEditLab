@@ -29,6 +29,7 @@ const createRow = (setup, row) => {
   const tr = document.createElement('tr');
   const checkbox = createCheckBox('td');
   tr.append(checkbox.dom);
+  const columns = [];
 
   setup.columns.forEach((column) => {
     const td = document.createElement('td');
@@ -38,6 +39,7 @@ const createRow = (setup, row) => {
     } else if (column.func !== undefined) {
       span.innerHTML = column.func(row);
     }
+    columns[column.title] = span;
     td.append(span);
     tr.append(td);
   });
@@ -47,6 +49,7 @@ const createRow = (setup, row) => {
     key: row[setup.rowKey],
     row: row,
     visible: true,
+    columns,
     selected() {
       return checkbox.input.checked;
     },
@@ -125,8 +128,24 @@ export const newTable = (selector, setup) => {
     table.tbody.append(newRow.dom);
   };
 
+  const updateRow = (row) => {
+    table.data.forEach((tableRow) => {
+      if (row[setup.rowKey] === tableRow.key) {
+        row = {...tableRow.row, ...row};
+        setup.columns.forEach((column) => {
+          if (column.key !== undefined) {
+            tableRow.columns[column.title].innerHTML = row[column.key];
+          } else if (column.func !== undefined) {
+            tableRow.columns[column.title].innerHTML = column.func(row);
+          }
+        });
+      }
+    });
+  };
+
   return {
     setData,
+    updateRow,
     deleteRow,
     addRow,
     render,
