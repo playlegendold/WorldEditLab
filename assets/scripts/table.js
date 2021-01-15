@@ -25,7 +25,7 @@ const createTHead = (table, columns) => {
   table.thead.append(head);
 };
 
-const createRow = (setup, row) => {
+const createRow = (table, setup, row) => {
   const tr = document.createElement('tr');
   const checkbox = createCheckBox('td');
   tr.append(checkbox.dom);
@@ -44,6 +44,10 @@ const createRow = (setup, row) => {
     tr.append(td);
   });
 
+  checkbox.input.addEventListener('change', () => {
+    table.updateSelectedCount(checkbox.input.checked ? 1 : -1);
+  });
+
   return {
     dom: tr,
     key: row[setup.rowKey],
@@ -54,7 +58,10 @@ const createRow = (setup, row) => {
       return checkbox.input.checked;
     },
     select(state) {
-      checkbox.input.checked = state;
+      if (checkbox.input.checked !== state) {
+        checkbox.input.checked = state;
+        table.updateSelectedCount(state ? 1 : -1);
+      }
     },
     remove() {
       tr.remove();
@@ -79,10 +86,59 @@ const createCheckBox = (tag) => {
   }
 };
 
+const registerMassActions = (table, setup) => {
+  if (setup.massActions === undefined) {
+    return;
+  }
+  let actionsVisible = false;
+
+  const dom = document.createElement('div');
+  dom.className = 'table-mass-actions';
+  dom.style.display = 'none';
+
+  setup.massActions.actions.forEach(action => {
+    const actionDOM = document.createElement('i');
+    actionDOM.className = action.icon;
+    actionDOM.title = action.title;
+
+    actionDOM.addEventListener('click', () => {
+      const selectedRows = table.data.filter(row => row.selected()).map(row => row.row);
+      action.click(selectedRows);
+    });
+
+    dom.append(actionDOM);
+  });
+
+  const container = document.querySelector(setup.massActions.selector);
+  container.append(dom);
+
+  table.updateSelectedCount = (update) => {
+    table.selectedCount += update;
+
+    if (table.selectedCount <= 0 && actionsVisible) {
+      table.selectedCount = 0;
+      dom.style.display = 'none';
+      actionsVisible = false;
+    } else if (update > 0 && !actionsVisible) {
+      dom.style.display = 'block';
+      actionsVisible = true;
+    }
+
+    if (table.selectedCount === table.rowCount) {
+      table.selectAllInput.checked = true;
+    } else if (update < 0 && table.selectedCount < table.rowCount && table.selectAllInput.checked) {
+      table.selectAllInput.checked = false;
+    }
+  };
+};
+
 export const newTable = (selector, setup) => {
   const table = {
     data: [],
+    selectedCount: 0,
+    rowCount: 0,
   };
+  registerMassActions(table, setup);
   createDOM(table);
   createTHead(table, setup.columns);
 
@@ -108,8 +164,9 @@ export const newTable = (selector, setup) => {
 
   const setData = (data) => {
     table.data = [];
+    table.rowCount = data.length;
     data.forEach((row) => {
-      table.data.push(createRow(setup, row));
+      table.data.push(createRow(table, setup, row));
     });
     render();
   };
@@ -117,13 +174,15 @@ export const newTable = (selector, setup) => {
   const deleteRow = (key) => {
     table.data.forEach((row) => {
       if (row.key === key) {
+        table.rowCount -= 1;
         row.remove();
       }
     });
   };
 
   const addRow = (row) => {
-    const newRow = createRow(setup, row);
+    table.rowCount += 1;
+    const newRow = createRow(table, setup, row);
     table.data.push(newRow);
     table.tbody.append(newRow.dom);
   };

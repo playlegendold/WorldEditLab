@@ -41,3 +41,11 @@
 .table > table > tbody > tr > td:last-of-type {
   @apply text-right h-10;
 }
+
+.table-mass-actions {
+  @apply rounded-lg bg-gray-200 text-black py-2 px-2;
+}
+
+.table-mass-actions > i {
+  @apply text-gray-600 hover:text-prime px-1 cursor-pointer px-2;
+}
