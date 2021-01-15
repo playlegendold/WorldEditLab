@@ -10,6 +10,7 @@ export const handleSchematicRequest = async (req: Request, res: Response) => {
   });
   if (schematic === null) {
     res.status(404);
+    res.send();
   } else {
     res.setHeader('Content-Type', 'application/octet-stream');
     res.setHeader('Content-Disposition', `attachment;filename="${schematic.name}.${schematic.format === SchematicFormat.SCHEM ? 'schem' : 'schematic'}"`);
