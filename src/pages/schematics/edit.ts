@@ -12,7 +12,7 @@ export const handleEditRequest = async (req: Request, res: Response) => {
   if (req.body.name.length <= 3
     || req.body.name.length > 32
     || !Number.isInteger(req.body.access)
-    || !Number.isInteger(req.body.category)) {
+    || (!Number.isInteger(req.body.category) && req.body.category != null)) {
     res.status(400);
     res.send({ success: false, message: 'Bad Request' });
     return;

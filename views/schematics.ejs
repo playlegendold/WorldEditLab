@@ -12,16 +12,12 @@
     <h1 class="text-3xl py-4 border-b mb-10">Schematics</h1>
     <% if (header.username) { %>
         <div class="mb-4 flex justify-between items-center">
-            <div class="flex-1 pr-4 mb-4"></div>
+            <div class="schematic-quick-actions"></div>
             <div>
-                <div class="shadow rounded-lg flex">
-                    <div class="relative">
-                        <button class="rounded-lg inline-flex items-center bg-green-600 text-white hover:bg-green-700 py-2 px-2 md:px-4"
-                                onclick="WEL.openSchematicUploadModal()">
-                            <span>Upload</span>
-                        </button>
-                    </div>
-                </div>
+                <button class="rounded-lg inline-flex items-center bg-green-600 text-white hover:bg-green-700 py-2 px-2 md:px-4"
+                        onclick="WEL.openSchematicUploadModal()">
+                    <span>Upload</span>
+                </button>
             </div>
         </div>
     <% } %>
@@ -56,15 +52,17 @@
               }
             },
           },
-          {title: 'Category', func: function (item) {
-            for (var i = 0; i < schematicCategories.length; i++) {
-              var category = schematicCategories[i];
-              if (category.id === item.category) {
-                return category.name;
+          {
+            title: 'Category', func: function (item) {
+              for (var i = 0; i < schematicCategories.length; i++) {
+                var category = schematicCategories[i];
+                if (category.id === item.category) {
+                  return category.name;
+                }
               }
+              return 'Unknown';
             }
-            return 'Unknown';
-            }},
+          },
           {
             title: '', func: function (item) {
               if (item.write) {
@@ -72,12 +70,12 @@
                   '<i class="fas fa-link" data-clipboard="<%= data.baseURL %>/dl/s/' + item.uuid + '"></i>' +
                   '<i class="fas fa-arrow-down" data-href="<%= data.baseURL %>/dl/s/' + item.uuid + '"></i>' +
                   '<i class="fas fa-trash-alt" data-delete-schematic="' + item.uuid + '"></i>' +
-                  '<i class="fas fa-wrench" data-edit-schematic=\''+ JSON.stringify({
+                  '<i class="fas fa-wrench" data-edit-schematic=\'' + JSON.stringify({
                     uuid: item.uuid,
                     name: item.name,
                     category: item.category,
                     access: item.access,
-                  }) +'\'></i>' +
+                  }) + '\'></i>' +
                   '</span>';
               } else {
                 return '<span class="actionhub">' +
@@ -108,6 +106,85 @@
             WEL.openSchematicEditModal(data.editSchematic, schematicCategories);
           }
         },
+        <% if (header.username) { %>
+        massActions: {
+          selector: '.schematic-quick-actions',
+          actions: [
+            {
+              title: 'Delete',
+              icon: 'fas fa-trash-alt',
+              click: function (rows) {
+                var filteredRows = [];
+                for (var i = 0; i < rows.length; i++) {
+                  if (rows[i].write) {
+                    filteredRows.push(rows[i]);
+                  }
+                }
+
+                WEL.openConfirmModal('Do you really want to delete ' + filteredRows.length + ' schematics?', function () {
+                  for (var i = 0; i < filteredRows.length; i++) {
+                    WEL.deleteSchematic(filteredRows[i].uuid);
+                  }
+                });
+              },
+            },
+            {
+              title: 'Public',
+              icon: 'fas fa-unlock',
+              click: function (rows) {
+                var filteredRows = [];
+                for (var i = 0; i < rows.length; i++) {
+                  if (rows[i].write) {
+                    filteredRows.push(rows[i]);
+                  }
+                }
+
+                WEL.openConfirmModal('Do you really want to publish ' + filteredRows.length + ' schematics?', function () {
+                  for (var i = 0; i < filteredRows.length; i++) {
+                    WEL.updateSchematicAccess(filteredRows[i], 0);
+                  }
+                });
+              },
+            },
+            {
+              title: 'Internal',
+              icon: 'fas fa-unlock-alt',
+              click: function (rows) {
+                var filteredRows = [];
+                for (var i = 0; i < rows.length; i++) {
+                  if (rows[i].write) {
+                    filteredRows.push(rows[i]);
+                  }
+                }
+
+                WEL.openConfirmModal('Do you really want to update ' + filteredRows.length + ' schematics?', function () {
+                  for (var i = 0; i < filteredRows.length; i++) {
+                    WEL.updateSchematicAccess(filteredRows[i], 1);
+                  }
+                });
+              },
+            },
+            {
+              title: 'Private',
+              icon: 'fas fa-lock',
+              click: function (rows) {
+                var filteredRows = [];
+                for (var i = 0; i < rows.length; i++) {
+                  if (rows[i].write) {
+                    filteredRows.push(rows[i]);
+                  }
+                }
+
+                WEL.openConfirmModal('Do you really want to update ' + filteredRows.length + ' schematics?', function () {
+                  for (var i = 0; i < filteredRows.length; i++) {
+                    WEL.updateSchematicAccess(filteredRows[i], 2);
+                  }
+                });
+              },
+            }
+          ],
+        },
+        <% } %>
       });
       tableSchematic.setData(data.table);
     </script>

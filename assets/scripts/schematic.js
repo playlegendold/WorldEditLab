@@ -61,7 +61,7 @@ export const openSchematicUploadModal = () => {
           }
           if (failed)
             return;
-          sendNotification('Upload started...');
+          sendNotification('Upload started...', 'info', 2000);
           uploadNewSchematic({
             file: modal.file.files[0],
             name: modal.name.value,
@@ -186,6 +186,35 @@ export const openSchematicEditModal = (infoJSON, categories) => {
       },
     ],
   });
+};
+
+export const updateSchematicAccess = (row, access) => {
+  const patch = {
+    name: row.name,
+    access: access,
+    category: row.category,
+  };
+
+  const request = new XMLHttpRequest();
+  request.open('PUT', `/schematics/${row.uuid}`);
+  request.setRequestHeader('Content-Type', 'application/json');
+  request.onload = (event) => {
+    if (request.status === 200) {
+      const result = JSON.parse(request.response);
+      if (result.success) {
+        sendNotification('Schematic successfully updated!', 'success', 2000);
+        tableSchematic.updateRow({
+          uuid: row.uuid,
+          access: patch.access,
+        });
+      } else {
+        sendNotification('Schematic update failed! ' + result.message, 'error', 4000);
+      }
+    } else {
+      sendNotification(`Request Error: ${request.status} ${request.statusText}`, 'error', 4000);
+    }
+  };
+  request.send(JSON.stringify(patch));
 };
 
 export const deleteSchematic = (uuid) => {
