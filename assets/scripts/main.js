@@ -5,6 +5,7 @@ import {
   deleteSchematic,
   openSchematicEditModal,
   updateSchematicAccess,
+  registerDragAndDropOnSchematicTable,
 } from './schematic';
 import { openConfirmModal } from './defaultModals';
 import { newTable } from './table';
@@ -18,4 +19,5 @@ global.WEL = {
   openConfirmModal,
   deleteSchematic,
   newTable,
+  registerDragAndDropOnSchematicTable,
 };

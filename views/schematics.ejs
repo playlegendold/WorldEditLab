@@ -22,6 +22,7 @@
         </div>
     <% } %>
     <div id="schematic-table" class="table"></div>
+    <% if (header.username) { %><span class="text-xs">Table allows you to drop files</span><% } %>
     <script>
       var data = JSON.parse('<%- data.runtimeData %>');
       var schematicCategories = data.categories;
@@ -186,6 +187,9 @@
         },
         <% } %>
       });
+      <% if (header.username) { %>
+      WEL.registerDragAndDropOnSchematicTable(tableSchematic.dom);
+      <% } %>
       tableSchematic.setData(data.table);
     </script>
 </div>

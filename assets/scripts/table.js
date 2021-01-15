@@ -88,6 +88,9 @@ const createCheckBox = (tag) => {
 
 const registerMassActions = (table, setup) => {
   if (setup.massActions === undefined) {
+    table.updateSelectedCount = (update) => {
+      table.selectedCount += update;
+    };
     return;
   }
   let actionsVisible = false;
@@ -208,5 +211,6 @@ export const newTable = (selector, setup) => {
     deleteRow,
     addRow,
     render,
+    dom: table.dom,
   };
 };

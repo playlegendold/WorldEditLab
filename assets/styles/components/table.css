@@ -1,9 +1,11 @@
 .table {
-  @apply overflow-x-auto bg-white rounded-lg shadow overflow-y-auto relative w-full;
+  @apply overflow-x-auto rounded-lg shadow overflow-y-auto relative w-full bg-gray-800;
 }
 
 .table > table {
-  @apply border-collapse table-auto w-full bg-white relative;
+  transition: opacity 0.3s ease;
+
+  @apply border-collapse table-auto w-full relative;
 }
 
 .table > table > thead > tr {
@@ -24,6 +26,10 @@
 
 .table > table > thead > tr > th:not(.table-checkbox) {
   @apply bg-gray-100 sticky top-0 border-b border-gray-200 px-6 py-2 text-gray-600 font-bold tracking-wider uppercase text-xs;
+}
+
+.table > table > tbody {
+  @apply bg-white;
 }
 
 .table > table > tbody > tr > .table-checkbox {
@@ -48,4 +54,8 @@
 
 .table-mass-actions > i {
   @apply text-gray-600 hover:text-prime px-1 cursor-pointer px-2;
+}
+
+.table > table.drag-drop {
+  @apply opacity-95;
 }

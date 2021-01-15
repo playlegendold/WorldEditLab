@@ -8,6 +8,7 @@ export const handleSchematicRequest = async (req: Request, res: Response) => {
       uuid: req.params.id,
     },
   });
+
   if (schematic === null) {
     res.status(404);
     res.send();

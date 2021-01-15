@@ -13,7 +13,31 @@ const uploadNewSchematic = ({file, name}, onFinished, onFail = null, onProgress 
   request.send(formData);
 }
 
-export const openSchematicUploadModal = () => {
+const handleSchematicUpload = (file, name, modal) => {
+  uploadNewSchematic({
+    file,
+    name,
+  }, (event) => {
+    if (event.target.status === 200) {
+      sendNotification(
+        'Successfully uploaded',
+        'success',
+        2000);
+      modal.close();
+      tableSchematic.addRow(JSON.parse(event.target.response).row);
+    } else {
+      sendNotification(
+        `Upload failed: ${JSON.parse(event.target.response).message}`,
+        'error');
+    }
+  }, () => {
+    sendNotification(
+      'Upload failed: Connection aborted!',
+      'error');
+  });
+};
+
+export const openSchematicUploadModal = (file) => {
   openModal({
     title: 'Upload new schematic',
     content: [
@@ -62,27 +86,7 @@ export const openSchematicUploadModal = () => {
           if (failed)
             return;
           sendNotification('Upload started...', 'info', 2000);
-          uploadNewSchematic({
-            file: modal.file.files[0],
-            name: modal.name.value,
-          }, (event) => {
-            if (event.target.status === 200) {
-              sendNotification(
-                'Successfully uploaded',
-                'success',
-                2000);
-              modal.close();
-              tableSchematic.addRow(JSON.parse(event.target.response).row);
-            } else {
-              sendNotification(
-                `Upload failed: ${JSON.parse(event.target.response).message}`,
-                'error');
-            }
-          }, () => {
-            sendNotification(
-              'Upload failed: Connection aborted!',
-              'error');
-          });
+          handleSchematicUpload(modal.file.files[0], modal.name.value, modal);
         },
       },
     ],
@@ -234,4 +238,75 @@ export const deleteSchematic = (uuid) => {
     }
   };
   request.send();
+};
+
+export const registerDragAndDropOnSchematicTable = (tableDOM) => {
+  tableDOM.addEventListener('dragenter', (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    tableDOM.classList.add('drag-drop');
+  });
+  tableDOM.addEventListener('dragover', (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    tableDOM.classList.add('drag-drop');
+  });
+  tableDOM.addEventListener('dragleave', (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    tableDOM.classList.remove('drag-drop');
+  });
+  tableDOM.addEventListener('drop', (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    tableDOM.classList.remove('drag-drop');
+
+    const files = event.dataTransfer.files;
+
+    if (files[0].size >= 5 * 1024 * 1024) {
+      sendNotification('File is too big', 'error', 4000);
+      return;
+    }
+
+    if (!(files[0].name.endsWith('.schematic') || files[0].name.endsWith('.schem'))) {
+      sendNotification('Invalid file type', 'error', 4000);
+      return;
+    }
+
+    openModal({
+      title: 'Upload new schematic',
+      content: [
+        {
+          key: 'name',
+          type: 'input',
+          attr: {
+            maxLength: 32,
+            placeholder: 'Schematic name',
+          },
+        },
+      ],
+      buttons: [
+        {
+          name: 'Cancel',
+          click: 'close',
+        },
+        {
+          name: 'Upload',
+          primary: true,
+          click: (modal, event) => {
+            let failed = false;
+            modal.name.style.background = null;
+            if (modal.name.value.length <= 3) {
+              modal.name.style.background = '#ffc1c1';
+              failed = true;
+            }
+            if (failed)
+              return;
+            sendNotification('Upload started...', 'info', 2000);
+            handleSchematicUpload(files[0], modal.name.value, modal);
+          },
+        },
+      ],
+    });
+  });
 };
