@@ -64,6 +64,9 @@ const createRow = (table, setup, row) => {
       }
     },
     remove() {
+      if (checkbox.input.checked) {
+        table.updateSelectedCount(-1);
+      }
       tr.remove();
     }
   };

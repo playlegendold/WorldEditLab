@@ -1,7 +1,7 @@
 import {sendNotification} from './notification';
 import {openModal} from './modal';
 
-const uploadNewSchematic = ({file, name}, onFinished, onFail = null, onProgress = null) => {
+const uploadNewSchematic = ({file, name, access, category}, onFinished, onFail = null, onProgress = null) => {
   const request = new XMLHttpRequest();
   request.open('POST', '/schematics');
   request.onload = onFinished;
@@ -10,13 +10,17 @@ const uploadNewSchematic = ({file, name}, onFinished, onFail = null, onProgress 
   request.onprogress = onProgress;
   const formData = new FormData();
   formData.append('schematic', file, `${name}.${file.name.split('.').pop()}`);
+  formData.append('access', access);
+  formData.append('category', category);
   request.send(formData);
 }
 
-const handleSchematicUpload = (file, name, modal) => {
+const handleSchematicUpload = (file, name, access, category, modal) => {
   uploadNewSchematic({
     file,
     name,
+    access,
+    category,
   }, (event) => {
     if (event.target.status === 200) {
       sendNotification(
@@ -37,7 +41,15 @@ const handleSchematicUpload = (file, name, modal) => {
   });
 };
 
-export const openSchematicUploadModal = (file) => {
+export const openSchematicUploadModal = (categories) => {
+  const accessOptions = `<option value="0">Public</option>
+    <option value="1" selected>Internal</option>
+    <option value="2">Private</option>`;
+
+  const categoriesDom = categories.map((category) => {
+    return `<option value="${category.id}">${category.name}</option>`;
+  });
+
   openModal({
     title: 'Upload new schematic',
     content: [
@@ -47,6 +59,20 @@ export const openSchematicUploadModal = (file) => {
         attr: {
           maxLength: 32,
           placeholder: 'Schematic name',
+        },
+      },
+      {
+        key: 'category',
+        type: 'select',
+        attr: {
+          innerHTML: categoriesDom
+        },
+      },
+      {
+        key: 'access',
+        type: 'select',
+        attr: {
+          innerHTML: accessOptions
         },
       },
       {
@@ -85,8 +111,10 @@ export const openSchematicUploadModal = (file) => {
           }
           if (failed)
             return;
+          const access = parseInt(modal.access.value);
+          const category = parseInt(modal.category.value);
           sendNotification('Upload started...', 'info', 2000);
-          handleSchematicUpload(modal.file.files[0], modal.name.value, modal);
+          handleSchematicUpload(modal.file.files[0], modal.name.value, access, category, modal);
         },
       },
     ],
@@ -240,7 +268,7 @@ export const deleteSchematic = (uuid) => {
   request.send();
 };
 
-export const registerDragAndDropOnSchematicTable = (tableDOM) => {
+export const registerDragAndDropOnSchematicTable = (tableDOM, categories) => {
   tableDOM.addEventListener('dragenter', (event) => {
     event.preventDefault();
     event.stopPropagation();
@@ -273,6 +301,14 @@ export const registerDragAndDropOnSchematicTable = (tableDOM) => {
       return;
     }
 
+    const accessOptions = `<option value="0">Public</option>
+    <option value="1" selected>Internal</option>
+    <option value="2">Private</option>`;
+
+    const categoriesDom = categories.map((category) => {
+      return `<option value="${category.id}">${category.name}</option>`;
+    });
+
     openModal({
       title: 'Upload new schematic',
       content: [
@@ -282,6 +318,20 @@ export const registerDragAndDropOnSchematicTable = (tableDOM) => {
           attr: {
             maxLength: 32,
             placeholder: 'Schematic name',
+          },
+        },
+        {
+          key: 'category',
+          type: 'select',
+          attr: {
+            innerHTML: categoriesDom
+          },
+        },
+        {
+          key: 'access',
+          type: 'select',
+          attr: {
+            innerHTML: accessOptions
           },
         },
       ],
@@ -302,8 +352,10 @@ export const registerDragAndDropOnSchematicTable = (tableDOM) => {
             }
             if (failed)
               return;
+            const access = parseInt(modal.access.value);
+            const category = parseInt(modal.category.value);
             sendNotification('Upload started...', 'info', 2000);
-            handleSchematicUpload(files[0], modal.name.value, modal);
+            handleSchematicUpload(files[0], modal.name.value, access, category, modal);
           },
         },
       ],

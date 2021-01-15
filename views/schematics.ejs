@@ -15,7 +15,7 @@
             <div class="schematic-quick-actions"></div>
             <div>
                 <button class="rounded-lg inline-flex items-center bg-green-600 text-white hover:bg-green-700 py-2 px-2 md:px-4"
-                        onclick="WEL.openSchematicUploadModal()">
+                        onclick="WEL.openSchematicUploadModal(schematicCategories)">
                     <span>Upload</span>
                 </button>
             </div>
@@ -188,7 +188,7 @@
         <% } %>
       });
       <% if (header.username) { %>
-      WEL.registerDragAndDropOnSchematicTable(tableSchematic.dom);
+      WEL.registerDragAndDropOnSchematicTable(tableSchematic.dom, schematicCategories);
       <% } %>
       tableSchematic.setData(data.table);
     </script>
