@@ -12,9 +12,9 @@
     A fancy and simple UI for up- & downloading schematics and heightmaps
     <br />
     <br />
-    <a href="https://github.com/playlegend/WorldEditLab/issues">Report Bug</a>
+    <a href="https://github.com/playlegend/WorldEditLab/issues/new?assignees=&labels=bug&template=bug_report.md">Report Bug</a>
     ·
-    <a href="https://github.com/playlegend/WorldEditLab/issues">Request Feature</a>
+    <a href="https://github.com/playlegend/WorldEditLab/issues/new?assignees=&labels=enhancement&template=feature_request.md">Request Feature</a>
   </p>
 </p>
 
