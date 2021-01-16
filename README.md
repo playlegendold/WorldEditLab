@@ -91,41 +91,41 @@ services:
       - BASE_URL="http://foobar.com:8080"     
  ```
 
-### Dev Environment
+## Dev Environment
 
-#### Prerequirements
+### Prerequirements
 
-##### Yarn package manager
+#### Yarn package manager
 
 ```shell
 npm install -g yarn
 ```
 
-#### Downloading all dependencies
+### Downloading all dependencies
 
 ```shell
 yarn install
 ```
 
-#### Compiles and hot-reloads for development
+### Compiles and hot-reloads for development
 
 ```shell
 yarn serve
 ```
 
-#### Compiles and minifies for production
+### Compiles and minifies for production
 
 ```shell
 yarn build
 ```
 
-#### Run project
+### Run project
 
 ```shell
 yarn start
 ```
 
-#### Lint files
+### Lint files
 
 ```shell
 yarn lint
