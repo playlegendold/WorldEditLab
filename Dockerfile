@@ -9,7 +9,7 @@ RUN apk --no-cache --virtual build-dependencies add \
     python2
 
 # install dependencies
-RUN yarn install
+RUN yarn install --frozen-lockfile
 
 # build and cleanup afterwords
 RUN yarn build && npm prune --production

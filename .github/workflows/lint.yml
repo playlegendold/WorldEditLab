@@ -8,7 +8,7 @@ on:
     pull_request:
 jobs:
   lint_css:
-    name: "Lint CSS"
+    name: 'Lint CSS'
     runs-on: self-hosted
     steps:
       - name: Checkout
@@ -22,11 +22,11 @@ jobs:
       - name: Install Yarn
         run: npm install -g yarn
       - name: Install modules
-        run: yarn install
+        run: yarn install --frozen-lockfile
       - name: Run ESLint
         run: yarn run lint:css
   lint_ts:
-    name: "Lint TS"
+    name: 'Lint TS'
     runs-on: self-hosted
     steps:
       - name: Checkout
@@ -40,6 +40,6 @@ jobs:
       - name: Install Yarn
         run: npm install -g yarn
       - name: Install modules
-        run: yarn install
+        run: yarn install --frozen-lockfile
       - name: Run ESLint
         run: yarn run lint:ts
