@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('partials/head'); %>
+</head>
+<body>
+<header class="header">
+    <%- include('partials/header'); %>
+</header>
+
+<div class="container mx-auto py-6">
+    <h1 class="text-3xl py-4 border-b mb-10">Schematics</h1>
+    <% if (header.username) { %>
+        <div class="mb-4 flex justify-between items-center">
+            <div class="schematic-quick-actions"></div>
+            <div>
+                <button class="rounded-lg inline-flex items-center bg-green-600 text-white hover:bg-green-700 py-2 px-2 md:px-4"
+                        onclick="WEL.openSchematicUploadModal(schematicCategories)">
+                    <span>Upload</span>
+                </button>
+            </div>
+        </div>
+    <% } %>
+    <div id="schematic-table" class="table"></div>
+    <% if (header.username) { %><span class="text-xs">Just drop your Schematic on the table to upload it</span><% } %>
+    <script>
+      var data = JSON.parse('<%- data.runtimeData %>');
+      var schematicCategories = data.categories;
+
+      var tableSchematic = WEL.newTable('#schematic-table', {
+        rowKey: 'uuid',
+        columns: [
+          {title: 'Name', key: 'name'},
+          {
+            title: 'Uploaded By', func: function (item) {
+              return item.uploadedBy ? item.uploadedBy : '-'
+            }
+          },
+          {
+            title: 'Uploaded At', func: function (item) {
+              return new Date(item.createdAt).toLocaleDateString('en-EN')
+            }
+          },
+          {
+            title: 'Access', func: function (item) {
+              switch (item.access) {
+                case 0:
+                  return 'Public';
+                case 1:
+                  return 'Internal';
+                case 2:
+                  return 'Private';
+              }
+            },
+          },
+          {
+            title: 'Category', func: function (item) {
+              for (var i = 0; i < schematicCategories.length; i++) {
+                var category = schematicCategories[i];
+                if (category.id === item.category) {
+                  return category.name;
+                }
+              }
+              return '-';
+            }
+          },
+          {
+            title: '', func: function (item) {
+              if (item.write) {
+                return '<span class="actionhub">' +
+                  '<i class="fas fa-link" data-clipboard="//schematic load url:' + item.uuid + '"></i>' +
+                  '<i class="fas fa-arrow-down" data-href="<%= data.baseURL %>/dl/s/' + item.uuid + '"></i>' +
+                  '<i class="fas fa-trash-alt" data-delete-schematic="' + item.uuid + '"></i>' +
+                  '<i class="fas fa-wrench" data-edit-schematic=\'' + JSON.stringify({
+                    uuid: item.uuid,
+                    name: item.name,
+                    category: item.category,
+                    access: item.access,
+                  }) + '\'></i>' +
+                  '</span>';
+              } else {
+                return '<span class="actionhub">' +
+                  '<i class="fas fa-link" data-clipboard="//schematic load url:' + item.uuid + '"></i>' +
+                  '<i class="fas fa-arrow-down" data-href="<%= data.baseURL %>/dl/s/' + item.uuid + '"></i>' +
+                  '</span>';
+              }
+            },
+          },
+        ],
+        clickHandler: function (event) {
+          if (event.target === undefined) {
+            return;
+          }
+          var data = event.target.dataset;
+
+          if (data.clipboard !== undefined) {
+            WEL.copyToClipboard(data.clipboard);
+          } else if (data.href !== undefined) {
+            location.href = data.href;
+          } else if (data.notification !== undefined) {
+            WEL.sendNotification(data.notification, data.notificationStatus, data.notificationDuration);
+          } else if (data.deleteSchematic !== undefined) {
+            WEL.openConfirmModal('Do you really want to delete the schematic?', function () {
+              WEL.deleteSchematic(data.deleteSchematic);
+            });
+          } else if (data.editSchematic !== undefined) {
+            WEL.openSchematicEditModal(data.editSchematic, schematicCategories);
+          }
+        },
+        <% if (header.username) { %>
+        massActions: {
+          selector: '.schematic-quick-actions',
+          actions: [
+            {
+              title: 'Delete',
+              icon: 'fas fa-trash-alt',
+              click: function (rows) {
+                var filteredRows = [];
+                for (var i = 0; i < rows.length; i++) {
+                  if (rows[i].write) {
+                    filteredRows.push(rows[i]);
+                  }
+                }
+
+                WEL.openConfirmModal('Do you really want to delete ' + filteredRows.length + ' schematics?', function () {
+                  for (var i = 0; i < filteredRows.length; i++) {
+                    WEL.deleteSchematic(filteredRows[i].uuid);
+                  }
+                });
+              },
+            },
+            {
+              title: 'Public',
+              icon: 'fas fa-unlock',
+              click: function (rows) {
+                var filteredRows = [];
+                for (var i = 0; i < rows.length; i++) {
+                  if (rows[i].write) {
+                    filteredRows.push(rows[i]);
+                  }
+                }
+
+                WEL.openConfirmModal('Do you really want to publish ' + filteredRows.length + ' schematics?', function () {
+                  for (var i = 0; i < filteredRows.length; i++) {
+                    WEL.updateSchematicAccess(filteredRows[i], 0);
+                  }
+                });
+              },
+            },
+            {
+              title: 'Internal',
+              icon: 'fas fa-unlock-alt',
+              click: function (rows) {
+                var filteredRows = [];
+                for (var i = 0; i < rows.length; i++) {
+                  if (rows[i].write) {
+                    filteredRows.push(rows[i]);
+                  }
+                }
+
+                WEL.openConfirmModal('Do you really want to change access from ' + filteredRows.length + ' schematics to internal?', function () {
+                  for (var i = 0; i < filteredRows.length; i++) {
+                    WEL.updateSchematicAccess(filteredRows[i], 1);
+                  }
+                });
+              },
+            },
+            {
+              title: 'Private',
+              icon: 'fas fa-lock',
+              click: function (rows) {
+                var filteredRows = [];
+                for (var i = 0; i < rows.length; i++) {
+                  if (rows[i].write) {
+                    filteredRows.push(rows[i]);
+                  }
+                }
+
+                WEL.openConfirmModal('Do you really want to change access from ' + filteredRows.length + ' schematics to private?', function () {
+                  for (var i = 0; i < filteredRows.length; i++) {
+                    WEL.updateSchematicAccess(filteredRows[i], 2);
+                  }
+                });
+              },
+            }
+          ],
+        },
+        <% } %>
+      });
+      <% if (header.username) { %>
+      WEL.registerDragAndDropOnSchematicTable(tableSchematic.dom, schematicCategories);
+      <% } %>
+      tableSchematic.setData(data.table);
+    </script>
+</div>
+<%- include('partials/foot'); %>
+</body>
+</html>

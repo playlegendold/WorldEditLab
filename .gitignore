@@ -2,6 +2,7 @@
 /dist
 /node_modules
 /public/styles
+/public/scripts
 /data
 .env
 

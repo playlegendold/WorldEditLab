@@ -1,0 +1,7 @@
+.actionhub {
+  @apply bg-gray-100 py-1 px-2 rounded;
+}
+
+.actionhub > i {
+  @apply text-gray-600 hover:text-primary px-1 cursor-pointer;
+}

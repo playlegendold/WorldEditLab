@@ -3,15 +3,15 @@
 }
 
 .header-container {
-  @apply container mx-auto flex flex-wrap flex-col md:flex-row items-center;
+  @apply container mx-auto flex flex-wrap flex-row items-center;
 }
 
 .header-nav {
-  @apply flex lg:w-2/5 flex-wrap items-center text-base md:ml-auto;
+  @apply flex lg:w-2/5 flex-wrap items-center text-base ml-auto;
 }
 
 .header-icon-container {
-  @apply flex order-first lg:order-none lg:w-1/5 font-medium items-center lg:items-center lg:justify-center mb-4 md:mb-0;
+  @apply flex order-first lg:order-none lg:w-1/5 font-medium items-center lg:items-center lg:justify-center mb-0;
 }
 
 .header-container-right {
@@ -19,5 +19,9 @@
 }
 
 .header-link {
-  @apply mr-5 hover:text-blue-400 cursor-pointer border-b border-transparent;
+  @apply mr-5 hover:text-primary cursor-pointer border-b border-transparent;
+}
+
+.header-account-link {
+  @apply hover:text-primary cursor-pointer border-b border-transparent;
 }

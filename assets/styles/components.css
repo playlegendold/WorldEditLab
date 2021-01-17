@@ -1,2 +1,6 @@
 @import "./components/header.css";
 @import "./components/login.css";
+@import "./components/modal.css";
+@import "./components/table.css";
+@import "./components/actionhub.css";
+@import "./components/notification.css";

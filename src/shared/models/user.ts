@@ -1,16 +1,17 @@
-import {
-  DataTypes, Model, Sequelize,
-} from 'sequelize';
+import { DataTypes, Model, Sequelize } from 'sequelize';
 import { Role } from './role';
 import { hashPassword } from '../auth/password';
 
 interface UserAttributes {
+  id?: number;
   name: string;
   password: string;
   role: Role;
 }
 
-export class User extends Model<UserAttributes> implements UserAttributes {
+export class User extends Model implements UserAttributes {
+  public id!: number;
+
   public name!: string;
 
   public password!: string;
@@ -20,6 +21,11 @@ export class User extends Model<UserAttributes> implements UserAttributes {
 
 export const initUser = async (sequelize: Sequelize) => {
   User.init({
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
     name: {
       type: DataTypes.STRING,
       unique: true,
@@ -36,6 +42,7 @@ export const initUser = async (sequelize: Sequelize) => {
   }, {
     sequelize,
     modelName: 'User',
+    tableName: 'user',
   });
 
   try {

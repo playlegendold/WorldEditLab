@@ -1,0 +1,53 @@
+body.modal-active {
+  overflow-x: hidden;
+  overflow-y: visible !important;
+}
+
+.modal {
+  @apply opacity-0 pointer-events-none fixed w-full h-full top-0 left-0 flex items-center justify-center;
+}
+
+.modal.open {
+  @apply opacity-100 pointer-events-auto;
+}
+
+.modal-overlay {
+  @apply absolute w-full h-full bg-gray-900 opacity-50;
+}
+
+.modal-container {
+  @apply bg-white w-11/12 md:max-w-md mx-auto rounded shadow-lg z-50 overflow-y-auto;
+}
+
+.modal-container > div {
+  @apply py-4 text-left px-6;
+}
+
+.modal-head {
+  @apply flex justify-between items-center pb-3;
+}
+
+.modal-head > p {
+  @apply text-2xl font-bold;
+}
+
+.modal-body > input,
+.modal-body > select {
+  @apply w-full p-3 mb-2 rounded-lg bg-gray-100 outline-none;
+}
+
+.modal-body > label {
+  @apply text-xs;
+}
+
+.modal-foot {
+  @apply flex justify-end pt-2;
+}
+
+.modal-btn-prime {
+  @apply px-4 bg-indigo-500 p-3 rounded-lg text-white hover:bg-indigo-400;
+}
+
+.modal-btn {
+  @apply px-4 bg-transparent p-3 rounded-lg text-indigo-500 hover:bg-gray-100 hover:text-indigo-400 mr-4;
+}

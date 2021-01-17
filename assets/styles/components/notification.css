@@ -1,0 +1,31 @@
+.notification-box {
+  @apply absolute right-0 top-0 m-5;
+}
+
+.notification-box > .notification {
+  @apply flex items-center bg-green-500 border-l-4 border-green-700 py-2 px-3 shadow-md mb-2;
+}
+
+.notification-box > .notification > .notification-icon {
+  @apply text-white mr-3;
+}
+
+.notification-box > .notification > .notification-content {
+  @apply text-white max-w-xs;
+}
+
+.notification-box > .notification.success {
+  @apply bg-green-500 border-green-700;
+}
+
+.notification-box > .notification.info {
+  @apply bg-blue-400 border-blue-700;
+}
+
+.notification-box > .notification.warning {
+  @apply bg-yellow-400 border-yellow-600;
+}
+
+.notification-box > .notification.error {
+  @apply bg-red-500 border-red-700;
+}

@@ -1,6 +1,7 @@
 import passport from 'passport';
 import passportCustom, { VerifiedCallback } from 'passport-custom';
 import { Request } from 'express';
+import { Op } from 'sequelize';
 import { User } from '../../models';
 import { verifyPassword } from '../password';
 
@@ -19,7 +20,9 @@ export const localStrategy = () => ({
       new CustomStrategy((reg: Request, callback: VerifiedCallback) => {
         User.findOne({
           where: {
-            name: reg.body.username,
+            name: {
+              [Op.like]: reg.body.username,
+            },
           },
         }).then((user) => {
           if (user == null || user.password == null) {
