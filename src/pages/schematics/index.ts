@@ -3,7 +3,7 @@ import { handleIndexView } from './view';
 import { handleIndexUpload } from './upload';
 import { handleDeleteRequest } from './delete';
 import { handleEditRequest } from './edit';
-import { handleFAWEDownload, handleFAWEUpload } from './fawe';
+import { handleFAWECustomDownload, handleFAWEDirectDownload, handleFAWEUpload } from './fawe';
 
 export default () => {
   const router = Router();
@@ -13,9 +13,10 @@ export default () => {
   router.delete('/:uuid', handleDeleteRequest);
 
   if (process.env.FAWE_USER_ID && process.env.FAWE_UPLOAD_ACCESS) {
-    router.get('/fawe/', handleFAWEDownload);
+    router.get('/fawe/', handleFAWEDirectDownload);
     router.post('/fawe/save.php', handleFAWEUpload);
     router.post('/fawe/upload.php', handleFAWEUpload);
+    router.get('/fawe/uploads/:id', handleFAWECustomDownload);
     console.log('Enabled FAWE compatibility mode.');
   }
 

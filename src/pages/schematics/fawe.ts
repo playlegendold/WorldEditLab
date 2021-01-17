@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { UploadedFile } from 'express-fileupload';
 import { Access, Schematic, SchematicFormat } from '../../shared/models';
 import { HTTPError, HTTPStatus } from '../../shared/helpers/errorHandler';
+import { returnSchematic } from '../download/schematic';
 
 export const handleFAWEUpload = async (req: Request, res: Response) => {
   const faweAllowedAddresses = (process.env.FAWE_UPLOAD_ACCESS as string).split(',');
@@ -44,18 +45,22 @@ export const handleFAWEUpload = async (req: Request, res: Response) => {
   });
 };
 
-export const handleFAWEDownload = async (req: Request, res: Response) => {
+export const handleFAWEDirectDownload = async (req: Request, res: Response) => {
   const schematic = await Schematic.findOne({
     attributes: ['rawData', 'name', 'format'],
     where: {
       name: (req.query.key as string).replace(/-/g, ''),
     },
   });
-  if (schematic === null) {
-    res.status(HTTPStatus.NOT_FOUND).send();
-  } else {
-    res.setHeader('Content-Type', 'application/octet-stream');
-    res.setHeader('Content-Disposition', `attachment;filename="${schematic.name}.${schematic.format === SchematicFormat.SCHEM ? 'schem' : 'schematic'}"`);
-    res.send(schematic.rawData);
-  }
+  returnSchematic(schematic, res);
+};
+
+export const handleFAWECustomDownload = async (req: Request, res: Response) => {
+  const schematic = await Schematic.findOne({
+    attributes: ['rawData', 'name', 'format'],
+    where: {
+      uuid: (req.params.id as string).split('.')[0],
+    },
+  });
+  returnSchematic(schematic, res);
 };
