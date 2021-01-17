@@ -53,7 +53,7 @@
 }
 
 .table-mass-actions > i {
-  @apply text-gray-600 hover:text-prime px-1 cursor-pointer px-2;
+  @apply text-gray-600 hover:text-primary px-1 cursor-pointer px-2;
 }
 
 .table > table.drag-drop {

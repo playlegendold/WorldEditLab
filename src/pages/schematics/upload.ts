@@ -4,42 +4,33 @@ import {
   Access, Schematic, SchematicFormat, User,
 } from '../../shared/models';
 import { createResponseFromRow } from './shared';
+import { HTTPError, HTTPStatus } from '../../shared/helpers/errorHandler';
 
 export const handleIndexUpload = async (req: Request, res: Response) => {
   const user = req.user as User;
   if (!user) {
-    res.status(403);
-    res.send({ success: false, message: 'Forbidden' });
-    return;
+    return HTTPError(res, HTTPStatus.FORBIDDEN, 'Forbidden');
   }
 
   const file = req.files?.schematic as UploadedFile;
 
   if (file === undefined) {
-    res.status(400);
-    res.send({ success: false, message: 'Invalid file upload' });
-    return;
+    return HTTPError(res, HTTPStatus.BAD_REQUEST, 'Invalid file upload');
   }
 
   const args = file.name.split('.');
   if (args.length !== 2) {
-    res.status(400);
-    res.send({ success: false, message: 'Invalid file name' });
-    return;
+    return HTTPError(res, HTTPStatus.BAD_REQUEST, 'Invalid file name');
   }
 
   const [name, type] = args;
 
   if (name.length <= 3 || name.length > 32) {
-    res.status(400);
-    res.send({ success: false, message: 'Invalid schematic name' });
-    return;
+    return HTTPError(res, HTTPStatus.BAD_REQUEST, 'Invalid schematic name');
   }
 
   if (type !== 'schematic' && type !== 'schem') {
-    res.status(400);
-    res.send({ success: false, message: 'Invalid schematic type' });
-    return;
+    return HTTPError(res, HTTPStatus.BAD_REQUEST, 'Invalid schematic type');
   }
 
   const schematic = Schematic.build({
@@ -51,7 +42,7 @@ export const handleIndexUpload = async (req: Request, res: Response) => {
     format: type === 'schem' ? SchematicFormat.SCHEM : SchematicFormat.SCHEMATIC,
   });
 
-  schematic.save().then(() => {
+  return schematic.save().then(() => {
     res.send({
       success: true,
       row: createResponseFromRow(schematic, user),

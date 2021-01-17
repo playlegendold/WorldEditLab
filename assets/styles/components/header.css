@@ -19,9 +19,9 @@
 }
 
 .header-link {
-  @apply mr-5 hover:text-prime cursor-pointer border-b border-transparent;
+  @apply mr-5 hover:text-primary cursor-pointer border-b border-transparent;
 }
 
 .header-account-link {
-  @apply hover:text-prime cursor-pointer border-b border-transparent;
+  @apply hover:text-primary cursor-pointer border-b border-transparent;
 }

@@ -1,43 +1,34 @@
 import { Request, Response } from 'express';
 import { UploadedFile } from 'express-fileupload';
 import { Access, Schematic, SchematicFormat } from '../../shared/models';
+import { HTTPError, HTTPStatus } from '../../shared/helpers/errorHandler';
 
 export const handleFAWEUpload = async (req: Request, res: Response) => {
   const faweAllowedAddresses = (process.env.FAWE_UPLOAD_ACCESS as string).split(',');
   if (req.header('X-Forwarded-For')) {
     if (!faweAllowedAddresses.includes(req.header('X-Forwarded-For') as string)) {
-      res.status(403);
-      res.send({ success: false, message: 'Forbidden' });
-      return;
+      return HTTPError(res, HTTPStatus.FORBIDDEN, 'Forbidden');
     }
   } else if (!faweAllowedAddresses.includes(req.ip)) {
-    res.status(403);
-    res.send({ success: false, message: 'Forbidden' });
-    return;
+    return HTTPError(res, HTTPStatus.FORBIDDEN, 'Forbidden');
   }
 
   const file = req.files?.schematicFile as UploadedFile;
 
   if (file === undefined) {
-    res.status(400);
-    res.send({ success: false, message: 'Invalid file upload' });
-    return;
+    return HTTPError(res, HTTPStatus.BAD_REQUEST, 'Invalid file upload');
   }
 
   const queryArgs = Object.keys(req.query);
 
   if (queryArgs.length !== 1) {
-    res.status(400);
-    res.send({ success: false, message: 'Invalid query arguments' });
-    return;
+    return HTTPError(res, HTTPStatus.BAD_REQUEST, 'Invalid query arguments');
   }
 
   const name = queryArgs[0].replace(/-/g, '');
 
   if (name.length !== 32) {
-    res.status(400);
-    res.send({ success: false, message: 'Invalid schematic key' });
-    return;
+    return HTTPError(res, HTTPStatus.BAD_REQUEST, 'Invalid schematic ke');
   }
 
   const schematic = Schematic.build({
@@ -48,7 +39,7 @@ export const handleFAWEUpload = async (req: Request, res: Response) => {
     format: SchematicFormat.SCHEM,
   });
 
-  schematic.save().then(() => {
+  return schematic.save().then(() => {
     res.send('Success!');
   });
 };
@@ -61,8 +52,7 @@ export const handleFAWEDownload = async (req: Request, res: Response) => {
     },
   });
   if (schematic === null) {
-    res.status(404);
-    res.send();
+    res.status(HTTPStatus.NOT_FOUND).send();
   } else {
     res.setHeader('Content-Type', 'application/octet-stream');
     res.setHeader('Content-Disposition', `attachment;filename="${schematic.name}.${schematic.format === SchematicFormat.SCHEM ? 'schem' : 'schematic'}"`);

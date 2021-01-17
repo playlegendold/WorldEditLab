@@ -3,5 +3,5 @@
 }
 
 .actionhub > i {
-  @apply text-gray-600 hover:text-prime px-1 cursor-pointer;
+  @apply text-gray-600 hover:text-primary px-1 cursor-pointer;
 }

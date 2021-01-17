@@ -22,7 +22,7 @@
         </div>
     <% } %>
     <div id="schematic-table" class="table"></div>
-    <% if (header.username) { %><span class="text-xs">Table allows you to drop files</span><% } %>
+    <% if (header.username) { %><span class="text-xs">Just drop your Schematic on the table to upload it</span><% } %>
     <script>
       var data = JSON.parse('<%- data.runtimeData %>');
       var schematicCategories = data.categories;
@@ -158,7 +158,7 @@
                   }
                 }
 
-                WEL.openConfirmModal('Do you really want to update ' + filteredRows.length + ' schematics?', function () {
+                WEL.openConfirmModal('Do you really want to change access from ' + filteredRows.length + ' schematics to internal?', function () {
                   for (var i = 0; i < filteredRows.length; i++) {
                     WEL.updateSchematicAccess(filteredRows[i], 1);
                   }
@@ -176,7 +176,7 @@
                   }
                 }
 
-                WEL.openConfirmModal('Do you really want to update ' + filteredRows.length + ' schematics?', function () {
+                WEL.openConfirmModal('Do you really want to change access from ' + filteredRows.length + ' schematics to private?', function () {
                   for (var i = 0; i < filteredRows.length; i++) {
                     WEL.updateSchematicAccess(filteredRows[i], 2);
                   }
