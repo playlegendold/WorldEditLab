@@ -4,9 +4,12 @@ FROM node:lts-alpine as build-stage
 WORKDIR /usr/src/app/
 COPY . .
 
-# install python to build dependencies
+# install build dependencies
 RUN apk --no-cache --virtual build-dependencies add \
-    python2
+    python2 \
+    make \
+    g++ \
+    bash
 
 # install dependencies
 RUN yarn install --frozen-lockfile
@@ -14,7 +17,7 @@ RUN yarn install --frozen-lockfile
 # build and cleanup afterwords
 RUN yarn build && npm prune --production
 
-# delete build-dependencies again
+# delete build-dependencies
 RUN apk del build-dependencies
 
 ### production stage
