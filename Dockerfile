@@ -5,7 +5,7 @@ WORKDIR /usr/src/app/
 COPY . .
 
 # install dependencies
-RUN yarn install
+RUN yarn install --frozen-lockfile
 
 # build and cleanup afterwords
 RUN yarn build && npm prune --production
