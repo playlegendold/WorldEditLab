@@ -21,7 +21,7 @@ export const handleEditRequest = async (req: Request, res: Response) => {
     [count] = await Schematic.update({
       name: req.body.name,
       access: req.body.access,
-      categoryId: req.body.category,
+      categoryId: req.body.category === -1 ? null : req.body.category,
     }, {
       where: {
         uuid: req.params.uuid,
@@ -31,7 +31,7 @@ export const handleEditRequest = async (req: Request, res: Response) => {
     [count] = await Schematic.update({
       name: req.body.name,
       access: req.body.access,
-      categoryId: req.body.category,
+      categoryId: req.body.category === -1 ? null : req.body.category,
     }, {
       where: {
         uuid: req.params.uuid,

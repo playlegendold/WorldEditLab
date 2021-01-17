@@ -46,7 +46,8 @@ export const openSchematicUploadModal = (categories) => {
     <option value="1" selected>Internal</option>
     <option value="2">Private</option>`;
 
-  const categoriesDom = categories.map((category) => {
+  let categoriesDom = '<option value="-1">-</option>';
+  categoriesDom += categories.map((category) => {
     return `<option value="${category.id}">${category.name}</option>`;
   });
 
@@ -54,11 +55,23 @@ export const openSchematicUploadModal = (categories) => {
     title: 'Upload new schematic',
     content: [
       {
+        type: 'label',
+        attr: {
+          innerText: 'Name',
+        },
+      },
+      {
         key: 'name',
         type: 'input',
         attr: {
           maxLength: 32,
           placeholder: 'Schematic name',
+        },
+      },
+      {
+        type: 'label',
+        attr: {
+          innerText: 'Category',
         },
       },
       {
@@ -69,10 +82,22 @@ export const openSchematicUploadModal = (categories) => {
         },
       },
       {
+        type: 'label',
+        attr: {
+          innerText: 'Access',
+        },
+      },
+      {
         key: 'access',
         type: 'select',
         attr: {
           innerHTML: accessOptions
+        },
+      },
+      {
+        type: 'label',
+        attr: {
+          innerText: 'Schematic file',
         },
       },
       {
@@ -127,7 +152,8 @@ export const openSchematicEditModal = (infoJSON, categories) => {
     <option value="1" ${info.access === 1 ? 'selected' : ''}>Internal</option>
     <option value="2" ${info.access === 2 ? 'selected' : ''}>Private</option>`;
 
-  const categoriesDom = categories.map((category) => {
+  let categoriesDom = '<option value="-1">-</option>';
+  categoriesDom += categories.map((category) => {
     return `<option value="${category.id}" ${info.category === category.id ? 'selected' : ''}>${category.name}</option>`;
   });
 
@@ -304,14 +330,20 @@ export const registerDragAndDropOnSchematicTable = (tableDOM, categories) => {
     const accessOptions = `<option value="0">Public</option>
     <option value="1" selected>Internal</option>
     <option value="2">Private</option>`;
-
-    const categoriesDom = categories.map((category) => {
+    let categoriesDom = '<option value="-1">-</option>';
+    categoriesDom += categories.map((category) => {
       return `<option value="${category.id}">${category.name}</option>`;
     });
 
     openModal({
       title: 'Upload new schematic',
       content: [
+        {
+          type: 'label',
+          attr: {
+            innerText: 'Name',
+          },
+        },
         {
           key: 'name',
           type: 'input',
@@ -321,10 +353,22 @@ export const registerDragAndDropOnSchematicTable = (tableDOM, categories) => {
           },
         },
         {
+          type: 'label',
+          attr: {
+            innerText: 'Category',
+          },
+        },
+        {
           key: 'category',
           type: 'select',
           attr: {
             innerHTML: categoriesDom
+          },
+        },
+        {
+          type: 'label',
+          attr: {
+            innerText: 'Access',
           },
         },
         {

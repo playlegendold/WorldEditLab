@@ -44,7 +44,7 @@ body.modal-active {
   @apply flex justify-end pt-2;
 }
 
-.modal-btn-primary {
+.modal-btn-prime {
   @apply px-4 bg-indigo-500 p-3 rounded-lg text-white hover:bg-indigo-400;
 }
 
