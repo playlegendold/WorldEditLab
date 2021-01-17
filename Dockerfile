@@ -9,7 +9,7 @@ RUN apk --no-cache --virtual build-dependencies add \
     python2 \
     make \
     g++ \
-    bash \
+    bash
 
 # install dependencies
 RUN yarn install --frozen-lockfile
