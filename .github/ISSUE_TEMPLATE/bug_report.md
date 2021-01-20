@@ -2,18 +2,16 @@
 name: Bug report
 about: Create a report to help us improve our project
 title: This is a placeholder title
-labels: bug
+labels: type: bugfix
 assignees: ''
 ---
 
-<!--
-  If this is a security related matter, please contact us at admin@playlegend.net
--->
+### Describe the bug
 
-**Describe the bug**
 A clear and concise description of what the bug is.
 
-**To Reproduce**
+### To Reproduce
+
 Steps to reproduce the behavior:
 
 1. Go to '...'
@@ -21,8 +19,10 @@ Steps to reproduce the behavior:
 3. Scroll down to '....'
 4. See error
 
-**Expected behavior**
+### Expected behavior
+
 A clear and concise description of what you expected to happen.
 
-**Additional context**
+### Additional context
+
 Add any other context about the problem here.
