@@ -6,7 +6,6 @@ on:
       - prod
     tags:
       - 'v*.*.*'
-    pull_request:
 jobs:
   release:
     name: Release
