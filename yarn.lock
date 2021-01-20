@@ -1114,14 +1114,6 @@
     "@typescript-eslint/typescript-estree" "4.14.0"
     debug "^4.1.1"
 
-"@typescript-eslint/scope-manager@4.13.0":
-  version "4.13.0"
-  resolved "https://registry.yarnpkg.com/@typescript-eslint/scope-manager/-/scope-manager-4.13.0.tgz#5b45912a9aa26b29603d8fa28f5e09088b947141"
-  integrity sha512-UpK7YLG2JlTp/9G4CHe7GxOwd93RBf3aHO5L+pfjIrhtBvZjHKbMhBXTIQNkbz7HZ9XOe++yKrXutYm5KmjWgQ==
-  dependencies:
-    "@typescript-eslint/types" "4.13.0"
-    "@typescript-eslint/visitor-keys" "4.13.0"
-
 "@typescript-eslint/scope-manager@4.14.0":
   version "4.14.0"
   resolved "https://registry.yarnpkg.com/@typescript-eslint/scope-manager/-/scope-manager-4.14.0.tgz#55a4743095d684e1f7b7180c4bac2a0a3727f517"
@@ -1138,11 +1130,6 @@
     "@typescript-eslint/types" "4.4.1"
     "@typescript-eslint/visitor-keys" "4.4.1"
 
-"@typescript-eslint/types@4.13.0":
-  version "4.13.0"
-  resolved "https://registry.yarnpkg.com/@typescript-eslint/types/-/types-4.13.0.tgz#6a7c6015a59a08fbd70daa8c83dfff86250502f8"
-  integrity sha512-/+aPaq163oX+ObOG00M0t9tKkOgdv9lq0IQv/y4SqGkAXmhFmCfgsELV7kOCTb2vVU5VOmVwXBXJTDr353C1rQ==
-
 "@typescript-eslint/types@4.14.0":
   version "4.14.0"
   resolved "https://registry.yarnpkg.com/@typescript-eslint/types/-/types-4.14.0.tgz#d8a8202d9b58831d6fd9cee2ba12f8a5a5dd44b6"
@@ -1152,20 +1139,6 @@
   version "4.4.1"
   resolved "https://registry.yarnpkg.com/@typescript-eslint/types/-/types-4.4.1.tgz#c507b35cf523bc7ba00aae5f75ee9b810cdabbc1"
   integrity sha512-KNDfH2bCyax5db+KKIZT4rfA8rEk5N0EJ8P0T5AJjo5xrV26UAzaiqoJCxeaibqc0c/IvZxp7v2g3difn2Pn3w==
-
-"@typescript-eslint/typescript-estree@4.13.0":
-  version "4.13.0"
-  resolved "https://registry.yarnpkg.com/@typescript-eslint/typescript-estree/-/typescript-estree-4.13.0.tgz#cf6e2207c7d760f5dfd8d18051428fadfc37b45e"
-  integrity sha512-9A0/DFZZLlGXn5XA349dWQFwPZxcyYyCFX5X88nWs2uachRDwGeyPz46oTsm9ZJE66EALvEns1lvBwa4d9QxMg==
-  dependencies:
-    "@typescript-eslint/types" "4.13.0"
-    "@typescript-eslint/visitor-keys" "4.13.0"
-    debug "^4.1.1"
-    globby "^11.0.1"
-    is-glob "^4.0.1"
-    lodash "^4.17.15"
-    semver "^7.3.2"
-    tsutils "^3.17.1"
 
 "@typescript-eslint/typescript-estree@4.14.0":
   version "4.14.0"
@@ -1194,14 +1167,6 @@
     lodash "^4.17.15"
     semver "^7.3.2"
     tsutils "^3.17.1"
-
-"@typescript-eslint/visitor-keys@4.13.0":
-  version "4.13.0"
-  resolved "https://registry.yarnpkg.com/@typescript-eslint/visitor-keys/-/visitor-keys-4.13.0.tgz#9acb1772d3b3183182b6540d3734143dce9476fe"
-  integrity sha512-6RoxWK05PAibukE7jElqAtNMq+RWZyqJ6Q/GdIxaiUj2Ept8jh8+FUVlbq9WxMYxkmEOPvCE5cRSyupMpwW31g==
-  dependencies:
-    "@typescript-eslint/types" "4.13.0"
-    eslint-visitor-keys "^2.0.0"
 
 "@typescript-eslint/visitor-keys@4.14.0":
   version "4.14.0"
@@ -1640,13 +1605,13 @@ atob@^2.1.2:
   resolved "https://registry.yarnpkg.com/atob/-/atob-2.1.2.tgz#6d9517eb9e030d2436666651e86bd9f6f13533c9"
   integrity sha512-Wm6ukoaOGJi/73p/cl2GvLjTI5JM1k/O14isD73YML8StrH/7/lRFgmg8nICZgD3bZZvjwCGxtMOD3wWNAu8cg==
 
-autoprefixer@^10.2.1:
-  version "10.2.1"
-  resolved "https://registry.yarnpkg.com/autoprefixer/-/autoprefixer-10.2.1.tgz#ce96870df6ddd9ba4c9bbba56c54b9ef4b00a962"
-  integrity sha512-dwP0UjyYvROUvtU+boBx8ff5pPWami1NGTrJs9YUsS/oZVbRAcdNHOOuXSA1fc46tgKqe072cVaKD69rvCc3QQ==
+autoprefixer@^10.2.3:
+  version "10.2.3"
+  resolved "https://registry.yarnpkg.com/autoprefixer/-/autoprefixer-10.2.3.tgz#2834b55b75cfc10fa80c66000a66dc94b7136804"
+  integrity sha512-vlz+iv+EnLkVaTgX8wApfYzmK3LUfK8Z9XAnmflzxMy/+oFuNK8fVGQV79SOpBv4jxk2YQJimw4hXIKZ29570A==
   dependencies:
     browserslist "^4.16.1"
-    caniuse-lite "^1.0.30001173"
+    caniuse-lite "^1.0.30001178"
     colorette "^1.2.1"
     fraction.js "^4.0.13"
     normalize-range "^0.1.2"
@@ -1908,10 +1873,10 @@ caniuse-api@^3.0.0:
     lodash.memoize "^4.1.2"
     lodash.uniq "^4.5.0"
 
-caniuse-lite@^1.0.0, caniuse-lite@^1.0.30001109, caniuse-lite@^1.0.30001173:
-  version "1.0.30001173"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001173.tgz#3c47bbe3cd6d7a9eda7f50ac016d158005569f56"
-  integrity sha512-R3aqmjrICdGCTAnSXtNyvWYMK3YtV5jwudbq0T7nN9k4kmE4CBuwPqyJ+KBzepSTh0huivV2gLbSMEzTTmfeYw==
+caniuse-lite@^1.0.0, caniuse-lite@^1.0.30001109, caniuse-lite@^1.0.30001173, caniuse-lite@^1.0.30001178:
+  version "1.0.30001178"
+  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001178.tgz#3ad813b2b2c7d585b0be0a2440e1e233c6eabdbc"
+  integrity sha512-VtdZLC0vsXykKni8Uztx45xynytOi71Ufx9T8kHptSw9AL4dpqailUJJHavttuzUe1KYuBYtChiWv+BAb7mPmQ==
 
 caseless@~0.12.0:
   version "0.12.0"
@@ -4629,6 +4594,11 @@ neo-async@^2.6.2:
   version "2.6.2"
   resolved "https://registry.yarnpkg.com/neo-async/-/neo-async-2.6.2.tgz#b4aafb93e3aeb2d8174ca53cf163ab7d7308305f"
   integrity sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==
+
+node-addon-api@2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/node-addon-api/-/node-addon-api-2.0.0.tgz#f9afb8d777a91525244b01775ea0ddbe1125483b"
+  integrity sha512-ASCL5U13as7HhOExbT6OlWJJUV/lLzL2voOSP1UVehpRD8FbSrSDjfScK/KwAvVTI5AS6r4VwbOMlIqtvRidnA==
 
 node-addon-api@^3.0.0:
   version "3.1.0"
