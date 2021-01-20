@@ -1,6 +1,6 @@
 # Description
 
-Please include a summary of the change and which issue you fixed.
+Please include a summary of the change if no issue is related to this pr.
 Please also include relevant motivation and context.
 List any dependencies that are required for this change.
 
