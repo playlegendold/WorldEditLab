@@ -63,7 +63,7 @@
     "dotenv": "^8.2.0",
     "ejs": "^3.1.5",
     "express": "^4.17.1",
-    "express-fileupload": "^1.2.0",
+    "express-fileupload": "^1.2.1",
     "express-session": "^1.17.1",
     "passport": "^0.4.1",
     "passport-custom": "^1.1.1",
