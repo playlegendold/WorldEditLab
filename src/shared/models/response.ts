@@ -7,4 +7,5 @@ export type ResponseData = {
 
 export type ResponseHeaderData = {
   username?: string;
+  role?: number;
 };

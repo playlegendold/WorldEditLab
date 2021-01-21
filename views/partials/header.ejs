@@ -1,5 +1,8 @@
 <div class="header-container">
     <nav class="header-nav">
+        <% if (header.role === 2) { %>
+            <a href="/management" class="header-link"><i class="fas fa-wrench"></i></a>
+        <% } %>
         <a href="/schematics" class="header-link">Schematics</a>
         <a href="/heightmaps" class="header-link">Heightmaps</a>
     </nav>

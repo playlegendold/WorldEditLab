@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('partials/head'); %>
+</head>
+<body>
+<header class="header">
+    <%- include('partials/header'); %>
+</header>
+
+<div class="container mx-auto py-6">
+    <h1 class="text-3xl py-4 border-b mb-10">Users</h1>
+    <% if (header.username) { %>
+        <div class="mb-4 flex justify-between items-center">
+            <div class="users-quick-actions"></div>
+            <div>
+                <button class="rounded-lg inline-flex items-center bg-green-600 text-white hover:bg-green-700 py-2 px-2 md:px-4"
+                        onclick="">
+                    <span>Create new user</span>
+                </button>
+            </div>
+        </div>
+    <% } %>
+    <div id="users-table" class="table"></div>
+    <script>
+      var tableUsers = WEL.newTable('#users-table', {
+        rowKey: 'id',
+        columns: [
+          {title: 'Name', key: 'name'},
+          {
+            title: 'Role', func: function (item) {
+              switch (item.access) {
+                case 0:
+                  return 'Guest';
+                case 1:
+                  return 'User';
+                case 2:
+                  return 'Admin';
+              }
+            },
+          },
+          {
+            title: 'Created At', func: function (item) {
+              return new Date(item.createdAt).toLocaleDateString('en-EN')
+            }
+          },
+          {
+            title: '', func: function (item) {
+              return '<span class="actionhub">' +
+                '<i class="fas fa-trash-alt"></i>' +
+                '<i class="fas fa-wrench"></i>' +
+                '</span>';
+            },
+          },
+        ],
+        clickHandler: function (event) {
+        },
+        massActions: {
+          selector: '.users-quick-actions',
+          actions: [],
+        },
+      });
+      tableUsers.setData([]);
+    </script>
+</div>
+
+<%- include('partials/foot'); %>
+</body>
+</html>

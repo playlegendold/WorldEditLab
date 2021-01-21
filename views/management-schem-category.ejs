@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('partials/head'); %>
+</head>
+<body>
+<header class="header">
+    <%- include('partials/header'); %>
+</header>
+
+<div class="container mx-auto py-6">
+    <h1 class="text-3xl py-4 border-b mb-10">Schematic Categories</h1>
+    <div class="mb-4 flex justify-between items-center">
+        <div class="categories-quick-actions"></div>
+        <div>
+            <button class="rounded-lg inline-flex items-center bg-green-600 text-white hover:bg-green-700 py-2 px-2 md:px-4"
+                    onclick="">
+                <span>Create New Category</span>
+            </button>
+        </div>
+    </div>
+    <div id="category-table" class="table"></div>
+    <script>
+      var tableCategories = WEL.newTable('#category-table', {
+        rowKey: 'id',
+        columns: [
+          {title: 'Name', key: 'name'},
+          {
+            title: '', func: function (item) {
+              return '<span class="actionhub">' +
+                '<i class="fas fa-trash-alt"></i>' +
+                '<i class="fas fa-wrench"></i>' +
+                '</span>';
+            },
+          },
+        ],
+        clickHandler: function (event) {
+        },
+        massActions: {
+          selector: '.categories-quick-actions',
+          actions: [],
+        },
+      });
+      tableCategories.setData([]);
+    </script>
+</div>
+
+<%- include('partials/foot'); %>
+</body>
+</html>
