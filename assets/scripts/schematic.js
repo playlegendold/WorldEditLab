@@ -211,6 +211,16 @@ export const openSchematicEditModal = (infoJSON, categories) => {
         name: 'Save',
         primary: true,
         click: (modal, event) => {
+          let failed = false;
+          modal.name.style.background = null;
+
+          if (modal.name.value.length <= 3 || modal.name.value.length > 32) {
+            modal.name.style.background = '#ffc1c1';
+            failed = true;
+          }
+          if (failed)
+            return;
+
           const patch = {
             name: modal.name.value,
             access: parseInt(modal.access.value),
