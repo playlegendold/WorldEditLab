@@ -5,6 +5,11 @@ import { LOCAL_SQLITE_STRATEGY } from '../../shared/auth/strategies';
 import { User } from '../../shared/models';
 import { hashPassword } from '../../shared/auth/password';
 
+export const handleLogoutRequest = (req: Request, res: Response) => {
+  req.logout();
+  res.redirect('/');
+};
+
 export const handleLoginRequest = (req: Request, res: Response, next: NextFunction) => {
   const responseData = buildDefaultResponse(req);
   passport.authenticate(LOCAL_SQLITE_STRATEGY, (err: Error, user: User) => {

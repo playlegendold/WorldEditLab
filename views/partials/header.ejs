@@ -13,7 +13,7 @@
         <% if (!header.username) { %>
             <a href="/login" class="header-account-link">Login</a>
         <% } else { %>
-                <a class="header-account-link">Welcome, <%= header.username %></a>
+            <a href="/logout" class="header-account-link">Logout</a>
         <% } %>
     </div>
 </div>
