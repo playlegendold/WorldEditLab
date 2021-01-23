@@ -1,11 +1,25 @@
 .management-nav {
-  @apply text-gray-500 bg-gray-900 w-full text-center py-1;
+  @apply text-gray-900 bg-gray-100 py-3;
 }
 
-.management-nav > li {
-  @apply inline mr-5 hover:text-primary cursor-pointer;
+.management-nav ul {
+  @apply mx-auto container;
 }
 
-.management-nav > li:last-of-type {
+.management-nav li {
+  @apply inline mr-5;
+}
+
+.management-nav li:first-of-type {
+  padding-bottom: 2px;
+
+  @apply font-bold text-primary pr-5 border-r border-primary;
+}
+
+.management-nav li a {
+  @apply hover:text-primary cursor-pointer;
+}
+
+.management-nav li:last-of-type {
   @apply mr-0;
 }
