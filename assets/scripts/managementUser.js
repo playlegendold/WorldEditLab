@@ -1,28 +1,28 @@
-import {openModal} from "./modal";
-import {sendNotification} from "./notification";
+import { openModal } from './modal';
+import { sendNotification } from './notification';
 
-const sendCategoryCreateRequest = (name, onFinished, onFail = null, onProgress = null) => {
+const sendUserCreateRequest = ({name, role}, onFinished, onFail = null, onProgress = null) => {
   const request = new XMLHttpRequest();
-  request.open('POST', '/management/schematic-categories');
+  request.open('POST', '/management/users');
   request.onload = onFinished;
   request.onerror = onFail;
   request.onabort = onFail;
   request.onprogress = onProgress;
   request.setRequestHeader('Content-Type', 'application/json');
-  request.send(JSON.stringify({name}));
+  request.send(JSON.stringify({name, role}));
 };
 
-export const deleteSchematicCategory = (id) => {
+export const deleteUser = (id) => {
   const request = new XMLHttpRequest();
-  request.open('DELETE', `/management/schematic-categories/${id}`);
+  request.open('DELETE', `/management/users/${id}`);
   request.onload = (event) => {
     if (request.status === 200) {
       const result = JSON.parse(request.response);
       if (result.success) {
-        sendNotification('Schematic category successfully deleted!', 'success', 2000);
-        tableCategories.deleteRow(id);
+        sendNotification('User successfully deleted!', 'success', 2000);
+        tableUsers.deleteRow(id);
       } else {
-        sendNotification('Schematic category deletion failed! ' + result.message, 'error', 4000);
+        sendNotification('User deletion failed! ' + result.message, 'error', 4000);
       }
     } else {
       sendNotification('Error: ' + request.statusText, 'error', 4000);
@@ -31,9 +31,12 @@ export const deleteSchematicCategory = (id) => {
   request.send();
 };
 
-export const openSchematicCategoryCreateModal = () => {
+export const openUserCreateModal = () => {
+  const roleOptions = `<option value="1" selected>User</option>
+    <option value="2">Admin</option>`;
+
   openModal({
-    title: 'Create New Category',
+    title: 'Create New User',
     content: [
       {
         type: 'label',
@@ -46,7 +49,20 @@ export const openSchematicCategoryCreateModal = () => {
         type: 'input',
         attr: {
           maxLength: 32,
-          placeholder: 'Category name',
+          placeholder: 'User name',
+        },
+      },
+      {
+        type: 'label',
+        attr: {
+          innerText: 'Role',
+        },
+      },
+      {
+        key: 'role',
+        type: 'select',
+        attr: {
+          innerHTML: roleOptions
         },
       },
     ],
@@ -69,14 +85,18 @@ export const openSchematicCategoryCreateModal = () => {
           if (failed)
             return;
 
-          sendCategoryCreateRequest(modal.name.value, (event) => {
+          const role = parseInt(modal.role.value);
+          sendUserCreateRequest({
+            name: modal.name.value,
+            role: role,
+          }, (event) => {
             if (event.target.status === 200) {
               sendNotification(
                 'Successfully created',
                 'success',
                 1000);
               modal.close();
-              tableCategories.addRow(JSON.parse(event.target.response).row);
+              tableUsers.addRow(JSON.parse(event.target.response).row);
             } else {
               sendNotification(
                 `Creation failed: ${JSON.parse(event.target.response).message}`,
@@ -93,10 +113,14 @@ export const openSchematicCategoryCreateModal = () => {
   });
 };
 
-export const openSchematicCategoryEditModal = (infoJSON) => {
+export const openUserEditModal = (infoJSON) => {
   const info = JSON.parse(infoJSON);
+
+  const roleOptions = `<option value="1" ${info.role === 1 ? 'selected' : ''}>User</option>
+    <option value="2" ${info.role === 2 ? 'selected' : ''}>Admin</option>`;
+
   openModal({
-    title: 'Category',
+    title: 'User',
     content: [
       {
         type: 'label',
@@ -111,6 +135,19 @@ export const openSchematicCategoryEditModal = (infoJSON) => {
           maxLength: 32,
           placeholder: 'Category name',
           value: info.name,
+        },
+      },
+      {
+        type: 'label',
+        attr: {
+          innerText: 'Role',
+        },
+      },
+      {
+        key: 'role',
+        type: 'select',
+        attr: {
+          innerHTML: roleOptions
         },
       },
     ],
@@ -133,21 +170,24 @@ export const openSchematicCategoryEditModal = (infoJSON) => {
           if (failed)
             return;
 
+          const role = parseInt(modal.role.value);
+
           const request = new XMLHttpRequest();
-          request.open('PUT', `/management/schematic-categories/${info.id}`);
+          request.open('PUT', `/management/users/${info.id}`);
           request.setRequestHeader('Content-Type', 'application/json');
           request.onload = (event) => {
             if (request.status === 200) {
               const result = JSON.parse(request.response);
               if (result.success) {
-                sendNotification('Category successfully updated!', 'success', 2000);
-                tableCategories.updateRow({
+                sendNotification('User successfully updated!', 'success', 2000);
+                tableUsers.updateRow({
                   id: info.id,
                   name: modal.name.value,
+                  role,
                 });
                 modal.close();
               } else {
-                sendNotification('Category update failed! ' + result.message, 'error', 4000);
+                sendNotification('User update failed! ' + result.message, 'error', 4000);
               }
             } else {
               sendNotification(`Request Error: ${request.status} ${request.statusText}`, 'error', 4000);
@@ -155,6 +195,7 @@ export const openSchematicCategoryEditModal = (infoJSON) => {
           };
           request.send(JSON.stringify({
             name: modal.name.value,
+            role,
           }));
         },
       },

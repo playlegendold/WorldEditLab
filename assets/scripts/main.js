@@ -13,16 +13,24 @@ import {
   openSchematicCategoryCreateModal,
   deleteSchematicCategory,
   openSchematicCategoryEditModal,
-} from './management';
+} from './managementCategory';
+import {
+  deleteUser,
+  openUserCreateModal,
+  openUserEditModal,
+} from './managementUser';
 
 global.WEL = {
   openSchematicUploadModal,
   openSchematicCategoryCreateModal,
+  openUserCreateModal,
   openSchematicEditModal,
   openSchematicCategoryEditModal,
+  openUserEditModal,
   updateSchematicAccess,
   deleteSchematic,
   deleteSchematicCategory,
+  deleteUser,
   copyToClipboard,
   sendNotification,
   openConfirmModal,

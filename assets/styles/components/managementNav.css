@@ -1,0 +1,11 @@
+.management-nav {
+  @apply text-gray-500 bg-gray-900 w-full text-center py-1;
+}
+
+.management-nav > li {
+  @apply inline mr-5 hover:text-primary cursor-pointer;
+}
+
+.management-nav > li:last-of-type {
+  @apply mr-0;
+}

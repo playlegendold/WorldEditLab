@@ -7,6 +7,7 @@
 <header class="header">
     <%- include('partials/header'); %>
 </header>
+<%- include('partials/management-header'); %>
 
 <div class="container mx-auto py-6">
     <h1 class="text-3xl py-4 border-b mb-10">Schematic Categories</h1>
@@ -45,7 +46,7 @@
 
           if (data.deleteCategory !== undefined) {
             WEL.openConfirmModal('Do you really want to delete the category?', function () {
-              WEL.deleteSchematicCategory(data.deleteCategory);
+              WEL.deleteSchematicCategory(parseInt(data.deleteCategory, 10));
             });
           } else if (data.editCategory !== undefined) {
             WEL.openSchematicCategoryEditModal(data.editCategory);
