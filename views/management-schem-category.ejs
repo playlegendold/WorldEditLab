@@ -29,8 +29,8 @@
           {
             title: '', func: function (item) {
               return '<span class="actionhub">' +
-                '<i class="fas fa-trash-alt" data-delete-category="'+ item.id +'"></i>' +
-                '<i class="fas fa-wrench" data-edit-category=\''+ JSON.stringify({
+                '<i title="Delete" class="fas fa-trash-alt" data-delete-category="'+ item.id +'"></i>' +
+                '<i title="Edit" class="fas fa-wrench" data-edit-category=\''+ JSON.stringify({
                   id: item.id,
                   name: item.name,
                 }) +'\'></i>' +
