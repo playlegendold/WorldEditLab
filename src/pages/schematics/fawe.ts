@@ -1,35 +1,35 @@
 import { Request, Response } from 'express';
 import { UploadedFile } from 'express-fileupload';
 import { Access, Schematic, SchematicFormat } from '../../shared/models';
-import { HTTPError, HTTPStatus } from '../../shared/helpers/errorHandler';
+import { HTTPErrorResponse, HTTPStatus } from '../../shared/helpers/errorHandler';
 import { returnSchematic } from '../download/schematic';
 
 export const handleFAWEUpload = async (req: Request, res: Response) => {
   const faweAllowedAddresses = (process.env.FAWE_UPLOAD_ACCESS as string).split(',');
   if (req.header('X-Forwarded-For')) {
     if (!faweAllowedAddresses.includes(req.header('X-Forwarded-For') as string)) {
-      return HTTPError(res, HTTPStatus.FORBIDDEN, 'Forbidden');
+      throw new HTTPErrorResponse(HTTPStatus.FORBIDDEN, 'Forbidden', true);
     }
   } else if (!faweAllowedAddresses.includes(req.ip)) {
-    return HTTPError(res, HTTPStatus.FORBIDDEN, 'Forbidden');
+    throw new HTTPErrorResponse(HTTPStatus.FORBIDDEN, 'Forbidden', true);
   }
 
   const file = req.files?.schematicFile as UploadedFile;
 
   if (file === undefined) {
-    return HTTPError(res, HTTPStatus.BAD_REQUEST, 'Invalid file upload');
+    throw new HTTPErrorResponse(HTTPStatus.BAD_REQUEST, 'Invalid file upload', true);
   }
 
   const queryArgs = Object.keys(req.query);
 
   if (queryArgs.length !== 1) {
-    return HTTPError(res, HTTPStatus.BAD_REQUEST, 'Invalid query arguments');
+    throw new HTTPErrorResponse(HTTPStatus.BAD_REQUEST, 'Invalid query arguments', true);
   }
 
   const name = queryArgs[0].replace(/-/g, '');
 
   if (name.length !== 32) {
-    return HTTPError(res, HTTPStatus.BAD_REQUEST, 'Invalid schematic ke');
+    throw new HTTPErrorResponse(HTTPStatus.BAD_REQUEST, 'Invalid schematic name', true);
   }
 
   const schematic = Schematic.build({

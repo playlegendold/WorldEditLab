@@ -1,11 +1,11 @@
 import { Request, Response } from 'express';
 import { Role, Schematic, User } from '../../shared/models';
-import { HTTPError, HTTPStatus } from '../../shared/helpers/errorHandler';
+import { HTTPErrorResponse, HTTPStatus } from '../../shared/helpers/errorHandler';
 
 export const handleDeleteRequest = async (req: Request, res: Response) => {
   const user = req.user as User;
   if (!user) {
-    return HTTPError(res, HTTPStatus.FORBIDDEN, 'Forbidden');
+    throw new HTTPErrorResponse(HTTPStatus.FORBIDDEN, 'Forbidden', true);
   }
   let count;
 
@@ -27,5 +27,5 @@ export const handleDeleteRequest = async (req: Request, res: Response) => {
   if (count === 1) {
     return res.send({ success: true });
   }
-  return HTTPError(res, HTTPStatus.NOT_FOUND, 'Not found');
+  throw new HTTPErrorResponse(HTTPStatus.NOT_FOUND, 'Not found', true);
 };
