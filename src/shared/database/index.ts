@@ -17,6 +17,8 @@ sequelize.authenticate().then(() => {
 
   Schematic.belongsTo(User, { as: 'uploadedBy' });
   Schematic.belongsTo(SchematicCategory, { as: 'category' });
+
+  sequelize.sync();
 }).catch((error) => {
   console.error('Unable to connect to the database:', error);
 });
