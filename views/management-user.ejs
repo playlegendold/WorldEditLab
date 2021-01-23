@@ -67,6 +67,10 @@
             });
           } else if (data.editUser !== undefined) {
             WEL.openUserEditModal(data.editUser);
+          } else if (data.resetPwUser !== undefined) {
+            WEL.openConfirmModal('Do you really want to reset the password?', function () {
+              WEL.resetPasswordFromUser(data.resetPwUser);
+            });
           }
         },
         massActions: {

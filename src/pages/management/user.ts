@@ -113,3 +113,38 @@ export const handleUserPatchRequest = async (req: Request, res: Response) => {
   }
   return HTTPError(res, HTTPStatus.NOT_FOUND, 'Not found');
 };
+
+export const handleUserPasswordResetRequest = async (req: Request, res: Response) => {
+  const user = req.user as User;
+  if (!user) {
+    return HTTPError(res, HTTPStatus.FORBIDDEN, 'Forbidden');
+  }
+
+  const id = parseInt(req.params.id, 10);
+
+  if (!id) {
+    return HTTPError(res, HTTPStatus.BAD_REQUEST, 'Invalid id');
+  }
+
+  const tempPassword = generateRandomString(8);
+
+  const [count] = await User.update({
+    password: hashPassword(tempPassword),
+    forcePasswordUpdate: true,
+  }, {
+    where: {
+      id,
+    },
+  });
+
+  if (count === 1) {
+    return res.send({
+      success: true,
+      row: {
+        id,
+        password: tempPassword,
+      },
+    });
+  }
+  return HTTPError(res, HTTPStatus.NOT_FOUND, 'Not found');
+};

@@ -18,6 +18,7 @@ import {
   deleteUser,
   openUserCreateModal,
   openUserEditModal,
+  resetPasswordFromUser,
 } from './managementUser';
 
 global.WEL = {
@@ -31,6 +32,7 @@ global.WEL = {
   deleteSchematic,
   deleteSchematicCategory,
   deleteUser,
+  resetPasswordFromUser,
   copyToClipboard,
   sendNotification,
   openConfirmModal,

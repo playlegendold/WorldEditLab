@@ -31,6 +31,25 @@ export const deleteUser = (id) => {
   request.send();
 };
 
+export const resetPasswordFromUser = (id) => {
+  const request = new XMLHttpRequest();
+  request.open('GET', `/management/users/${id}/pw-reset`);
+  request.onload = (event) => {
+    if (request.status === 200) {
+      const result = JSON.parse(request.response);
+      if (result.success) {
+        sendNotification('User password was reset!', 'success', 2000);
+        tableUsers.updateRow(result.row);
+      } else {
+        sendNotification('User password reset failed! ' + result.message, 'error', 4000);
+      }
+    } else {
+      sendNotification('Error: ' + request.statusText, 'error', 4000);
+    }
+  };
+  request.send();
+};
+
 export const openUserCreateModal = () => {
   const roleOptions = `<option value="1" selected>User</option>
     <option value="2">Admin</option>`;

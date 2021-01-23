@@ -1,6 +1,10 @@
 import { Request, Response, Router } from 'express';
 import {
-  handleUserCreateRequest, handleUserDeleteRequest, handleUserIndexView, handleUserPatchRequest,
+  handleUserCreateRequest,
+  handleUserDeleteRequest,
+  handleUserIndexView,
+  handleUserPasswordResetRequest,
+  handleUserPatchRequest,
 } from './user';
 import { Role, User } from '../../shared/models';
 import { HTTPError, HTTPStatus } from '../../shared/helpers/errorHandler';
@@ -29,6 +33,7 @@ export default () => {
   router.post('/users', handleUserCreateRequest);
   router.delete('/users/:id', handleUserDeleteRequest);
   router.put('/users/:id', handleUserPatchRequest);
+  router.get('/users/:id/pw-reset', handleUserPasswordResetRequest);
 
   router.get('/schematic-categories', handleCategoryIndexView);
   router.post('/schematic-categories', handleCategoryCreateRequest);
