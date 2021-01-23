@@ -15,7 +15,6 @@ const app: Application = express();
 if (process.env.NODE_ENV === 'production') {
   app.use(((req: Request, res: Response, next: NextFunction) => {
     const firstPathArgument = req.url.substr(1).split(/\//)[0].toLowerCase();
-    console.log(firstPathArgument);
     const cachePaths = ['images', 'scripts', 'styles'];
     if (cachePaths.includes(firstPathArgument)) {
       res.setHeader('Cache-Control', 'public, max-age=900');
