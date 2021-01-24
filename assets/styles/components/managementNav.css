@@ -20,6 +20,10 @@
   @apply hover:text-primary cursor-pointer;
 }
 
+.management-nav li a.active {
+  @apply text-primary;
+}
+
 .management-nav li:last-of-type {
   @apply mr-0;
 }

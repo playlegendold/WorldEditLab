@@ -1,17 +1,25 @@
 <div class="header-container">
     <nav class="header-nav">
         <% if (header.role === 2) { %>
-            <a href="/management" class="header-link"><i class="fas fa-wrench"></i></a>
+            <a href="/management"
+               class="header-link <%- navigation.pathArguments[0] === 'management' ? 'active' : '' %>"
+            ><i class="fas fa-wrench"></i></a>
         <% } %>
-        <a href="/schematics" class="header-link">Schematics</a>
-        <a href="/heightmaps" class="header-link">Heightmaps</a>
+        <a href="/schematics"
+           class="header-link <%- navigation.pathArguments[0] === 'schematics' ? 'active' : '' %>"
+        >Schematics</a>
+        <a href="/heightmaps"
+           class="header-link <%- navigation.pathArguments[0] === 'heightmaps' ? 'active' : '' %>"
+        >Heightmaps</a>
     </nav>
     <span class="header-icon-container">
         <a href="/"><img src="/images/logo.png" style="height: 40px; margin-top: 10px; margin-bottom: 10px;" alt="logo"></a>
     </span>
     <div class="header-container-right">
         <% if (!header.username) { %>
-            <a href="/login" class="header-account-link">Login</a>
+            <a href="/login"
+               class="header-account-link <%- navigation.pathArguments[0] === 'login' ? 'active' : '' %>"
+            >Login</a>
         <% } else { %>
             <a href="/logout" class="header-account-link">Logout</a>
         <% } %>

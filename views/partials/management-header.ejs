@@ -1,7 +1,11 @@
 <div class="management-nav">
     <ul>
         <li>Management</li>
-        <li><a href="/management/users">Users</a></li>
-        <li><a href="/management/schematic-categories">Schematic Categories</a></li>
+        <li><a href="/management/users"
+                    <%- navigation.pathArguments[1] === 'users' ? 'class="active"' : '' %>
+            >Users</a></li>
+        <li><a href="/management/schematic-categories"
+                    <%- navigation.pathArguments[1] === 'schematic-categories' ? 'class="active"' : '' %>
+            >Schematic Categories</a></li>
     </ul>
 </div>
