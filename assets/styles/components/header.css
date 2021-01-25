@@ -22,6 +22,11 @@
   @apply mr-5 hover:text-primary cursor-pointer border-b border-transparent;
 }
 
+.header-link.active,
+.header-account-link.active {
+  @apply text-primary;
+}
+
 .header-account-link {
   @apply hover:text-primary cursor-pointer border-b border-transparent;
 }
