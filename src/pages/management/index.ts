@@ -7,7 +7,7 @@ import {
   handleUserPatchRequest,
 } from './user';
 import { Role, User } from '../../shared/models';
-import { HTTPError, HTTPStatus } from '../../shared/helpers/errorHandler';
+import { HTTPErrorResponse, HTTPStatus } from '../../shared/helpers/errorHandler';
 import {
   handleCategoryCreateRequest,
   handleCategoryDeleteRequest,
@@ -18,7 +18,7 @@ import {
 export const handleIndexView = async (req: Request, res: Response) => {
   const user = req.user as User;
   if (!user || user.role !== Role.ADMIN) {
-    return HTTPError(res, HTTPStatus.FORBIDDEN, 'Forbidden');
+    throw new HTTPErrorResponse(HTTPStatus.FORBIDDEN, 'Forbidden', false);
   }
   return res.redirect('/management/users');
 };

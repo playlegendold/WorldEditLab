@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { Role, User } from '../../shared/models';
-import { HTTPError, HTTPStatus } from '../../shared/helpers/errorHandler';
+import { HTTPErrorResponse, HTTPStatus } from '../../shared/helpers/errorHandler';
 import { buildDefaultResponse } from '../../shared/response';
 import { hashPassword } from '../../shared/auth/password';
 import { generateRandomString } from '../../shared/helpers/generate';
@@ -8,7 +8,7 @@ import { generateRandomString } from '../../shared/helpers/generate';
 export const handleUserIndexView = async (req: Request, res: Response) => {
   const user = req.user as User;
   if (!user || user.role !== Role.ADMIN) {
-    return HTTPError(res, HTTPStatus.FORBIDDEN, 'Forbidden');
+    throw new HTTPErrorResponse(HTTPStatus.FORBIDDEN, 'Forbidden', false);
   }
 
   const responseUsers = await User.findAll({ attributes: ['id', 'name', 'role'] });
@@ -25,13 +25,13 @@ export const handleUserIndexView = async (req: Request, res: Response) => {
 export const handleUserCreateRequest = async (req: Request, res: Response) => {
   const user = req.user as User;
   if (!user || user.role !== Role.ADMIN) {
-    return HTTPError(res, HTTPStatus.FORBIDDEN, 'Forbidden');
+    throw new HTTPErrorResponse(HTTPStatus.FORBIDDEN, 'Forbidden', true);
   }
 
   const { name, role } = req.body;
 
   if (name.length <= 3 || name.length > 32 || !Number.isInteger(role)) {
-    return HTTPError(res, HTTPStatus.BAD_REQUEST, 'Bad Request');
+    throw new HTTPErrorResponse(HTTPStatus.BAD_REQUEST, 'Bad Request', true);
   }
 
   const tempPassword = generateRandomString(8);
@@ -59,13 +59,13 @@ export const handleUserCreateRequest = async (req: Request, res: Response) => {
 export const handleUserDeleteRequest = async (req: Request, res: Response) => {
   const user = req.user as User;
   if (!user || user.role !== Role.ADMIN) {
-    return HTTPError(res, HTTPStatus.FORBIDDEN, 'Forbidden');
+    throw new HTTPErrorResponse(HTTPStatus.FORBIDDEN, 'Forbidden', true);
   }
 
   const id = parseInt(req.params.id, 10);
 
   if (!id) {
-    return HTTPError(res, HTTPStatus.BAD_REQUEST, 'Invalid id');
+    throw new HTTPErrorResponse(HTTPStatus.BAD_REQUEST, 'Invalid id', true);
   }
 
   const count = await User.destroy({
@@ -77,26 +77,26 @@ export const handleUserDeleteRequest = async (req: Request, res: Response) => {
   if (count === 1) {
     return res.send({ success: true });
   }
-  return HTTPError(res, HTTPStatus.NOT_FOUND, 'Not found');
+  throw new HTTPErrorResponse(HTTPStatus.NOT_FOUND, 'Not Found', true);
 };
 
 export const handleUserPatchRequest = async (req: Request, res: Response) => {
   const user = req.user as User;
   if (!user) {
-    return HTTPError(res, HTTPStatus.FORBIDDEN, 'Forbidden');
+    throw new HTTPErrorResponse(HTTPStatus.FORBIDDEN, 'Forbidden', true);
   }
 
   const id = parseInt(req.params.id, 10);
 
   if (!id) {
-    return HTTPError(res, HTTPStatus.BAD_REQUEST, 'Invalid id');
+    throw new HTTPErrorResponse(HTTPStatus.BAD_REQUEST, 'Invalid id', true);
   }
 
   if (req.body.name.length <= 3
     || req.body.name.length > 32
     || !Number.isInteger(req.body.role)
     || !(req.body.role === 1 || req.body.role === 2)) {
-    return HTTPError(res, HTTPStatus.BAD_REQUEST, 'Bad Request');
+    throw new HTTPErrorResponse(HTTPStatus.BAD_REQUEST, 'Bad Request', true);
   }
 
   const [count] = await User.update({
@@ -111,19 +111,19 @@ export const handleUserPatchRequest = async (req: Request, res: Response) => {
   if (count === 1) {
     return res.send({ success: true });
   }
-  return HTTPError(res, HTTPStatus.NOT_FOUND, 'Not found');
+  throw new HTTPErrorResponse(HTTPStatus.NOT_FOUND, 'Not Found', true);
 };
 
 export const handleUserPasswordResetRequest = async (req: Request, res: Response) => {
   const user = req.user as User;
   if (!user) {
-    return HTTPError(res, HTTPStatus.FORBIDDEN, 'Forbidden');
+    throw new HTTPErrorResponse(HTTPStatus.FORBIDDEN, 'Forbidden', true);
   }
 
   const id = parseInt(req.params.id, 10);
 
   if (!id) {
-    return HTTPError(res, HTTPStatus.BAD_REQUEST, 'Invalid id');
+    throw new HTTPErrorResponse(HTTPStatus.BAD_REQUEST, 'Invalid id', true);
   }
 
   const tempPassword = generateRandomString(8);
@@ -146,5 +146,5 @@ export const handleUserPasswordResetRequest = async (req: Request, res: Response
       },
     });
   }
-  return HTTPError(res, HTTPStatus.NOT_FOUND, 'Not found');
+  throw new HTTPErrorResponse(HTTPStatus.NOT_FOUND, 'Not Found', true);
 };
