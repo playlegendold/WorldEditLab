@@ -7,6 +7,7 @@ interface UserAttributes {
   name: string;
   password: string;
   role: Role;
+  forcePasswordUpdate: boolean;
 }
 
 export class User extends Model implements UserAttributes {
@@ -17,6 +18,8 @@ export class User extends Model implements UserAttributes {
   public password!: string;
 
   public role!: Role;
+
+  public forcePasswordUpdate!: boolean;
 }
 
 export const initUser = async (sequelize: Sequelize) => {
@@ -39,6 +42,11 @@ export const initUser = async (sequelize: Sequelize) => {
       allowNull: false,
       defaultValue: Role.GUEST,
     },
+    forcePasswordUpdate: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
+    },
   }, {
     sequelize,
     modelName: 'User',
@@ -53,6 +61,7 @@ export const initUser = async (sequelize: Sequelize) => {
         name: 'admin',
         password: hashPassword('admin'),
         role: Role.ADMIN,
+        forcePasswordUpdate: true,
       });
     }
   } catch (err) {

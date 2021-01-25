@@ -9,15 +9,33 @@ import {
 } from './schematic';
 import { openConfirmModal } from './defaultModals';
 import { newTable } from './table';
+import {
+  openSchematicCategoryCreateModal,
+  deleteSchematicCategory,
+  openSchematicCategoryEditModal,
+} from './managementCategory';
+import {
+  deleteUser,
+  openUserCreateModal,
+  openUserEditModal,
+  resetPasswordFromUser,
+} from './managementUser';
 
 global.WEL = {
   openSchematicUploadModal,
+  openSchematicCategoryCreateModal,
+  openUserCreateModal,
   openSchematicEditModal,
+  openSchematicCategoryEditModal,
+  openUserEditModal,
   updateSchematicAccess,
+  deleteSchematic,
+  deleteSchematicCategory,
+  deleteUser,
+  resetPasswordFromUser,
   copyToClipboard,
   sendNotification,
   openConfirmModal,
-  deleteSchematic,
   newTable,
   registerDragAndDropOnSchematicTable,
 };

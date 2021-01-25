@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('partials/head'); %>
+</head>
+<body>
+<header class="header">
+    <%- include('partials/header'); %>
+</header>
+<div class="login-container">
+    <div>
+        <h1 class="login-title"> Reset Password </h1>
+        <h3 class="text-red-500"><%= data.errorMessage %></h3>
+        <form method="post">
+            <div class="login-input-field">
+                <div>
+                    <span><i class="fas fa-user-circle"></i></span>
+                </div>
+                <input type="text" name="username" placeholder="Username" required/>
+            </div>
+            <div class="login-input-field">
+                <div>
+                    <span><i class="fas fa-lock"></i></span>
+                </div>
+                <input type="password" name="password" placeholder="Current Password" required/>
+            </div>
+            <div class="login-input-field">
+                <div>
+                    <span><i class="fas fa-lock"></i></span>
+                </div>
+                <input type="password" name="new_password" placeholder="New Password" minlength="8" maxlength="32" required/>
+            </div>
+            <div class="login-input-field">
+                <div>
+                    <span><i class="fas fa-lock"></i></span>
+                </div>
+                <input type="password" name="new_password_2" placeholder="Repeat New Password" minlength="8" maxlength="32" required/>
+            </div>
+            <button type="submit"> Reset Password </button>
+        </form>
+    </div>
+</div>
+<%- include('partials/foot'); %>
+</body>
+</html>
