@@ -1,5 +1,8 @@
 import { Request, Response } from 'express';
+import { buildDefaultResponse } from '../../shared/response';
 
 export const handleIndexView = async (req: Request, res: Response) => {
-  res.render('heightmaps');
+  const response = buildDefaultResponse(req);
+
+  res.render('heightmaps', response);
 };
