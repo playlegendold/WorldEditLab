@@ -1,5 +1,5 @@
 .collection-table {
-  @apply overflow-x-auto rounded-lg shadow overflow-y-auto relative w-full bg-gray-800;
+  @apply rounded-lg shadow relative w-full bg-gray-800;
 }
 
 .collection-table > table {

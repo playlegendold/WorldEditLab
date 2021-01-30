@@ -20,10 +20,12 @@ import {
   openUserEditModal,
   resetPasswordFromUser,
 } from './managementUser';
+import { openHeightmapUploadModal } from './heightmap';
 
 global.WEL = {
   openSchematicUploadModal,
   openCategoryCreateModal,
+  openHeightmapUploadModal,
   openUserCreateModal,
   openSchematicEditModal,
   openCategoryEditModal,

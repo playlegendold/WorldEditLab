@@ -15,16 +15,88 @@
             <div class="schematic-quick-actions"></div>
             <div>
                 <button class="rounded-lg inline-flex items-center bg-green-600 text-white hover:bg-green-700 py-2 px-2 md:px-4"
-                        onclick="">
+                        onclick="WEL.openHeightmapUploadModal(heightmapCategories)">
                     <span>Upload</span>
                 </button>
             </div>
         </div>
     <% } %>
+    <style>
+      .card {
+        margin-bottom: 10px;
+        margin-right: 10px;
+        background: #f3f4f6;
+        padding: 5px;
+        border-radius: 5px;
+        text-align: center;
+      }
+      .card > img {
+        width: 150px;
+        filter: invert();
+      }
+    </style>
     <div id="heightmap-collection" class="collection-grid"></div>
-    <% if (header.username) { %><span class="text-xs">Just drop your Schematic on the table to upload it</span><% } %>
+    <% if (header.username) { %><span class="text-xs">Just drop your Heightmap on the table to upload it</span><% } %>
     <script>
+      var data = JSON.parse('<%- data.runtimeData %>');
+      var heightmapCategories = data.categories;
 
+      var gridHeightmaps = WEL.newCollection('#heightmap-collection', 'grid', {
+        rowKey: 'uuid',
+        columns: [
+          {
+            title: 'Image',
+            render: function (item) {
+              return '<img src="<%= data.baseURL %>/dl/h/' + item.uuid + '">';
+            },
+          },
+          {
+            title: 'Name',
+            render: function (item) {
+              return '<p style="text-align: left"><i class="fas fa-tag"></i>' + item.name + '</p>';
+            },
+          },
+          {
+            title: 'Category',
+            render: function (item) {
+              for (var i = 0; i < heightmapCategories.length; i++) {
+                var category = heightmapCategories[i];
+                if (category.id === item.category) {
+                  return '<p style="text-align: left"><i class="fas fa-map"></i>' + category.name + '</p>';
+                }
+              }
+              return '<p style="text-align: left"><i class="fas fa-map"></i>-</p>';
+            },
+          },
+          {
+            title: '',
+            render: function (item) {
+              if (item.write) {
+                return '<span class="actionhub">' +
+                  '<i title="Copy brush command" class="fas fa-link" data-clipboard="//brush height <%= data.baseURL %>/dl/h/' + item.uuid + '"></i>' +
+                  '<i title="Download" class="fas fa-arrow-down" data-href="<%= data.baseURL %>/dl/h/' + item.uuid + '"></i>' +
+                  '<i title="Delete" class="fas fa-trash-alt" data-delete="' + item.uuid + '"></i>' +
+                  '<i title="Edit" class="fas fa-wrench" data-edit=\'' + JSON.stringify({
+                    uuid: item.uuid,
+                    name: item.name,
+                    category: item.category,
+                    access: item.access,
+                  }) + '\'></i>' +
+                  '</span>';
+              } else {
+                return '<span class="actionhub">' +
+                  '<i title="Copy brush command" class="fas fa-link" data-clipboard="//brush height <%= data.baseURL %>/dl/h/' + item.uuid + '"></i>' +
+                  '<i title="Download" class="fas fa-arrow-down" data-href="<%= data.baseURL %>/dl/h/' + item.uuid + '"></i>' +
+                  '</span>';
+              }
+            },
+          },
+        ],
+        clickHandler: function (event) {
+
+        },
+      });
+      gridHeightmaps.setData(data.coll);
     </script>
 </div>
 <%- include('partials/foot'); %>

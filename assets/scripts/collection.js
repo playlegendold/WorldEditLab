@@ -26,6 +26,15 @@ const createItem = (collection, setup, item) => {
     checkbox.input.addEventListener('change', () => {
       collection.updateSelectedCount(checkbox.input.checked ? 1 : -1);
     });
+  } else if (collection.type === GRID) {
+    dom = document.createElement('div');
+    dom.className = 'card';
+
+    setup.columns.forEach((column) => {
+      const html = column.render(item);
+      columns[column.title] = html;
+      dom.innerHTML += html;
+    });
   }
 
   return {
@@ -64,8 +73,9 @@ const createDOM = (collection) => {
     collection.body = tbodyDOM;
   } else if (collection.type === GRID) {
     const gridBody = document.createElement('div');
-    gridBody.className = '';
+    gridBody.className = 'flex flex-wrap';
     collection.dom = gridBody;
+    collection.body = gridBody;
   }
 };
 
@@ -174,17 +184,15 @@ export const newCollection = (selector, type, setup) => {
   }
 
   const render = () => {
-    if (type === TABLE) {
-      const box = document.querySelector(selector);
-      collection.body.innerHTML = '';
-      box.append(collection.dom);
+    const box = document.querySelector(selector);
+    collection.body.innerHTML = '';
+    box.append(collection.dom);
 
-      collection.data.forEach((row) => {
-        if (row.visible) {
-          collection.body.append(row.dom);
-        }
-      });
-    }
+    collection.data.forEach((row) => {
+      if (row.visible) {
+        collection.body.append(row.dom);
+      }
+    });
   };
 
   const setData = (data) => {
