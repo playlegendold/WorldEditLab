@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('partials/head'); %>
+</head>
+<body>
+<header class="header">
+    <%- include('partials/header'); %>
+    <%- include('partials/management-header'); %>
+</header>
+
+<div class="container mx-auto py-6">
+    <h1 class="text-3xl py-4 border-b mb-10">Users</h1>
+    <div class="mb-4 flex justify-between items-center">
+        <div class="users-quick-actions"></div>
+        <div>
+            <button class="rounded-lg inline-flex items-center bg-green-600 text-white hover:bg-green-700 py-2 px-2 md:px-4"
+                    onclick="WEL.openUserCreateModal()">
+                <span>Create New User</span>
+            </button>
+        </div>
+    </div>
+    <div id="users-table" class="table"></div>
+    <script>
+      var tableUsers = WEL.newTable('#users-table', {
+        rowKey: 'id',
+        columns: [
+          {title: 'Name', key: 'name'},
+          {
+            title: 'Role', func: function (item) {
+              switch (item.role) {
+                case 0:
+                  return 'Guest';
+                case 1:
+                  return 'User';
+                case 2:
+                  return 'Admin';
+              }
+            },
+          },
+          {title: 'Temp Password', func: function (item) {
+            return item.password ? item.password : '';
+          }},
+          {
+            title: '', func: function (item) {
+              return '<span class="actionhub">' +
+                '<i title="Delete" class="fas fa-trash-alt" data-delete-user="'+ item.id +'"></i>' +
+                '<i title="Edit" class="fas fa-wrench" data-edit-user=\''+ JSON.stringify({
+                  id: item.id,
+                  name: item.name,
+                  role: item.role,
+                }) +'\'></i>' +
+                '<i title="Reset Password" class="fas fa-redo" data-reset-pw-user="'+ item.id +'"></i>'
+                '</span>';
+            },
+          },
+        ],
+        clickHandler: function (event) {
+          if (event.target === undefined) {
+            return;
+          }
+          var data = event.target.dataset;
+
+          if (data.deleteUser !== undefined) {
+            WEL.openConfirmModal('Do you really want to delete the user?', function () {
+              WEL.deleteUser(parseInt(data.deleteUser, 10));
+            });
+          } else if (data.editUser !== undefined) {
+            WEL.openUserEditModal(data.editUser);
+          } else if (data.resetPwUser !== undefined) {
+            WEL.openConfirmModal('Do you really want to reset the password?', function () {
+              WEL.resetPasswordFromUser(data.resetPwUser);
+            });
+          }
+        },
+        massActions: {
+          selector: '.users-quick-actions',
+          actions: [
+            {
+              title: 'Delete',
+              icon: 'fas fa-trash-alt',
+              click: function (rows) {
+                WEL.openConfirmModal('Do you really want to delete ' + rows.length + ' users?', function () {
+                  for (var i = 0; i < rows.length; i++) {
+                    WEL.deleteUser(rows[i].id);
+                  }
+                });
+              },
+            },
+          ],
+        },
+      });
+      tableUsers.setData(JSON.parse('<%- data.rows %>'));
+    </script>
+</div>
+
+<%- include('partials/foot'); %>
+</body>
+</html>

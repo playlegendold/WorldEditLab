@@ -68,10 +68,10 @@
             title: '', func: function (item) {
               if (item.write) {
                 return '<span class="actionhub">' +
-                  '<i class="fas fa-link" data-clipboard="//schematic load url:' + item.uuid + '"></i>' +
-                  '<i class="fas fa-arrow-down" data-href="<%= data.baseURL %>/dl/s/' + item.uuid + '"></i>' +
-                  '<i class="fas fa-trash-alt" data-delete-schematic="' + item.uuid + '"></i>' +
-                  '<i class="fas fa-wrench" data-edit-schematic=\'' + JSON.stringify({
+                  '<i title="Copy FAWE load command" class="fas fa-link" data-clipboard="//schematic load url:' + item.uuid + '"></i>' +
+                  '<i title="Download" class="fas fa-arrow-down" data-href="<%= data.baseURL %>/dl/s/' + item.uuid + '"></i>' +
+                  '<i title="Delete" class="fas fa-trash-alt" data-delete-schematic="' + item.uuid + '"></i>' +
+                  '<i title="Edit" class="fas fa-wrench" data-edit-schematic=\'' + JSON.stringify({
                     uuid: item.uuid,
                     name: item.name,
                     category: item.category,
@@ -80,8 +80,8 @@
                   '</span>';
               } else {
                 return '<span class="actionhub">' +
-                  '<i class="fas fa-link" data-clipboard="//schematic load url:' + item.uuid + '"></i>' +
-                  '<i class="fas fa-arrow-down" data-href="<%= data.baseURL %>/dl/s/' + item.uuid + '"></i>' +
+                  '<i title="Copy FAWE load command" class="fas fa-link" data-clipboard="//schematic load url:' + item.uuid + '"></i>' +
+                  '<i title="Download" class="fas fa-arrow-down" data-href="<%= data.baseURL %>/dl/s/' + item.uuid + '"></i>' +
                   '</span>';
               }
             },

@@ -24,7 +24,7 @@ sequelize.authenticate().then(() => {
   Heightmap.belongsTo(User, { as: 'uploadedBy' });
   Heightmap.belongsTo(HeightmapCategory, { as: 'category' });
 
-  sequelize.sync({});
+  sequelize.sync();
 }).catch((error) => {
   console.error('Unable to connect to the database:', error);
 });

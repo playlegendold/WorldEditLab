@@ -6,10 +6,9 @@ on:
       - prod
     tags:
       - 'v*.*.*'
-    pull_request:
 jobs:
   release:
-    name: "Release"
+    name: Release
     runs-on: self-hosted
     steps:
       - name: Checkout
