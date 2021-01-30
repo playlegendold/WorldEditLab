@@ -20,7 +20,10 @@ import {
   openUserEditModal,
   resetPasswordFromUser,
 } from './managementUser';
-import { openHeightmapUploadModal } from './heightmap';
+import {
+  openHeightmapUploadModal,
+  deleteHeightmap,
+} from './heightmap';
 
 global.WEL = {
   openSchematicUploadModal,
@@ -32,6 +35,7 @@ global.WEL = {
   openUserEditModal,
   updateSchematicAccess,
   deleteSchematic,
+  deleteHeightmap,
   deleteCategory,
   deleteUser,
   resetPasswordFromUser,

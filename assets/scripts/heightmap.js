@@ -146,3 +146,22 @@ export const openHeightmapUploadModal = (categories) => {
     ],
   });
 };
+
+export const deleteHeightmap = (uuid) => {
+  const request = new XMLHttpRequest();
+  request.open('DELETE', `/heightmaps/${uuid}`);
+  request.onload = (event) => {
+    if (request.status === 200) {
+      const result = JSON.parse(request.response);
+      if (result.success) {
+        sendNotification('Heightmap successfully deleted!', 'success', 2000);
+        gridHeightmaps.deleteItem(uuid);
+      } else {
+        sendNotification('Heightmap deletion failed! ' + result.message, 'error', 4000);
+      }
+    } else {
+      sendNotification('Error: ' + request.statusText, 'error', 4000);
+    }
+  };
+  request.send();
+};

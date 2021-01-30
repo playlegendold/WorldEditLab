@@ -88,6 +88,10 @@
             WEL.copyToClipboard(data.clipboard);
           } else if (data.href !== undefined) {
             location.href = data.href;
+          } else if (data.delete !== undefined) {
+            WEL.openConfirmModal('Do you really want to delete the heightmap?', function () {
+              WEL.deleteHeightmap(data.delete);
+            });
           }
         },
       });
