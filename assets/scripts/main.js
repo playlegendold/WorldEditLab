@@ -22,6 +22,7 @@ import {
 } from './managementUser';
 import {
   openHeightmapUploadModal,
+  openHeightmapEditModal,
   deleteHeightmap,
 } from './heightmap';
 
@@ -33,6 +34,7 @@ global.WEL = {
   openSchematicEditModal,
   openCategoryEditModal,
   openUserEditModal,
+  openHeightmapEditModal,
   updateSchematicAccess,
   deleteSchematic,
   deleteHeightmap,

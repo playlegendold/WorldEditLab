@@ -31,9 +31,10 @@ const createItem = (collection, setup, item) => {
     dom.className = 'card';
 
     setup.columns.forEach((column) => {
-      const html = column.render(item);
-      columns[column.title] = html;
-      dom.innerHTML += html;
+      const container = document.createElement('div');
+      container.innerHTML = column.render(item);
+      columns[column.title] = container;
+      dom.append(container);
     });
   }
 
@@ -229,6 +230,8 @@ export const newCollection = (selector, type, setup) => {
             ele.columns[column.title].innerHTML = item[column.key];
           } else if (column.func !== undefined) {
             ele.columns[column.title].innerHTML = column.func(item);
+          } else if (column.render !== undefined) {
+            ele.columns[column.title].innerHTML = column.render(item);
           }
         });
       }

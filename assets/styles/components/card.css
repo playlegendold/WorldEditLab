@@ -2,15 +2,15 @@
   @apply mb-4 mr-4 bg-gray-100 p-2 rounded-lg text-center;
 }
 
-.card > img {
+.card img {
   width: 150px;
   filter: invert();
 }
 
-.card > p {
+.card p {
   @apply text-left text-gray-600 text-xs my-2;
 }
 
-.card > p > i {
+.card p > i {
   @apply mr-2;
 }

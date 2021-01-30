@@ -92,6 +92,8 @@
             WEL.openConfirmModal('Do you really want to delete the heightmap?', function () {
               WEL.deleteHeightmap(data.delete);
             });
+          } else if (data.edit !== undefined) {
+            WEL.openHeightmapEditModal(data.edit, heightmapCategories);
           }
         },
       });

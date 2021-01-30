@@ -165,3 +165,113 @@ export const deleteHeightmap = (uuid) => {
   };
   request.send();
 };
+
+export const openHeightmapEditModal = (infoJSON, categories) => {
+  const info = JSON.parse(infoJSON);
+  const accessOptions = `<option value="0" ${info.access === 0 ? 'selected' : ''}>Public</option>
+    <option value="1" ${info.access === 1 ? 'selected' : ''}>Internal</option>
+    <option value="2" ${info.access === 2 ? 'selected' : ''}>Private</option>`;
+
+  let categoriesDom = '<option value="-1">-</option>';
+  categoriesDom += categories.map((category) => {
+    return `<option value="${category.id}" ${info.category === category.id ? 'selected' : ''}>${category.name}</option>`;
+  });
+
+  openModal({
+    title: 'Heightmap',
+    content: [
+      {
+        type: 'label',
+        attr: {
+          innerText: 'Name',
+        },
+      },
+      {
+        key: 'name',
+        type: 'input',
+        attr: {
+          maxLength: 32,
+          placeholder: 'Name',
+          value: info.name
+        },
+      },
+      {
+        type: 'label',
+        attr: {
+          innerText: 'Access',
+        },
+      },
+      {
+        key: 'access',
+        type: 'select',
+        attr: {
+          innerHTML: accessOptions,
+        },
+      },
+      {
+        type: 'label',
+        attr: {
+          innerText: 'Category',
+        },
+      },
+      {
+        key: 'category',
+        type: 'select',
+        attr: {
+          innerHTML: categoriesDom,
+        },
+      }
+    ],
+    buttons: [
+      {
+        name: 'Cancel',
+        click: 'close',
+      },
+      {
+        name: 'Save',
+        primary: true,
+        click: (modal, event) => {
+          let failed = false;
+          modal.name.style.background = null;
+
+          if (modal.name.value.length <= 3 || modal.name.value.length > 32) {
+            modal.name.style.background = '#ffc1c1';
+            failed = true;
+          }
+          if (failed)
+            return;
+
+          const patch = {
+            name: modal.name.value,
+            access: parseInt(modal.access.value),
+            category: parseInt(modal.category.value),
+          };
+
+          const request = new XMLHttpRequest();
+          request.open('PUT', `/heightmaps/${info.uuid}`);
+          request.setRequestHeader('Content-Type', 'application/json');
+          request.onload = (event) => {
+            if (request.status === 200) {
+              const result = JSON.parse(request.response);
+              if (result.success) {
+                sendNotification('Heightmap successfully updated!', 'success', 2000);
+                gridHeightmaps.updateItem({
+                  uuid: info.uuid,
+                  name: patch.name,
+                  access: patch.access,
+                  category: patch.category,
+                });
+                modal.close();
+              } else {
+                sendNotification('Heightmap update failed! ' + result.message, 'error', 4000);
+              }
+            } else {
+              sendNotification(`Request Error: ${request.status} ${request.statusText}`, 'error', 4000);
+            }
+          };
+          request.send(JSON.stringify(patch));
+        },
+      },
+    ],
+  });
+};
