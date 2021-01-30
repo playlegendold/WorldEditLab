@@ -9,6 +9,7 @@ import {
 } from './schematic';
 import { openConfirmModal } from './defaultModals';
 import { newTable } from './table';
+import { newCollection } from './collection';
 import {
   openCategoryCreateModal,
   deleteCategory,
@@ -37,5 +38,6 @@ global.WEL = {
   sendNotification,
   openConfirmModal,
   newTable,
+  newCollection,
   registerDragAndDropOnSchematicTable,
 };
