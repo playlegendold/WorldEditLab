@@ -79,7 +79,16 @@
           },
         ],
         clickHandler: function (event) {
+          if (event.target === undefined) {
+            return;
+          }
+          var data = event.target.dataset;
 
+          if (data.clipboard !== undefined) {
+            WEL.copyToClipboard(data.clipboard);
+          } else if (data.href !== undefined) {
+            location.href = data.href;
+          }
         },
       });
       gridHeightmaps.setData(data.coll);
