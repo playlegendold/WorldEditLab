@@ -275,3 +275,117 @@ export const openHeightmapEditModal = (infoJSON, categories) => {
     ],
   });
 };
+
+export const registerDragAndDropOnHeightmapCollection = (collectionDOM, categories) => {
+  collectionDOM.addEventListener('dragenter', (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    collectionDOM.classList.add('drag-drop');
+  });
+  collectionDOM.addEventListener('dragover', (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    collectionDOM.classList.add('drag-drop');
+  });
+  collectionDOM.addEventListener('dragleave', (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    collectionDOM.classList.remove('drag-drop');
+  });
+  collectionDOM.addEventListener('drop', (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    collectionDOM.classList.remove('drag-drop');
+
+    const files = event.dataTransfer.files;
+
+    if (files[0].size >= 5 * 1024 * 1024) {
+      sendNotification('File is too big', 'error', 4000);
+      return;
+    }
+
+    if (!files[0].name.endsWith('.png')) {
+      sendNotification('Invalid file type', 'error', 4000);
+      return;
+    }
+
+    const accessOptions = `<option value="0">Public</option>
+        <option value="1" selected>Internal</option>
+        <option value="2">Private</option>`;
+
+    let categoriesDom = '<option value="-1">-</option>';
+    categoriesDom += categories.map((category) => {
+      return `<option value="${category.id}">${category.name}</option>`;
+    });
+
+    openModal({
+      title: 'Upload new Heightmap',
+      content: [
+        {
+          type: 'label',
+          attr: {
+            innerText: 'Name',
+          },
+        },
+        {
+          key: 'name',
+          type: 'input',
+          attr: {
+            maxLength: 32,
+            placeholder: 'Heightmap name',
+          },
+        },
+        {
+          type: 'label',
+          attr: {
+            innerText: 'Category',
+          },
+        },
+        {
+          key: 'category',
+          type: 'select',
+          attr: {
+            innerHTML: categoriesDom
+          },
+        },
+        {
+          type: 'label',
+          attr: {
+            innerText: 'Access',
+          },
+        },
+        {
+          key: 'access',
+          type: 'select',
+          attr: {
+            innerHTML: accessOptions
+          },
+        },
+      ],
+      buttons: [
+        {
+          name: 'Cancel',
+          click: 'close',
+        },
+        {
+          name: 'Upload',
+          primary: true,
+          click: (modal, event) => {
+            let failed = false;
+            modal.name.style.background = null;
+            if (modal.name.value.length <= 3) {
+              modal.name.style.background = '#ffc1c1';
+              failed = true;
+            }
+            if (failed)
+              return;
+            const access = parseInt(modal.access.value);
+            const category = parseInt(modal.category.value);
+            sendNotification('Upload started...', 'info', 2000);
+            handleHeightmapUpload(files[0], modal.name.value, access, category, modal);
+          },
+        },
+      ],
+    });
+  });
+};

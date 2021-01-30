@@ -24,6 +24,7 @@ import {
   openHeightmapUploadModal,
   openHeightmapEditModal,
   deleteHeightmap,
+  registerDragAndDropOnHeightmapCollection,
 } from './heightmap';
 
 global.WEL = {
@@ -46,4 +47,5 @@ global.WEL = {
   openConfirmModal,
   newCollection,
   registerDragAndDropOnSchematicTable,
+  registerDragAndDropOnHeightmapCollection,
 };

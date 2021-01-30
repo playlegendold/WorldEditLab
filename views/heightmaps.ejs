@@ -97,6 +97,9 @@
           }
         },
       });
+      <% if (header.username) { %>
+      WEL.registerDragAndDropOnHeightmapCollection(gridHeightmaps.dom, heightmapCategories);
+      <% } %>
       gridHeightmaps.setData(data.coll);
     </script>
 </div>
