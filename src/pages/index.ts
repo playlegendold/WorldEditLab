@@ -1,4 +1,4 @@
-import { Application, Request, Response } from 'express';
+import { Application, Request } from 'express';
 import core from './core';
 import schematics from './schematics';
 import download from './download';
@@ -11,8 +11,7 @@ export const initPages = (app: Application) => {
   app.use('/dl', download());
   app.use('/management', management());
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  app.get('/*', (req: Request, res: Response) => {
-    throw new HTTPErrorResponse(HTTPStatus.NOT_FOUND, `Page not found: ${req.url}`);
+  app.get('/*', (req: Request) => {
+    throw new HTTPErrorResponse(HTTPStatus.NOT_FOUND, `Page not found: ${req.url}`, false);
   });
 };

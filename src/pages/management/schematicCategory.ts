@@ -24,13 +24,13 @@ export const handleCategoryIndexView = async (req: Request, res: Response) => {
 export const handleCategoryCreateRequest = async (req: Request, res: Response) => {
   const user = req.user as User;
   if (!user || user.role !== Role.ADMIN) {
-    throw new HTTPErrorResponse(HTTPStatus.FORBIDDEN, 'Forbidden', true);
+    throw new HTTPErrorResponse(HTTPStatus.FORBIDDEN, 'Forbidden');
   }
 
   const { name } = req.body;
 
   if (name.length <= 3 || name.length > 32) {
-    throw new HTTPErrorResponse(HTTPStatus.BAD_REQUEST, 'Invalid category name', true);
+    throw new HTTPErrorResponse(HTTPStatus.BAD_REQUEST, 'Invalid category name');
   }
 
   const category = SchematicCategory.build({
@@ -51,13 +51,13 @@ export const handleCategoryCreateRequest = async (req: Request, res: Response) =
 export const handleCategoryDeleteRequest = async (req: Request, res: Response) => {
   const user = req.user as User;
   if (!user || user.role !== Role.ADMIN) {
-    throw new HTTPErrorResponse(HTTPStatus.FORBIDDEN, 'Forbidden', true);
+    throw new HTTPErrorResponse(HTTPStatus.FORBIDDEN, 'Forbidden');
   }
 
   const id = parseInt(req.params.id, 10);
 
   if (!id) {
-    throw new HTTPErrorResponse(HTTPStatus.BAD_REQUEST, 'Invalid id', true);
+    throw new HTTPErrorResponse(HTTPStatus.BAD_REQUEST, 'Invalid id');
   }
 
   await Schematic.update({
@@ -77,24 +77,24 @@ export const handleCategoryDeleteRequest = async (req: Request, res: Response) =
   if (count === 1) {
     return res.send({ success: true });
   }
-  throw new HTTPErrorResponse(HTTPStatus.NOT_FOUND, 'Not Found', true);
+  throw new HTTPErrorResponse(HTTPStatus.NOT_FOUND, 'Not Found');
 };
 
 export const handleCategoryPatchRequest = async (req: Request, res: Response) => {
   const user = req.user as User;
   if (!user) {
-    throw new HTTPErrorResponse(HTTPStatus.FORBIDDEN, 'Forbidden', true);
+    throw new HTTPErrorResponse(HTTPStatus.FORBIDDEN, 'Forbidden');
   }
 
   const id = parseInt(req.params.id, 10);
 
   if (!id) {
-    throw new HTTPErrorResponse(HTTPStatus.BAD_REQUEST, 'Invalid id', true);
+    throw new HTTPErrorResponse(HTTPStatus.BAD_REQUEST, 'Invalid id');
   }
 
   if (req.body.name.length <= 3
     || req.body.name.length > 32) {
-    throw new HTTPErrorResponse(HTTPStatus.BAD_REQUEST, 'Bad Request', true);
+    throw new HTTPErrorResponse(HTTPStatus.BAD_REQUEST, 'Bad Request');
   }
 
   const [count] = await SchematicCategory.update({
@@ -108,5 +108,5 @@ export const handleCategoryPatchRequest = async (req: Request, res: Response) =>
   if (count === 1) {
     return res.send({ success: true });
   }
-  throw new HTTPErrorResponse(HTTPStatus.NOT_FOUND, 'Not Found', true);
+  throw new HTTPErrorResponse(HTTPStatus.NOT_FOUND, 'Not Found');
 };

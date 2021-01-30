@@ -1,4 +1,6 @@
-import { NextFunction, Request, Response } from 'express';
+import {
+  NextFunction, Request, Response, RequestHandler,
+} from 'express';
 import { buildDefaultResponse } from '../response';
 
 export enum HTTPStatus {
@@ -40,7 +42,7 @@ export class HTTPErrorResponse extends Error {
 
   api: boolean;
 
-  constructor(status: HTTPStatus, message: string, api: boolean = false) {
+  constructor(status: HTTPStatus, message: string, api: boolean = true) {
     super(message);
     this.status = status;
     this.message = message;
@@ -59,10 +61,17 @@ export const printErrorPage = (req: Request, res: Response, message: string, sta
   res.render('error-page', baseResponse);
 };
 
+export const asyncHandler = (handler: RequestHandler) => (
+  (req: Request, res: Response, next: NextFunction) => (
+    Promise.resolve(handler(req, res, next)).catch(next)
+  )
+);
+
 export const errorHandler = (
   err: Error | HTTPErrorResponse,
   req: Request,
   res: Response,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   next: NextFunction,
 ) => {
   if ((err as HTTPErrorResponse).status) {
@@ -75,9 +84,7 @@ export const errorHandler = (
     } else {
       printErrorPage(req, res, errorResponse.message, errorResponse.status.valueOf());
     }
-  } else if (err) {
-    printErrorPage(req, res, err.message, HTTPStatus.INTERNAL_SERVER_ERROR.valueOf());
   } else {
-    next();
+    printErrorPage(req, res, err.message, HTTPStatus.INTERNAL_SERVER_ERROR.valueOf());
   }
 };

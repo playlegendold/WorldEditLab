@@ -9,28 +9,28 @@ import { HTTPErrorResponse, HTTPStatus } from '../../shared/helpers/errorHandler
 export const handleIndexUpload = async (req: Request, res: Response) => {
   const user = req.user as User;
   if (!user) {
-    throw new HTTPErrorResponse(HTTPStatus.FORBIDDEN, 'Forbidden', true);
+    throw new HTTPErrorResponse(HTTPStatus.FORBIDDEN, 'Forbidden');
   }
 
   const file = req.files?.schematic as UploadedFile;
 
   if (file === undefined) {
-    throw new HTTPErrorResponse(HTTPStatus.BAD_REQUEST, 'Invalid file upload', true);
+    throw new HTTPErrorResponse(HTTPStatus.BAD_REQUEST, 'Invalid file upload');
   }
 
   const args = file.name.split('.');
   if (args.length !== 2) {
-    throw new HTTPErrorResponse(HTTPStatus.BAD_REQUEST, 'Invalid file name', true);
+    throw new HTTPErrorResponse(HTTPStatus.BAD_REQUEST, 'Invalid file name');
   }
 
   const [name, type] = args;
 
   if (name.length <= 3 || name.length > 32) {
-    throw new HTTPErrorResponse(HTTPStatus.BAD_REQUEST, 'Invalid schematic name', true);
+    throw new HTTPErrorResponse(HTTPStatus.BAD_REQUEST, 'Invalid schematic name');
   }
 
   if (type !== 'schematic' && type !== 'schem') {
-    throw new HTTPErrorResponse(HTTPStatus.BAD_REQUEST, 'Invalid schematic type', true);
+    throw new HTTPErrorResponse(HTTPStatus.BAD_REQUEST, 'Invalid schematic type');
   }
 
   const schematic = Schematic.build({

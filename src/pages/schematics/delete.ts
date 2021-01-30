@@ -5,7 +5,7 @@ import { HTTPErrorResponse, HTTPStatus } from '../../shared/helpers/errorHandler
 export const handleDeleteRequest = async (req: Request, res: Response) => {
   const user = req.user as User;
   if (!user) {
-    throw new HTTPErrorResponse(HTTPStatus.FORBIDDEN, 'Forbidden', true);
+    throw new HTTPErrorResponse(HTTPStatus.FORBIDDEN, 'Forbidden');
   }
   let count;
 
@@ -27,5 +27,5 @@ export const handleDeleteRequest = async (req: Request, res: Response) => {
   if (count === 1) {
     return res.send({ success: true });
   }
-  throw new HTTPErrorResponse(HTTPStatus.NOT_FOUND, 'Not found', true);
+  throw new HTTPErrorResponse(HTTPStatus.NOT_FOUND, 'Not found');
 };

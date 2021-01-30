@@ -8,28 +8,28 @@ export const handleFAWEUpload = async (req: Request, res: Response) => {
   const faweAllowedAddresses = (process.env.FAWE_UPLOAD_ACCESS as string).split(',');
   if (req.header('X-Forwarded-For')) {
     if (!faweAllowedAddresses.includes(req.header('X-Forwarded-For') as string)) {
-      throw new HTTPErrorResponse(HTTPStatus.FORBIDDEN, 'Forbidden', true);
+      throw new HTTPErrorResponse(HTTPStatus.FORBIDDEN, 'Forbidden');
     }
   } else if (!faweAllowedAddresses.includes(req.ip)) {
-    throw new HTTPErrorResponse(HTTPStatus.FORBIDDEN, 'Forbidden', true);
+    throw new HTTPErrorResponse(HTTPStatus.FORBIDDEN, 'Forbidden');
   }
 
   const file = req.files?.schematicFile as UploadedFile;
 
   if (file === undefined) {
-    throw new HTTPErrorResponse(HTTPStatus.BAD_REQUEST, 'Invalid file upload', true);
+    throw new HTTPErrorResponse(HTTPStatus.BAD_REQUEST, 'Invalid file upload');
   }
 
   const queryArgs = Object.keys(req.query);
 
   if (queryArgs.length !== 1) {
-    throw new HTTPErrorResponse(HTTPStatus.BAD_REQUEST, 'Invalid query arguments', true);
+    throw new HTTPErrorResponse(HTTPStatus.BAD_REQUEST, 'Invalid query arguments');
   }
 
   const name = queryArgs[0].replace(/-/g, '');
 
   if (name.length !== 32) {
-    throw new HTTPErrorResponse(HTTPStatus.BAD_REQUEST, 'Invalid schematic name', true);
+    throw new HTTPErrorResponse(HTTPStatus.BAD_REQUEST, 'Invalid schematic name');
   }
 
   const schematic = Schematic.build({
