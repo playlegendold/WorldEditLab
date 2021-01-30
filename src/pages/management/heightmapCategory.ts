@@ -1,29 +1,30 @@
 import { Request, Response } from 'express';
 import {
-  Role, Schematic, SchematicCategory, User,
+  Role, Schematic, User,
 } from '../../shared/models';
 import { HTTPError, HTTPStatus } from '../../shared/helpers/errorHandler';
 import { buildDefaultResponse } from '../../shared/response';
+import { HeightmapCategory } from '../../shared/models/heightmapCategory';
 
-export const handleSchematicCategoryIndexView = async (req: Request, res: Response) => {
+export const handleHeightmapCategoryIndexView = async (req: Request, res: Response) => {
   const user = req.user as User;
   if (!user || user.role !== Role.ADMIN) {
     return HTTPError(res, HTTPStatus.FORBIDDEN, 'Forbidden');
   }
-  const responseCategories = await SchematicCategory.findAll({ attributes: ['id', 'name'] });
+  const responseCategories = await HeightmapCategory.findAll({ attributes: ['id', 'name'] });
 
   const responseData = buildDefaultResponse(req);
 
   responseData.data = {
     rows: JSON.stringify(responseCategories),
-    type: 'schematic',
-    title: 'Schematic Categories',
+    type: 'heightmap',
+    title: 'Heightmap Categories',
   };
 
   return res.render('management-category', responseData);
 };
 
-export const handleSchematicCategoryCreateRequest = async (req: Request, res: Response) => {
+export const handleHeightmapCategoryCreateRequest = async (req: Request, res: Response) => {
   const user = req.user as User;
   if (!user || user.role !== Role.ADMIN) {
     return HTTPError(res, HTTPStatus.FORBIDDEN, 'Forbidden');
@@ -35,7 +36,7 @@ export const handleSchematicCategoryCreateRequest = async (req: Request, res: Re
     return HTTPError(res, HTTPStatus.BAD_REQUEST, 'Invalid category name');
   }
 
-  const category = SchematicCategory.build({
+  const category = HeightmapCategory.build({
     name,
   });
 
@@ -50,7 +51,7 @@ export const handleSchematicCategoryCreateRequest = async (req: Request, res: Re
   });
 };
 
-export const handleSchematicCategoryDeleteRequest = async (req: Request, res: Response) => {
+export const handleHeightmapCategoryDeleteRequest = async (req: Request, res: Response) => {
   const user = req.user as User;
   if (!user || user.role !== Role.ADMIN) {
     return HTTPError(res, HTTPStatus.FORBIDDEN, 'Forbidden');
@@ -70,7 +71,7 @@ export const handleSchematicCategoryDeleteRequest = async (req: Request, res: Re
     },
   });
 
-  const count = await SchematicCategory.destroy({
+  const count = await HeightmapCategory.destroy({
     where: {
       id,
     },
@@ -82,7 +83,7 @@ export const handleSchematicCategoryDeleteRequest = async (req: Request, res: Re
   return HTTPError(res, HTTPStatus.NOT_FOUND, 'Not found');
 };
 
-export const handleSchematicCategoryPatchRequest = async (req: Request, res: Response) => {
+export const handleHeightmapCategoryPatchRequest = async (req: Request, res: Response) => {
   const user = req.user as User;
   if (!user) {
     return HTTPError(res, HTTPStatus.FORBIDDEN, 'Forbidden');
@@ -99,7 +100,7 @@ export const handleSchematicCategoryPatchRequest = async (req: Request, res: Res
     return HTTPError(res, HTTPStatus.BAD_REQUEST, 'Bad Request');
   }
 
-  const [count] = await SchematicCategory.update({
+  const [count] = await HeightmapCategory.update({
     name: req.body.name,
   }, {
     where: {

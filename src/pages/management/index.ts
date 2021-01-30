@@ -9,11 +9,16 @@ import {
 import { Role, User } from '../../shared/models';
 import { HTTPError, HTTPStatus } from '../../shared/helpers/errorHandler';
 import {
-  handleCategoryCreateRequest,
-  handleCategoryDeleteRequest,
-  handleCategoryIndexView,
-  handleCategoryPatchRequest,
+  handleSchematicCategoryCreateRequest,
+  handleSchematicCategoryDeleteRequest,
+  handleSchematicCategoryIndexView,
+  handleSchematicCategoryPatchRequest,
 } from './schematicCategory';
+import {
+  handleHeightmapCategoryCreateRequest,
+  handleHeightmapCategoryDeleteRequest,
+  handleHeightmapCategoryIndexView, handleHeightmapCategoryPatchRequest,
+} from './heightmapCategory';
 
 export const handleIndexView = async (req: Request, res: Response) => {
   const user = req.user as User;
@@ -33,10 +38,15 @@ export default () => {
   router.put('/users/:id', handleUserPatchRequest);
   router.get('/users/:id/pw-reset', handleUserPasswordResetRequest);
 
-  router.get('/schematic-categories', handleCategoryIndexView);
-  router.post('/schematic-categories', handleCategoryCreateRequest);
-  router.delete('/schematic-categories/:id', handleCategoryDeleteRequest);
-  router.put('/schematic-categories/:id', handleCategoryPatchRequest);
+  router.get('/schematic-categories', handleSchematicCategoryIndexView);
+  router.post('/schematic-categories', handleSchematicCategoryCreateRequest);
+  router.delete('/schematic-categories/:id', handleSchematicCategoryDeleteRequest);
+  router.put('/schematic-categories/:id', handleSchematicCategoryPatchRequest);
+
+  router.get('/heightmap-categories', handleHeightmapCategoryIndexView);
+  router.post('/heightmap-categories', handleHeightmapCategoryCreateRequest);
+  router.delete('/heightmap-categories/:id', handleHeightmapCategoryDeleteRequest);
+  router.put('/heightmap-categories/:id', handleHeightmapCategoryPatchRequest);
 
   return router;
 };

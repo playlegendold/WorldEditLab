@@ -10,12 +10,12 @@
 </header>
 
 <div class="container mx-auto py-6">
-    <h1 class="text-3xl py-4 border-b mb-10">Schematic Categories</h1>
+    <h1 class="text-3xl py-4 border-b mb-10"><%= data.title %></h1>
     <div class="mb-4 flex justify-between items-center">
         <div class="categories-quick-actions"></div>
         <div>
             <button class="rounded-lg inline-flex items-center bg-green-600 text-white hover:bg-green-700 py-2 px-2 md:px-4"
-                    onclick="WEL.openSchematicCategoryCreateModal()">
+                    onclick="WEL.openCategoryCreateModal('<%= data.type %>')">
                 <span>Create New Category</span>
             </button>
         </div>
@@ -46,10 +46,10 @@
 
           if (data.deleteCategory !== undefined) {
             WEL.openConfirmModal('Do you really want to delete the category?', function () {
-              WEL.deleteSchematicCategory(parseInt(data.deleteCategory, 10));
+              WEL.deleteCategory(parseInt(data.deleteCategory, 10), '<%= data.type %>');
             });
           } else if (data.editCategory !== undefined) {
-            WEL.openSchematicCategoryEditModal(data.editCategory);
+            WEL.openCategoryEditModal(data.editCategory, '<%= data.type %>');
           }
         },
         massActions: {
@@ -61,7 +61,7 @@
               click: function (rows) {
                 WEL.openConfirmModal('Do you really want to delete ' + rows.length + ' categories?', function () {
                   for (var i = 0; i < rows.length; i++) {
-                    WEL.deleteSchematicCategory(rows[i].id);
+                    WEL.deleteCategory(rows[i].id, '<%= data.type %>');
                   }
                 });
               },

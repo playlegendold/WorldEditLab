@@ -1,9 +1,9 @@
 import { openModal } from './modal';
 import { sendNotification } from './notification';
 
-const sendCategoryCreateRequest = (name, onFinished, onFail = null, onProgress = null) => {
+const sendCategoryCreateRequest = ({name, type}, onFinished, onFail = null, onProgress = null) => {
   const request = new XMLHttpRequest();
-  request.open('POST', '/management/schematic-categories');
+  request.open('POST', `/management/${type}-categories`);
   request.onload = onFinished;
   request.onerror = onFail;
   request.onabort = onFail;
@@ -12,9 +12,9 @@ const sendCategoryCreateRequest = (name, onFinished, onFail = null, onProgress =
   request.send(JSON.stringify({name}));
 };
 
-export const deleteSchematicCategory = (id) => {
+export const deleteCategory = (id, type) => {
   const request = new XMLHttpRequest();
-  request.open('DELETE', `/management/schematic-categories/${id}`);
+  request.open('DELETE', `/management/${type}-categories/${id}`);
   request.onload = (event) => {
     if (request.status === 200) {
       const result = JSON.parse(request.response);
@@ -31,7 +31,7 @@ export const deleteSchematicCategory = (id) => {
   request.send();
 };
 
-export const openSchematicCategoryCreateModal = () => {
+export const openCategoryCreateModal = (type) => {
   openModal({
     title: 'Create New Category',
     content: [
@@ -69,7 +69,10 @@ export const openSchematicCategoryCreateModal = () => {
           if (failed)
             return;
 
-          sendCategoryCreateRequest(modal.name.value, (event) => {
+          sendCategoryCreateRequest({
+            name: modal.name.value,
+            type
+          }, (event) => {
             if (event.target.status === 200) {
               sendNotification(
                 'Successfully created',
@@ -93,7 +96,7 @@ export const openSchematicCategoryCreateModal = () => {
   });
 };
 
-export const openSchematicCategoryEditModal = (infoJSON) => {
+export const openCategoryEditModal = (infoJSON, type) => {
   const info = JSON.parse(infoJSON);
   openModal({
     title: 'Category',
@@ -134,7 +137,7 @@ export const openSchematicCategoryEditModal = (infoJSON) => {
             return;
 
           const request = new XMLHttpRequest();
-          request.open('PUT', `/management/schematic-categories/${info.id}`);
+          request.open('PUT', `/management/${type}-categories/${info.id}`);
           request.setRequestHeader('Content-Type', 'application/json');
           request.onload = (event) => {
             if (request.status === 200) {
