@@ -34,8 +34,8 @@
     <a href="#getting-started">Getting Started</a>
     <ul>
       <li><a href="#usage-with-docker-compose">Usage with docker-compose</a></li>
-      <li><a href="#dev-environment">Dev Environment</a></li>
     </ul>
+    <li><a href="#dev-environment">Dev Environment</a></li>
   </li>
   <li><a href="#contributing">Contributing</a></li> 
   <li><a href="#license">License</a></li>
@@ -63,6 +63,7 @@ labore et dolore magna aliquyam.
 
 * [express](https://www.npmjs.com/package/express)
 * [Passport](https://www.npmjs.com/package/passport)
+* [SQLite3](https://www.npmjs.com/package/sqlite3)
 * [Sequelize](https://www.npmjs.com/package/sequelize)
 * [Embedded JavaScript](https://www.npmjs.com/package/ejs)
 
@@ -91,6 +92,12 @@ services:
       - BASE_URL="http://foobar.com:8080"     
  ```
 
+To make WorldEditLab compatible with FastAsyncWorldEdit, please add the following environments: 
+````yaml
+    environment:
+      - FAWE_UPLOAD_ACCESS=::ffff:127.0.0.1 # IP Whitelist (separated through ',')
+      - FAWE_USER_ID=1 # Owner of all uploaded content
+````
 ## Dev Environment
 
 ### Prerequirements
