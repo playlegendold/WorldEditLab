@@ -8,7 +8,6 @@ import {
   registerDragAndDropOnSchematicTable,
 } from './schematic';
 import { openConfirmModal } from './defaultModals';
-import { newTable } from './table';
 import { newCollection } from './collection';
 import {
   openCategoryCreateModal,
@@ -37,7 +36,6 @@ global.WEL = {
   copyToClipboard,
   sendNotification,
   openConfirmModal,
-  newTable,
   newCollection,
   registerDragAndDropOnSchematicTable,
 };

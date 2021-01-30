@@ -28,7 +28,7 @@ const handleSchematicUpload = (file, name, access, category, modal) => {
         'success',
         2000);
       modal.close();
-      tableSchematic.addRow(JSON.parse(event.target.response).row);
+      tableSchematic.addItem(JSON.parse(event.target.response).row);
     } else {
       sendNotification(
         `Upload failed: ${JSON.parse(event.target.response).message}`,
@@ -235,7 +235,7 @@ export const openSchematicEditModal = (infoJSON, categories) => {
               const result = JSON.parse(request.response);
               if (result.success) {
                 sendNotification('Schematic successfully updated!', 'success', 2000);
-                tableSchematic.updateRow({
+                tableSchematic.updateItem({
                   uuid: info.uuid,
                   name: patch.name,
                   access: patch.access,
@@ -271,7 +271,7 @@ export const updateSchematicAccess = (row, access) => {
       const result = JSON.parse(request.response);
       if (result.success) {
         sendNotification('Schematic successfully updated!', 'success', 2000);
-        tableSchematic.updateRow({
+        tableSchematic.updateItem({
           uuid: row.uuid,
           access: patch.access,
         });
@@ -293,7 +293,7 @@ export const deleteSchematic = (uuid) => {
       const result = JSON.parse(request.response);
       if (result.success) {
         sendNotification('Schematic successfully deleted!', 'success', 2000);
-        tableSchematic.deleteRow(uuid);
+        tableSchematic.deleteItem(uuid);
       } else {
         sendNotification('Schematic deletion failed! ' + result.message, 'error', 4000);
       }

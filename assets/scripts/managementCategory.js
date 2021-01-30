@@ -20,7 +20,7 @@ export const deleteCategory = (id, type) => {
       const result = JSON.parse(request.response);
       if (result.success) {
         sendNotification('Schematic category successfully deleted!', 'success', 2000);
-        tableCategories.deleteRow(id);
+        tableCategories.deleteItem(id);
       } else {
         sendNotification('Schematic category deletion failed! ' + result.message, 'error', 4000);
       }
@@ -79,7 +79,7 @@ export const openCategoryCreateModal = (type) => {
                 'success',
                 1000);
               modal.close();
-              tableCategories.addRow(JSON.parse(event.target.response).row);
+              tableCategories.addItem(JSON.parse(event.target.response).row);
             } else {
               sendNotification(
                 `Creation failed: ${JSON.parse(event.target.response).message}`,
@@ -144,7 +144,7 @@ export const openCategoryEditModal = (infoJSON, type) => {
               const result = JSON.parse(request.response);
               if (result.success) {
                 sendNotification('Category successfully updated!', 'success', 2000);
-                tableCategories.updateRow({
+                tableCategories.updateItem({
                   id: info.id,
                   name: modal.name.value,
                 });

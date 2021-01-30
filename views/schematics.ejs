@@ -21,13 +21,13 @@
             </div>
         </div>
     <% } %>
-    <div id="schematic-table" class="table"></div>
+    <div id="schematic-table" class="collection-table"></div>
     <% if (header.username) { %><span class="text-xs">Just drop your Schematic on the table to upload it</span><% } %>
     <script>
       var data = JSON.parse('<%- data.runtimeData %>');
       var schematicCategories = data.categories;
 
-      var tableSchematic = WEL.newTable('#schematic-table', {
+      var tableSchematic = WEL.newCollection('#schematic-table', 'table', {
         rowKey: 'uuid',
         columns: [
           {title: 'Name', key: 'name'},

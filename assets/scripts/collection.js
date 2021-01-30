@@ -148,7 +148,7 @@ const createTableHead = (collection, columns) => {
     head.append(th);
   });
 
-  collection.thead.append(head);
+  collection.head.append(head);
 };
 
 export const newCollection = (selector, type, setup) => {
@@ -176,12 +176,12 @@ export const newCollection = (selector, type, setup) => {
   const render = () => {
     if (type === TABLE) {
       const box = document.querySelector(selector);
-      collection.tbody.innerHTML = '';
+      collection.body.innerHTML = '';
       box.append(collection.dom);
 
       collection.data.forEach((row) => {
         if (row.visible) {
-          collection.tbody.append(row.dom);
+          collection.body.append(row.dom);
         }
       });
     }
@@ -213,14 +213,14 @@ export const newCollection = (selector, type, setup) => {
   };
 
   const updateItem = (item) => {
-    collection.data.forEach((item) => {
-      if (item[setup.rowKey] === item.key) {
-        item = {...item.row, ...item};
+    collection.data.forEach((ele) => {
+      if (item[setup.rowKey] === ele.key) {
+        item = {...ele.row, ...item};
         setup.columns.forEach((column) => {
           if (column.key !== undefined) {
-            item.columns[column.title].innerHTML = item[column.key];
+            ele.columns[column.title].innerHTML = item[column.key];
           } else if (column.func !== undefined) {
-            item.columns[column.title].innerHTML = column.func(item);
+            ele.columns[column.title].innerHTML = column.func(item);
           }
         });
       }
