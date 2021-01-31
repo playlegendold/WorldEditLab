@@ -1,5 +1,5 @@
-import { sendNotification } from './notification';
-import { copyToClipboard } from './clipboard';
+import { sendNotification } from './shared/notification';
+import { copyToClipboard } from './shared/clipboard';
 import {
   openSchematicUploadModal,
   deleteSchematic,

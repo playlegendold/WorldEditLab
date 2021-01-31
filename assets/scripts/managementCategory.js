@@ -1,5 +1,5 @@
 import { openModal } from './modal';
-import { sendNotification } from './notification';
+import { sendNotification } from './shared/notification';
 
 const sendCategoryCreateRequest = ({name, type}, onFinished, onFail = null, onProgress = null) => {
   const request = new XMLHttpRequest();

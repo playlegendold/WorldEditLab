@@ -1,4 +1,4 @@
-import {sendNotification} from './notification';
+import {sendNotification} from './shared/notification';
 import {openModal} from './modal';
 
 const uploadNewSchematic = ({file, name, access, category}, onFinished, onFail = null, onProgress = null) => {
