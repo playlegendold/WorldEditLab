@@ -209,7 +209,7 @@ export const openHeightmapEditModal = (infoJSON, categories) => {
           });
           modal.close();
         } else {
-          sendErrorNotification('Heightmap update failed! ' + result.message)
+          sendErrorNotification('Heightmap update failed! ' + result.message);
         }
       } else {
         sendErrorNotification(`Request Error: ${res.status} ${res.statusText}`);
