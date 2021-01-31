@@ -1,15 +1,13 @@
 import { Request, Response } from 'express';
-import {
-  Role, Schematic, User,
-} from '../../shared/models';
-import { HTTPError, HTTPStatus } from '../../shared/helpers/errorHandler';
+import { Role, Schematic, User } from '../../shared/models';
+import { HTTPErrorResponse, HTTPStatus } from '../../shared/helpers/errorHandler';
 import { buildDefaultResponse } from '../../shared/response';
 import { HeightmapCategory } from '../../shared/models/heightmapCategory';
 
 export const handleHeightmapCategoryIndexView = async (req: Request, res: Response) => {
   const user = req.user as User;
   if (!user || user.role !== Role.ADMIN) {
-    return HTTPError(res, HTTPStatus.FORBIDDEN, 'Forbidden');
+    throw new HTTPErrorResponse(HTTPStatus.FORBIDDEN, 'Forbidden');
   }
   const responseCategories = await HeightmapCategory.findAll({ attributes: ['id', 'name'] });
 
@@ -27,13 +25,13 @@ export const handleHeightmapCategoryIndexView = async (req: Request, res: Respon
 export const handleHeightmapCategoryCreateRequest = async (req: Request, res: Response) => {
   const user = req.user as User;
   if (!user || user.role !== Role.ADMIN) {
-    return HTTPError(res, HTTPStatus.FORBIDDEN, 'Forbidden');
+    throw new HTTPErrorResponse(HTTPStatus.FORBIDDEN, 'Forbidden');
   }
 
   const { name } = req.body;
 
   if (name.length <= 3 || name.length > 32) {
-    return HTTPError(res, HTTPStatus.BAD_REQUEST, 'Invalid category name');
+    throw new HTTPErrorResponse(HTTPStatus.BAD_REQUEST, 'Invalid category name');
   }
 
   const category = HeightmapCategory.build({
@@ -54,13 +52,13 @@ export const handleHeightmapCategoryCreateRequest = async (req: Request, res: Re
 export const handleHeightmapCategoryDeleteRequest = async (req: Request, res: Response) => {
   const user = req.user as User;
   if (!user || user.role !== Role.ADMIN) {
-    return HTTPError(res, HTTPStatus.FORBIDDEN, 'Forbidden');
+    throw new HTTPErrorResponse(HTTPStatus.FORBIDDEN, 'Forbidden');
   }
 
   const id = parseInt(req.params.id, 10);
 
   if (!id) {
-    return HTTPError(res, HTTPStatus.BAD_REQUEST, 'Invalid id');
+    throw new HTTPErrorResponse(HTTPStatus.BAD_REQUEST, 'Invalid id');
   }
 
   await Schematic.update({
@@ -80,24 +78,24 @@ export const handleHeightmapCategoryDeleteRequest = async (req: Request, res: Re
   if (count === 1) {
     return res.send({ success: true });
   }
-  return HTTPError(res, HTTPStatus.NOT_FOUND, 'Not found');
+  throw new HTTPErrorResponse(HTTPStatus.NOT_FOUND, 'Not found');
 };
 
 export const handleHeightmapCategoryPatchRequest = async (req: Request, res: Response) => {
   const user = req.user as User;
   if (!user) {
-    return HTTPError(res, HTTPStatus.FORBIDDEN, 'Forbidden');
+    throw new HTTPErrorResponse(HTTPStatus.FORBIDDEN, 'Forbidden');
   }
 
   const id = parseInt(req.params.id, 10);
 
   if (!id) {
-    return HTTPError(res, HTTPStatus.BAD_REQUEST, 'Invalid id');
+    throw new HTTPErrorResponse(HTTPStatus.BAD_REQUEST, 'Invalid id');
   }
 
   if (req.body.name.length <= 3
     || req.body.name.length > 32) {
-    return HTTPError(res, HTTPStatus.BAD_REQUEST, 'Bad Request');
+    throw new HTTPErrorResponse(HTTPStatus.BAD_REQUEST, 'Bad Request');
   }
 
   const [count] = await HeightmapCategory.update({
@@ -111,5 +109,5 @@ export const handleHeightmapCategoryPatchRequest = async (req: Request, res: Res
   if (count === 1) {
     return res.send({ success: true });
   }
-  return HTTPError(res, HTTPStatus.NOT_FOUND, 'Not found');
+  throw new HTTPErrorResponse(HTTPStatus.NOT_FOUND, 'Not found');
 };
