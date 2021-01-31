@@ -1,4 +1,7 @@
-import { Response } from 'express';
+import {
+  NextFunction, Request, Response, RequestHandler,
+} from 'express';
+import { buildDefaultResponse } from '../response';
 
 export enum HTTPStatus {
   // Client Errors
@@ -32,13 +35,56 @@ export enum HTTPStatus {
   HTTP_VERSION_NOT_SUPPORTED = 505,
 }
 
-export const HTTPError = (
+export class HTTPErrorResponse extends Error {
+  status: HTTPStatus;
+
+  message: string;
+
+  api: boolean;
+
+  constructor(status: HTTPStatus, message: string, api: boolean = true) {
+    super(message);
+    this.status = status;
+    this.message = message;
+    this.api = api;
+  }
+}
+
+export const printErrorPage = (req: Request, res: Response, message: string, status: number) => {
+  const baseResponse = buildDefaultResponse(req);
+  baseResponse.data = {
+    error: {
+      message,
+      status,
+    },
+  };
+  res.render('error-page', baseResponse);
+};
+
+export const asyncHandler = (handler: RequestHandler) => (
+  (req: Request, res: Response, next: NextFunction) => (
+    Promise.resolve(handler(req, res, next)).catch(next)
+  )
+);
+
+export const errorHandler = (
+  err: Error | HTTPErrorResponse,
+  req: Request,
   res: Response,
-  status: HTTPStatus,
-  message?: string,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  next: NextFunction,
 ) => {
-  res.type('application/json');
-  res
-    .status(status)
-    .send({ success: false, message });
+  if ((err as HTTPErrorResponse).status) {
+    const errorResponse = err as HTTPErrorResponse;
+    if (errorResponse.api) {
+      res.type('application/json');
+      res
+        .status(errorResponse.status)
+        .send({ success: false, message: errorResponse.message });
+    } else {
+      printErrorPage(req, res, errorResponse.message, errorResponse.status.valueOf());
+    }
+  } else {
+    printErrorPage(req, res, err.message, HTTPStatus.INTERNAL_SERVER_ERROR.valueOf());
+  }
 };

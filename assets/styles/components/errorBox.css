@@ -1,0 +1,9 @@
+.error-box {
+  height: calc(100% - 60px);
+
+  @apply container mx-auto flex justify-center items-center text-center;
+}
+
+.error-box h1 {
+  @apply text-4xl mb-4;
+}

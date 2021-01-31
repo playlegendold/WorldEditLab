@@ -7,6 +7,7 @@ import fileUpload from 'express-fileupload';
 import { initPages } from './pages';
 import './shared/database';
 import { initAuth } from './shared/auth';
+import { errorHandler } from './shared/helpers/errorHandler';
 
 dotenv.config();
 
@@ -38,6 +39,8 @@ initAuth(app);
 
 app.set('view engine', 'ejs');
 initPages(app);
+
+app.use(errorHandler);
 
 const { PORT = 8080 } = process.env;
 app.listen(PORT, () => {
