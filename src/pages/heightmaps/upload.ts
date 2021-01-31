@@ -2,25 +2,25 @@ import { Request, Response } from 'express';
 import { UploadedFile } from 'express-fileupload';
 import { Access, User } from '../../shared/models';
 import { createResponseFromRow } from './shared';
-import { HTTPError, HTTPStatus } from '../../shared/helpers/errorHandler';
+import { HTTPErrorResponse, HTTPStatus } from '../../shared/helpers/errorHandler';
 import { Heightmap } from '../../shared/models/heightmap';
 
 export const handleIndexUpload = async (req: Request, res: Response) => {
   const user = req.user as User;
   if (!user) {
-    return HTTPError(res, HTTPStatus.FORBIDDEN, 'Forbidden');
+    throw new HTTPErrorResponse(HTTPStatus.FORBIDDEN, 'Forbidden');
   }
 
   const file = req.files?.heightmap as UploadedFile;
 
   if (file === undefined) {
-    return HTTPError(res, HTTPStatus.BAD_REQUEST, 'Invalid file upload');
+    throw new HTTPErrorResponse(HTTPStatus.BAD_REQUEST, 'Invalid file upload');
   }
 
   const { name } = file;
 
   if (name.length <= 3 || name.length > 32) {
-    return HTTPError(res, HTTPStatus.BAD_REQUEST, 'Invalid heightmap name');
+    throw new HTTPErrorResponse(HTTPStatus.BAD_REQUEST, 'Invalid heightmap name');
   }
 
   const heightmap = Heightmap.build({
