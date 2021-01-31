@@ -20,9 +20,9 @@
             </button>
         </div>
     </div>
-    <div id="category-table" class="collection-table"></div>
+    <div id="category-collection" class="collection-table"></div>
     <script>
-      var tableCategories = WEL.newCollection('#category-table', 'table', {
+      var collectionCategories = WEL.newCollection('#category-collection', 'table', {
         rowKey: 'id',
         columns: [
           {title: 'Name', key: 'name'},
@@ -69,7 +69,7 @@
           ],
         },
       });
-      tableCategories.setData(JSON.parse('<%- data.rows %>'));
+      collectionCategories.setData(JSON.parse('<%- data.rows %>'));
     </script>
 </div>
 

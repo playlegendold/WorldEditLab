@@ -27,7 +27,7 @@
       var data = JSON.parse('<%- data.runtimeData %>');
       var heightmapCategories = data.categories;
 
-      var gridHeightmaps = WEL.newCollection('#heightmap-collection', 'grid', {
+      var collectionHeightmaps = WEL.newCollection('#heightmap-collection', 'grid', {
         rowKey: 'uuid',
         columns: [
           {
@@ -98,9 +98,9 @@
         },
       });
       <% if (header.username) { %>
-      WEL.registerDragAndDropOnHeightmapCollection(gridHeightmaps.dom, heightmapCategories);
+      WEL.registerDragAndDropOnHeightmapCollection(collectionHeightmaps.dom, heightmapCategories);
       <% } %>
-      gridHeightmaps.setData(data.coll);
+      collectionHeightmaps.setData(data.coll);
     </script>
 </div>
 <%- include('partials/foot'); %>

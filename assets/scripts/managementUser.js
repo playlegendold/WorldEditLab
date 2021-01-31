@@ -20,7 +20,7 @@ export const deleteUser = (id) => {
       const result = JSON.parse(request.response);
       if (result.success) {
         sendNotification('User successfully deleted!', 'success', 2000);
-        tableUsers.deleteItem(id);
+        collectionUsers.deleteItem(id);
       } else {
         sendNotification('User deletion failed! ' + result.message, 'error', 4000);
       }
@@ -39,7 +39,7 @@ export const resetPasswordFromUser = (id) => {
       const result = JSON.parse(request.response);
       if (result.success) {
         sendNotification('User password was reset!', 'success', 2000);
-        tableUsers.updateItem(result.row);
+        collectionUsers.updateItem(result.row);
       } else {
         sendNotification('User password reset failed! ' + result.message, 'error', 4000);
       }
@@ -115,7 +115,7 @@ export const openUserCreateModal = () => {
                 'success',
                 1000);
               modal.close();
-              tableUsers.addItem(JSON.parse(event.target.response).row);
+              collectionUsers.addItem(JSON.parse(event.target.response).row);
             } else {
               sendNotification(
                 `Creation failed: ${JSON.parse(event.target.response).message}`,
@@ -199,7 +199,7 @@ export const openUserEditModal = (infoJSON) => {
               const result = JSON.parse(request.response);
               if (result.success) {
                 sendNotification('User successfully updated!', 'success', 2000);
-                tableUsers.updateItem({
+                collectionUsers.updateItem({
                   id: info.id,
                   name: modal.name.value,
                   role,

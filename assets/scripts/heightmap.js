@@ -28,7 +28,7 @@ const handleHeightmapUpload = (file, name, access, category, modal) => {
         'success',
         2000);
       modal.close();
-      gridHeightmaps.addItem(JSON.parse(event.target.response).row);
+      collectionHeightmaps.addItem(JSON.parse(event.target.response).row);
     } else {
       sendNotification(
         `Upload failed: ${JSON.parse(event.target.response).message}`,
@@ -155,7 +155,7 @@ export const deleteHeightmap = (uuid) => {
       const result = JSON.parse(request.response);
       if (result.success) {
         sendNotification('Heightmap successfully deleted!', 'success', 2000);
-        gridHeightmaps.deleteItem(uuid);
+        collectionHeightmaps.deleteItem(uuid);
       } else {
         sendNotification('Heightmap deletion failed! ' + result.message, 'error', 4000);
       }
@@ -255,7 +255,7 @@ export const openHeightmapEditModal = (infoJSON, categories) => {
               const result = JSON.parse(request.response);
               if (result.success) {
                 sendNotification('Heightmap successfully updated!', 'success', 2000);
-                gridHeightmaps.updateItem({
+                collectionHeightmaps.updateItem({
                   uuid: info.uuid,
                   name: patch.name,
                   access: patch.access,

@@ -21,13 +21,13 @@
             </div>
         </div>
     <% } %>
-    <div id="schematic-table" class="collection-table"></div>
+    <div id="schematic-collection" class="collection-table"></div>
     <% if (header.username) { %><span class="text-xs">Just drop your Schematic on the table to upload it</span><% } %>
     <script>
       var data = JSON.parse('<%- data.runtimeData %>');
       var schematicCategories = data.categories;
 
-      var tableSchematic = WEL.newCollection('#schematic-table', 'table', {
+      var collectionSchematic = WEL.newCollection('#schematic-collection', 'table', {
         rowKey: 'uuid',
         columns: [
           {title: 'Name', key: 'name'},
@@ -188,9 +188,9 @@
         <% } %>
       });
       <% if (header.username) { %>
-      WEL.registerDragAndDropOnSchematicTable(tableSchematic.dom, schematicCategories);
+      WEL.registerDragAndDropOnSchematicTable(collectionSchematic.dom, schematicCategories);
       <% } %>
-      tableSchematic.setData(data.table);
+      collectionSchematic.setData(data.table);
     </script>
 </div>
 <%- include('partials/foot'); %>
