@@ -7,7 +7,7 @@ import {
   handleUserPatchRequest,
 } from './user';
 import { Role, User } from '../../shared/models';
-import { HTTPError, HTTPStatus } from '../../shared/helpers/errorHandler';
+import { asyncHandler, HTTPErrorResponse, HTTPStatus } from '../../shared/helpers/errorHandler';
 import {
   handleSchematicCategoryCreateRequest,
   handleSchematicCategoryDeleteRequest,
@@ -23,7 +23,7 @@ import {
 export const handleIndexView = async (req: Request, res: Response) => {
   const user = req.user as User;
   if (!user || user.role !== Role.ADMIN) {
-    return HTTPError(res, HTTPStatus.FORBIDDEN, 'Forbidden');
+    throw new HTTPErrorResponse(HTTPStatus.FORBIDDEN, 'Forbidden', false);
   }
   return res.redirect('/management/users');
 };
@@ -32,21 +32,21 @@ export default () => {
   const router = Router();
   router.get('/', handleIndexView);
 
-  router.get('/users', handleUserIndexView);
-  router.post('/users', handleUserCreateRequest);
-  router.delete('/users/:id', handleUserDeleteRequest);
-  router.put('/users/:id', handleUserPatchRequest);
-  router.get('/users/:id/pw-reset', handleUserPasswordResetRequest);
+  router.get('/users', asyncHandler(handleUserIndexView));
+  router.post('/users', asyncHandler(handleUserCreateRequest));
+  router.delete('/users/:id', asyncHandler(handleUserDeleteRequest));
+  router.put('/users/:id', asyncHandler(handleUserPatchRequest));
+  router.get('/users/:id/pw-reset', asyncHandler(handleUserPasswordResetRequest));
 
-  router.get('/schematic-categories', handleSchematicCategoryIndexView);
-  router.post('/schematic-categories', handleSchematicCategoryCreateRequest);
-  router.delete('/schematic-categories/:id', handleSchematicCategoryDeleteRequest);
-  router.put('/schematic-categories/:id', handleSchematicCategoryPatchRequest);
+  router.get('/schematic-categories', asyncHandler(handleSchematicCategoryIndexView));
+  router.post('/schematic-categories', asyncHandler(handleSchematicCategoryCreateRequest));
+  router.delete('/schematic-categories/:id', asyncHandler(handleSchematicCategoryDeleteRequest));
+  router.put('/schematic-categories/:id', asyncHandler(handleSchematicCategoryPatchRequest));
 
-  router.get('/heightmap-categories', handleHeightmapCategoryIndexView);
-  router.post('/heightmap-categories', handleHeightmapCategoryCreateRequest);
-  router.delete('/heightmap-categories/:id', handleHeightmapCategoryDeleteRequest);
-  router.put('/heightmap-categories/:id', handleHeightmapCategoryPatchRequest);
+  router.get('/heightmap-categories', asyncHandler(handleHeightmapCategoryIndexView));
+  router.post('/heightmap-categories', asyncHandler(handleHeightmapCategoryCreateRequest));
+  router.delete('/heightmap-categories/:id', asyncHandler(handleHeightmapCategoryDeleteRequest));
+  router.put('/heightmap-categories/:id', asyncHandler(handleHeightmapCategoryPatchRequest));
 
   return router;
 };

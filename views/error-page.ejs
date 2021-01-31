@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('partials/head'); %>
+</head>
+<body class="h-screen">
+<header class="header">
+    <%- include('partials/header'); %>
+</header>
+<div class="error-box">
+    <div>
+        <h1><%- data.error.status %></h1>
+        <h2><%- data.error.message %></h2>
+    </div>
+</div>
+<%- include('partials/foot'); %>
+</body>
+</html>

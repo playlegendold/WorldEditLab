@@ -2,13 +2,13 @@ import { Request, Response } from 'express';
 import {
   Role, Schematic, SchematicCategory, User,
 } from '../../shared/models';
-import { HTTPError, HTTPStatus } from '../../shared/helpers/errorHandler';
+import { HTTPErrorResponse, HTTPStatus } from '../../shared/helpers/errorHandler';
 import { buildDefaultResponse } from '../../shared/response';
 
 export const handleSchematicCategoryIndexView = async (req: Request, res: Response) => {
   const user = req.user as User;
   if (!user || user.role !== Role.ADMIN) {
-    return HTTPError(res, HTTPStatus.FORBIDDEN, 'Forbidden');
+    throw new HTTPErrorResponse(HTTPStatus.FORBIDDEN, 'Forbidden', false);
   }
   const responseCategories = await SchematicCategory.findAll({ attributes: ['id', 'name'] });
 
@@ -26,13 +26,13 @@ export const handleSchematicCategoryIndexView = async (req: Request, res: Respon
 export const handleSchematicCategoryCreateRequest = async (req: Request, res: Response) => {
   const user = req.user as User;
   if (!user || user.role !== Role.ADMIN) {
-    return HTTPError(res, HTTPStatus.FORBIDDEN, 'Forbidden');
+    throw new HTTPErrorResponse(HTTPStatus.FORBIDDEN, 'Forbidden');
   }
 
   const { name } = req.body;
 
   if (name.length <= 3 || name.length > 32) {
-    return HTTPError(res, HTTPStatus.BAD_REQUEST, 'Invalid category name');
+    throw new HTTPErrorResponse(HTTPStatus.BAD_REQUEST, 'Invalid category name');
   }
 
   const category = SchematicCategory.build({
@@ -53,13 +53,13 @@ export const handleSchematicCategoryCreateRequest = async (req: Request, res: Re
 export const handleSchematicCategoryDeleteRequest = async (req: Request, res: Response) => {
   const user = req.user as User;
   if (!user || user.role !== Role.ADMIN) {
-    return HTTPError(res, HTTPStatus.FORBIDDEN, 'Forbidden');
+    throw new HTTPErrorResponse(HTTPStatus.FORBIDDEN, 'Forbidden');
   }
 
   const id = parseInt(req.params.id, 10);
 
   if (!id) {
-    return HTTPError(res, HTTPStatus.BAD_REQUEST, 'Invalid id');
+    throw new HTTPErrorResponse(HTTPStatus.BAD_REQUEST, 'Invalid id');
   }
 
   await Schematic.update({
@@ -79,24 +79,24 @@ export const handleSchematicCategoryDeleteRequest = async (req: Request, res: Re
   if (count === 1) {
     return res.send({ success: true });
   }
-  return HTTPError(res, HTTPStatus.NOT_FOUND, 'Not found');
+  throw new HTTPErrorResponse(HTTPStatus.NOT_FOUND, 'Not Found');
 };
 
 export const handleSchematicCategoryPatchRequest = async (req: Request, res: Response) => {
   const user = req.user as User;
   if (!user) {
-    return HTTPError(res, HTTPStatus.FORBIDDEN, 'Forbidden');
+    throw new HTTPErrorResponse(HTTPStatus.FORBIDDEN, 'Forbidden');
   }
 
   const id = parseInt(req.params.id, 10);
 
   if (!id) {
-    return HTTPError(res, HTTPStatus.BAD_REQUEST, 'Invalid id');
+    throw new HTTPErrorResponse(HTTPStatus.BAD_REQUEST, 'Invalid id');
   }
 
   if (req.body.name.length <= 3
     || req.body.name.length > 32) {
-    return HTTPError(res, HTTPStatus.BAD_REQUEST, 'Bad Request');
+    throw new HTTPErrorResponse(HTTPStatus.BAD_REQUEST, 'Bad Request');
   }
 
   const [count] = await SchematicCategory.update({
@@ -110,5 +110,5 @@ export const handleSchematicCategoryPatchRequest = async (req: Request, res: Res
   if (count === 1) {
     return res.send({ success: true });
   }
-  return HTTPError(res, HTTPStatus.NOT_FOUND, 'Not found');
+  throw new HTTPErrorResponse(HTTPStatus.NOT_FOUND, 'Not Found');
 };
