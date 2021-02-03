@@ -55,6 +55,24 @@
             },
           },
           {
+            title: 'Metadata',
+            render: function (item) {
+              var access = '-';
+              switch (item.access) {
+                case 0:
+                  access = 'Public';
+                  break;
+                case 1:
+                  access = 'Internal';
+                  break;
+                case 2:
+                  access = 'Private';
+                  break;
+              }
+              return '<p><i class="fas fa-eye"></i>' + access + (item.uploadedBy ?  ' ('+ item.uploadedBy + ')' : '') + '</p>';
+            },
+          },
+          {
             title: '',
             render: function (item) {
               if (item.write) {
