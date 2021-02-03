@@ -1,6 +1,6 @@
 import { openModal } from './modal';
-import {sendErrorNotification, sendNotification, sendSuccessNotification} from './shared/notification';
-import {api} from "./shared/api";
+import { sendErrorNotification, sendSuccessNotification } from './shared/notification';
+import { api } from './shared/api';
 
 export const deleteCategory = (id, type) => {
   api({
@@ -118,6 +118,7 @@ export const openCategoryEditModal = (infoJSON, type) => {
           api({
             method: 'PUT',
             path: `/management/${type}-categories/${info.id}`,
+            contentType: 'application/json',
           }, (res, err) => {
             if (res.status === 200) {
               const result = JSON.parse(res.data);
