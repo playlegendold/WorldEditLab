@@ -13,11 +13,6 @@ const handleSchematicUpload = (file, name, access, category, modal) => {
     method: 'POST',
     path: '/schematics'
   }, (res, err) => {
-    if (err != null) {
-      sendErrorNotification(`Upload failed: ${JSON.parse(res._event.target.response).message}`);
-      return;
-    }
-
     if (res.status === 200) {
       sendSuccessNotification('Successfully uploaded');
       modal.close();

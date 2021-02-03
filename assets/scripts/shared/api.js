@@ -4,26 +4,17 @@ export const api = (options, callback, payload) => {
   if (options.contentType) {
     request.setRequestHeader('Content-Type', options.contentType);
   }
-  request.onload = (event) => {
+  const internalCallback = (event) => {
     callback({
       status: request.status,
       statusText: request.statusText,
       data: request.response,
       _event: event,
       _request: request,
-    }, null);
-  };
-  request.onerror = (event) => {
-    callback({
-      _event: event,
-      _request: request,
-    }, event.target.status);
-  };
-  request.onabort = (event) => {
-    callback({
-      _event: event,
-      _request: request,
-    }, event.target.status);
-  };
+    }, request.status !== 200)
+  }
+  request.onload = internalCallback;
+  request.onerror = internalCallback;
+  request.onabort = internalCallback;
   request.send(payload);
 };
