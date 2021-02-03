@@ -201,3 +201,10 @@ export const openUserEditModal = (infoJSON) => {
     ],
   });
 };
+
+export default {
+  create: openUserCreateModal,
+  delete: deleteUser,
+  edit: openUserEditModal,
+  resetPassword: resetPasswordFromUser,
+};

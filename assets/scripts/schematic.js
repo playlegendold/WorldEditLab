@@ -1,7 +1,11 @@
-import {sendErrorNotification, sendNotification, sendSuccessNotification} from './shared/notification';
-import {openModal} from './modal';
-import {api} from "./shared/api";
-import {registerDragAndDrop} from "./shared/dragAndDrop";
+import {
+  sendErrorNotification,
+  sendNotification,
+  sendSuccessNotification
+} from './shared/notification';
+import { openModal } from './modal';
+import { api } from './shared/api';
+import { registerDragAndDrop } from './shared/dragAndDrop';
 
 const handleSchematicUpload = (file, name, access, category, modal) => {
   const formData = new FormData();
@@ -256,4 +260,12 @@ export const registerDragAndDropOnSchematicTable = (collectionDOM, categories) =
       onClickUpload(modal, event);
     }, null, true))
   });
+};
+
+export default {
+  create: openSchematicUploadModal,
+  delete: deleteSchematic,
+  edit: openSchematicEditModal,
+  editAccess: updateSchematicAccess,
+  dragDrop: registerDragAndDropOnSchematicTable,
 };

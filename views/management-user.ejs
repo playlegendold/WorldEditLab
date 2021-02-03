@@ -15,7 +15,7 @@
         <div class="users-quick-actions"></div>
         <div>
             <button class="rounded-lg inline-flex items-center bg-green-600 text-white hover:bg-green-700 py-2 px-2 md:px-4"
-                    onclick="WEL.openUserCreateModal()">
+                    onclick="WEL.users.create()">
                 <span>Create New User</span>
             </button>
         </div>
@@ -63,13 +63,13 @@
 
           if (data.deleteUser !== undefined) {
             WEL.openConfirmModal('Do you really want to delete the user?', function () {
-              WEL.deleteUser(parseInt(data.deleteUser, 10));
+              WEL.users.delete(parseInt(data.deleteUser, 10));
             });
           } else if (data.editUser !== undefined) {
-            WEL.openUserEditModal(data.editUser);
+            WEL.users.edit(data.editUser);
           } else if (data.resetPwUser !== undefined) {
             WEL.openConfirmModal('Do you really want to reset the password?', function () {
-              WEL.resetPasswordFromUser(data.resetPwUser);
+              WEL.users.resetPassword(data.resetPwUser);
             });
           }
         },
@@ -82,7 +82,7 @@
               click: function (rows) {
                 WEL.openConfirmModal('Do you really want to delete ' + rows.length + ' users?', function () {
                   for (var i = 0; i < rows.length; i++) {
-                    WEL.deleteUser(rows[i].id);
+                    WEL.users.delete(rows[i].id);
                   }
                 });
               },

@@ -232,3 +232,11 @@ export const registerDragAndDropOnHeightmapCollection = (collectionDOM, categori
     }, null, true));
   });
 };
+
+export default {
+  create: openHeightmapUploadModal,
+  delete: deleteHeightmap,
+  edit: openHeightmapEditModal,
+  dragDrop: registerDragAndDropOnHeightmapCollection,
+};
+

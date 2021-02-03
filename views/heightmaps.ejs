@@ -15,7 +15,7 @@
             <div class="schematic-quick-actions"></div>
             <div>
                 <button class="rounded-lg inline-flex items-center bg-green-600 text-white hover:bg-green-700 py-2 px-2 md:px-4"
-                        onclick="WEL.openHeightmapUploadModal(heightmapCategories)">
+                        onclick="WEL.heightmaps.create(heightmapCategories)">
                     <span>Upload</span>
                 </button>
             </div>
@@ -90,15 +90,15 @@
             location.href = data.href;
           } else if (data.delete !== undefined) {
             WEL.openConfirmModal('Do you really want to delete the heightmap?', function () {
-              WEL.deleteHeightmap(data.delete);
+              WEL.heightmaps.delete(data.delete);
             });
           } else if (data.edit !== undefined) {
-            WEL.openHeightmapEditModal(data.edit, heightmapCategories);
+            WEL.heightmaps.edit(data.edit, heightmapCategories);
           }
         },
       });
       <% if (header.username) { %>
-      WEL.registerDragAndDropOnHeightmapCollection(collectionHeightmaps.dom, heightmapCategories);
+      WEL.heightmaps.dragDrop(collectionHeightmaps.dom, heightmapCategories);
       <% } %>
       collectionHeightmaps.setData(data.coll);
     </script>

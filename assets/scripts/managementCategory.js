@@ -143,3 +143,9 @@ export const openCategoryEditModal = (infoJSON, type) => {
     ],
   });
 };
+
+export default {
+  create: openCategoryCreateModal,
+  delete: deleteCategory,
+  edit: openCategoryEditModal,
+};

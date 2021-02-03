@@ -15,7 +15,7 @@
             <div class="schematic-quick-actions"></div>
             <div>
                 <button class="rounded-lg inline-flex items-center bg-green-600 text-white hover:bg-green-700 py-2 px-2 md:px-4"
-                        onclick="WEL.openSchematicUploadModal(schematicCategories)">
+                        onclick="WEL.schematics.create(schematicCategories)">
                     <span>Upload</span>
                 </button>
             </div>
@@ -101,10 +101,10 @@
             WEL.sendNotification(data.notification, data.notificationStatus, data.notificationDuration);
           } else if (data.deleteSchematic !== undefined) {
             WEL.openConfirmModal('Do you really want to delete the schematic?', function () {
-              WEL.deleteSchematic(data.deleteSchematic);
+              WEL.schematics.delete(data.deleteSchematic);
             });
           } else if (data.editSchematic !== undefined) {
-            WEL.openSchematicEditModal(data.editSchematic, schematicCategories);
+            WEL.schematics.edit(data.editSchematic, schematicCategories);
           }
         },
         <% if (header.username) { %>
@@ -124,7 +124,7 @@
 
                 WEL.openConfirmModal('Do you really want to delete ' + filteredRows.length + ' schematics?', function () {
                   for (var i = 0; i < filteredRows.length; i++) {
-                    WEL.deleteSchematic(filteredRows[i].uuid);
+                    WEL.schematics.delete(filteredRows[i].uuid);
                   }
                 });
               },
@@ -142,7 +142,7 @@
 
                 WEL.openConfirmModal('Do you really want to publish ' + filteredRows.length + ' schematics?', function () {
                   for (var i = 0; i < filteredRows.length; i++) {
-                    WEL.updateSchematicAccess(filteredRows[i], 0);
+                    WEL.schematics.editAccess(filteredRows[i], 0);
                   }
                 });
               },
@@ -160,7 +160,7 @@
 
                 WEL.openConfirmModal('Do you really want to change access from ' + filteredRows.length + ' schematics to internal?', function () {
                   for (var i = 0; i < filteredRows.length; i++) {
-                    WEL.updateSchematicAccess(filteredRows[i], 1);
+                    WEL.schematics.editAccess(filteredRows[i], 1);
                   }
                 });
               },
@@ -178,7 +178,7 @@
 
                 WEL.openConfirmModal('Do you really want to change access from ' + filteredRows.length + ' schematics to private?', function () {
                   for (var i = 0; i < filteredRows.length; i++) {
-                    WEL.updateSchematicAccess(filteredRows[i], 2);
+                    WEL.schematics.editAccess(filteredRows[i], 2);
                   }
                 });
               },
@@ -188,7 +188,7 @@
         <% } %>
       });
       <% if (header.username) { %>
-      WEL.registerDragAndDropOnSchematicTable(collectionSchematic.dom, schematicCategories);
+      WEL.schematics.dragDrop(collectionSchematic.dom, schematicCategories);
       <% } %>
       collectionSchematic.setData(data.table);
     </script>

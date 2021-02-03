@@ -15,7 +15,7 @@
         <div class="categories-quick-actions"></div>
         <div>
             <button class="rounded-lg inline-flex items-center bg-green-600 text-white hover:bg-green-700 py-2 px-2 md:px-4"
-                    onclick="WEL.openCategoryCreateModal('<%= data.type %>')">
+                    onclick="WEL.categories.create('<%= data.type %>')">
                 <span>Create New Category</span>
             </button>
         </div>
@@ -46,10 +46,10 @@
 
           if (data.deleteCategory !== undefined) {
             WEL.openConfirmModal('Do you really want to delete the category?', function () {
-              WEL.deleteCategory(parseInt(data.deleteCategory, 10), '<%= data.type %>');
+              WEL.categories.delete(parseInt(data.deleteCategory, 10), '<%= data.type %>');
             });
           } else if (data.editCategory !== undefined) {
-            WEL.openCategoryEditModal(data.editCategory, '<%= data.type %>');
+            WEL.categories.edit(data.editCategory, '<%= data.type %>');
           }
         },
         massActions: {
@@ -61,7 +61,7 @@
               click: function (rows) {
                 WEL.openConfirmModal('Do you really want to delete ' + rows.length + ' categories?', function () {
                   for (var i = 0; i < rows.length; i++) {
-                    WEL.deleteCategory(rows[i].id, '<%= data.type %>');
+                    WEL.categories.delete(rows[i].id, '<%= data.type %>');
                   }
                 });
               },
