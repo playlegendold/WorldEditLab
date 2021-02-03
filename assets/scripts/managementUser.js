@@ -112,7 +112,7 @@ export const openUserCreateModal = () => {
             } else {
               sendErrorNotification(`Creation failed: ${JSON.parse(event.target.response).message}`);
             }
-          }, JSON.stringify({name, role}));
+          }, JSON.stringify({name: modal.name.value, role}));
         },
       },
     ],

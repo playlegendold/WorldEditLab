@@ -71,9 +71,9 @@ export const openCategoryCreateModal = (type) => {
             if (res.status === 200) {
               sendSuccessNotification('Successfully created');
               modal.close();
-              collectionCategories.addItem(JSON.parse(event.target.response).row);
+              collectionCategories.addItem(JSON.parse(res.data).row);
             } else {
-              sendErrorNotification(`Creation failed: ${JSON.parse(res._event.target.response).message}`);
+              sendErrorNotification(`Creation failed: ${JSON.parse(res.data).message}`);
             }
           }, JSON.stringify({ name: modal.name.value }));
         },
