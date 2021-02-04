@@ -46,20 +46,13 @@
 
 ## About The Project
 
-Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut
-labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores
-et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
-Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut
-labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores
-et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
-Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut
-labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores
-et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+WorldEditLab serves as a replacement for the old but very outdated web panel for WorldEdit. Schematics and heightmaps can be uploaded via WorldEditLab. These can then be used in-game.
+WorldEditLab combines ease of use with important features like SAML2 and permission management.
+Heightmaps and schematics can be sorted and tagged with different tags. Schematics can also be published through different access levels.
 
 ### Built With
 
-Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut
-labore et dolore magna aliquyam.
+WorldEditLab was built on well maintained packages:
 
 * [express](https://www.npmjs.com/package/express)
 * [Passport](https://www.npmjs.com/package/passport)
@@ -71,8 +64,9 @@ labore et dolore magna aliquyam.
 
 ## Getting Started
 
-Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut
-labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et.
+To use WorldEditLab itself you only need to start a docker container.
+Of course, more complex setups can also be built in Kubernetes or similar environments.
+A helmet chart is currently still in the works.
 
 ### Usage with docker-compose
 
