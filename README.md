@@ -44,13 +44,13 @@
 
 <!-- ABOUT THE PROJECT -->
 
-## About The Project
+## About the project
 
 WorldEditLab serves as a replacement for the old but very outdated web panel for WorldEdit. Schematics and heightmaps can be uploaded via WorldEditLab. These can then be used in-game.
 WorldEditLab combines ease of use with important features like SAML2 and permission management.
 Heightmaps and schematics can be sorted and tagged with different tags. Schematics can also be published through different access levels.
 
-### Built With
+### Built with
 
 WorldEditLab was built on well maintained packages:
 
@@ -63,11 +63,11 @@ WorldEditLab was built on well maintained packages:
 
 <!-- GETTING STARTED -->
 
-## Getting Started
+## Getting started
 
 To use WorldEditLab itself you only need to start a docker container.
 Of course, more complex setups can also be built in Kubernetes or similar environments.
-A helmet chart is currently still in the works.
+A helm chart is currently still in the works.
 
 ### Usage with docker-compose
 
@@ -137,8 +137,7 @@ yarn lint
 
 ## Contributing
 
-Contributions are what make the open source community such an amazing place to be learn, inspire,
-and create. Any contributions you make are **greatly appreciated**.
+Any contributions you make are **greatly appreciated**.
 
 1. Fork the Project
 2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
