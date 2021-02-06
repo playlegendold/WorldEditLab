@@ -59,6 +59,7 @@ WorldEditLab was built on well maintained packages:
 * [SQLite3](https://www.npmjs.com/package/sqlite3)
 * [Sequelize](https://www.npmjs.com/package/sequelize)
 * [Embedded JavaScript](https://www.npmjs.com/package/ejs)
+* [Tailwind CSS](https://www.npmjs.com/package/tailwindcss)
 
 <!-- GETTING STARTED -->
 
