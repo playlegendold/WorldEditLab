@@ -3,22 +3,22 @@ import {
 } from '../../shared/models';
 import { Heightmap } from '../../shared/models/heightmap';
 
-export const createResponseFromRow = (row: Heightmap, user: User) => {
-  let uploadedBy;
-  if (row.uploadedBy) {
-    uploadedBy = row.uploadedBy.name;
-  } else if (user !== undefined && user.id === row.uploadedById) {
+export const createResponseFromRow = (heightmap: Heightmap, user: User) => {
+  let uploadedBy: string | undefined;
+  if (heightmap.uploadedBy) {
+    uploadedBy = heightmap.uploadedBy.name;
+  } else if (user !== undefined && user.id === heightmap.uploadedById) {
     uploadedBy = user.name;
   }
   return {
-    uuid: row.uuid,
-    name: row.name,
-    createdAt: row.createdAt,
-    access: row.access,
+    uuid: heightmap.uuid,
+    name: heightmap.name,
+    createdAt: heightmap.createdAt,
+    access: heightmap.access,
     uploadedBy,
-    write: row.access === Access.PRIVATE
-      || row.uploadedById === user?.id
+    write: heightmap.access === Access.PRIVATE
+      || heightmap.uploadedById === user?.id
       || user?.role === Role.ADMIN,
-    category: row.categoryId,
+    category: heightmap.categoryId,
   };
 };

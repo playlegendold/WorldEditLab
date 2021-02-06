@@ -22,54 +22,56 @@
     </div>
     <div id="category-collection" class="collection-table"></div>
     <script>
-      var collectionCategories = WEL.newCollection('#category-collection', 'table', {
-        rowKey: 'id',
-        columns: [
-          {title: 'Name', key: 'name'},
-          {
-            title: '', func: function (item) {
-              return '<span class="actionhub">' +
-                '<i title="Delete" class="fas fa-trash-alt" data-delete-category="'+ item.id +'"></i>' +
-                '<i title="Edit" class="fas fa-wrench" data-edit-category=\''+ JSON.stringify({
-                  id: item.id,
-                  name: item.name,
-                }) +'\'></i>' +
-                '</span>';
-            },
-          },
-        ],
-        clickHandler: function (event) {
-          if (event.target === undefined) {
-            return;
-          }
-          var data = event.target.dataset;
-
-          if (data.deleteCategory !== undefined) {
-            WEL.openConfirmModal('Do you really want to delete the category?', function () {
-              WEL.categories.delete(parseInt(data.deleteCategory, 10), '<%= data.type %>');
-            });
-          } else if (data.editCategory !== undefined) {
-            WEL.categories.edit(data.editCategory, '<%= data.type %>');
-          }
-        },
-        massActions: {
-          selector: '.categories-quick-actions',
-          actions: [
+      (function () {
+        var collectionCategories = WEL.newCollection('#category-collection', 'table', {
+          rowKey: 'id',
+          columns: [
+            {title: 'Name', key: 'name'},
             {
-              title: 'Delete',
-              icon: 'fas fa-trash-alt',
-              click: function (rows) {
-                WEL.openConfirmModal('Do you really want to delete ' + rows.length + ' categories?', function () {
-                  for (var i = 0; i < rows.length; i++) {
-                    WEL.categories.delete(rows[i].id, '<%= data.type %>');
-                  }
-                });
+              title: '', func: function (item) {
+                return '<span class="actionhub">' +
+                  '<i title="Delete" class="fas fa-trash-alt" data-delete-category="'+ item.id +'"></i>' +
+                  '<i title="Edit" class="fas fa-wrench" data-edit-category=\''+ JSON.stringify({
+                    id: item.id,
+                    name: item.name,
+                  }) +'\'></i>' +
+                  '</span>';
               },
             },
           ],
-        },
-      });
-      collectionCategories.setData(JSON.parse('<%- data.rows %>'));
+          clickHandler: function (event) {
+            if (event.target === undefined) {
+              return;
+            }
+            var data = event.target.dataset;
+
+            if (data.deleteCategory !== undefined) {
+              WEL.openConfirmModal('Do you really want to delete the category?', function () {
+                WEL.categories.delete(parseInt(data.deleteCategory, 10), '<%= data.type %>');
+              });
+            } else if (data.editCategory !== undefined) {
+              WEL.categories.edit(data.editCategory, '<%= data.type %>');
+            }
+          },
+          massActions: {
+            selector: '.categories-quick-actions',
+            actions: [
+              {
+                title: 'Delete',
+                icon: 'fas fa-trash-alt',
+                click: function (rows) {
+                  WEL.openConfirmModal('Do you really want to delete ' + rows.length + ' categories?', function () {
+                    for (var i = 0; i < rows.length; i++) {
+                      WEL.categories.delete(rows[i].id, '<%= data.type %>');
+                    }
+                  });
+                },
+              },
+            ],
+          },
+        });
+        collectionCategories.setData(JSON.parse('<%- data.rows %>'));
+      })();
     </script>
 </div>
 

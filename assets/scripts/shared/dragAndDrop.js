@@ -1,14 +1,11 @@
 export const registerDragAndDrop = (element, ondrop) => {
-  element.addEventListener('dragenter', (event) => {
+  const eventHandlerAddClass = (event) => {
     event.preventDefault();
     event.stopPropagation();
     element.classList.add('drag-drop');
-  });
-  element.addEventListener('dragover', (event) => {
-    event.preventDefault();
-    event.stopPropagation();
-    element.classList.add('drag-drop');
-  });
+  };
+  element.addEventListener('dragenter', eventHandlerAddClass);
+  element.addEventListener('dragover', eventHandlerAddClass);
   element.addEventListener('dragleave', (event) => {
     event.preventDefault();
     event.stopPropagation();

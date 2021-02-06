@@ -7,7 +7,7 @@ export const handleDeleteRequest = async (req: Request, res: Response) => {
   if (!user) {
     throw new HTTPErrorResponse(HTTPStatus.FORBIDDEN, 'Forbidden');
   }
-  let count;
+  let count: number = 0;
 
   if (user.role === Role.ADMIN) {
     count = await Schematic.destroy({

@@ -40,7 +40,7 @@ export const handleIndexUpload = async (req: Request, res: Response) => {
     categoryId: (req.body.category !== undefined && req.body.category !== '-1')
       ? parseInt(req.body.category, 10)
       : null,
-    uploadedById: (user as User).id,
+    uploadedById: user.id,
     format: type === 'schem' ? SchematicFormat.SCHEM : SchematicFormat.SCHEMATIC,
   });
 

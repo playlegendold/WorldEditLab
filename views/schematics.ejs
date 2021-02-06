@@ -24,173 +24,176 @@
     <div id="schematic-collection" class="collection-table"></div>
     <% if (header.username) { %><span class="text-xs">Just drop your Schematic on the table to upload it</span><% } %>
     <script>
-      var data = JSON.parse('<%- data.runtimeData %>');
-      var schematicCategories = data.categories;
+      var schematicCategories = [];
+      (function () {
+        var runtimeData = JSON.parse('<%- data.runtimeData %>');
+        schematicCategories = runtimeData.categories;
 
-      var collectionSchematic = WEL.newCollection('#schematic-collection', 'table', {
-        rowKey: 'uuid',
-        columns: [
-          {title: 'Name', key: 'name'},
-          {
-            title: 'Uploaded By', func: function (item) {
-              return item.uploadedBy ? item.uploadedBy : '-'
-            }
-          },
-          {
-            title: 'Uploaded At', func: function (item) {
-              return new Date(item.createdAt).toLocaleDateString('en-EN')
-            }
-          },
-          {
-            title: 'Access', func: function (item) {
-              switch (item.access) {
-                case 0:
-                  return 'Public';
-                case 1:
-                  return 'Internal';
-                case 2:
-                  return 'Private';
+        var collectionSchematic = WEL.newCollection('#schematic-collection', 'table', {
+          rowKey: 'uuid',
+          columns: [
+            {title: 'Name', key: 'name'},
+            {
+              title: 'Uploaded By', func: function (item) {
+                return item.uploadedBy ? item.uploadedBy : '-'
               }
             },
-          },
-          {
-            title: 'Category', func: function (item) {
-              for (var i = 0; i < schematicCategories.length; i++) {
-                var category = schematicCategories[i];
-                if (category.id === item.category) {
-                  return category.name;
-                }
-              }
-              return '-';
-            }
-          },
-          {
-            title: '', func: function (item) {
-              if (item.write) {
-                return '<span class="actionhub">' +
-                  '<i title="Copy FAWE load command" class="fas fa-link" data-clipboard="//schematic load url:' + item.uuid + '"></i>' +
-                  '<i title="Download" class="fas fa-arrow-down" data-href="<%= data.baseURL %>/dl/s/' + item.uuid + '"></i>' +
-                  '<i title="Delete" class="fas fa-trash-alt" data-delete-schematic="' + item.uuid + '"></i>' +
-                  '<i title="Edit" class="fas fa-wrench" data-edit-schematic=\'' + JSON.stringify({
-                    uuid: item.uuid,
-                    name: item.name,
-                    category: item.category,
-                    access: item.access,
-                  }) + '\'></i>' +
-                  '</span>';
-              } else {
-                return '<span class="actionhub">' +
-                  '<i title="Copy FAWE load command" class="fas fa-link" data-clipboard="//schematic load url:' + item.uuid + '"></i>' +
-                  '<i title="Download" class="fas fa-arrow-down" data-href="<%= data.baseURL %>/dl/s/' + item.uuid + '"></i>' +
-                  '</span>';
+            {
+              title: 'Uploaded At', func: function (item) {
+                return new Date(item.createdAt).toLocaleDateString('en-EN')
               }
             },
-          },
-        ],
-        clickHandler: function (event) {
-          if (event.target === undefined) {
-            return;
-          }
-          var data = event.target.dataset;
-
-          if (data.clipboard !== undefined) {
-            WEL.copyToClipboard(data.clipboard);
-          } else if (data.href !== undefined) {
-            location.href = data.href;
-          } else if (data.notification !== undefined) {
-            WEL.sendNotification(data.notification, data.notificationStatus, data.notificationDuration);
-          } else if (data.deleteSchematic !== undefined) {
-            WEL.openConfirmModal('Do you really want to delete the schematic?', function () {
-              WEL.schematics.delete(data.deleteSchematic);
-            });
-          } else if (data.editSchematic !== undefined) {
-            WEL.schematics.edit(data.editSchematic, schematicCategories);
-          }
-        },
-        <% if (header.username) { %>
-        massActions: {
-          selector: '.schematic-quick-actions',
-          actions: [
             {
-              title: 'Delete',
-              icon: 'fas fa-trash-alt',
-              click: function (rows) {
-                var filteredRows = [];
-                for (var i = 0; i < rows.length; i++) {
-                  if (rows[i].write) {
-                    filteredRows.push(rows[i]);
-                  }
+              title: 'Access', func: function (item) {
+                switch (item.access) {
+                  case 0:
+                    return 'Public';
+                  case 1:
+                    return 'Internal';
+                  case 2:
+                    return 'Private';
                 }
-
-                WEL.openConfirmModal('Do you really want to delete ' + filteredRows.length + ' schematics?', function () {
-                  for (var i = 0; i < filteredRows.length; i++) {
-                    WEL.schematics.delete(filteredRows[i].uuid);
-                  }
-                });
               },
             },
             {
-              title: 'Public',
-              icon: 'fas fa-unlock',
-              click: function (rows) {
-                var filteredRows = [];
-                for (var i = 0; i < rows.length; i++) {
-                  if (rows[i].write) {
-                    filteredRows.push(rows[i]);
+              title: 'Category', func: function (item) {
+                for (var i = 0; i < schematicCategories.length; i++) {
+                  var category = schematicCategories[i];
+                  if (category.id === item.category) {
+                    return category.name;
                   }
                 }
-
-                WEL.openConfirmModal('Do you really want to publish ' + filteredRows.length + ' schematics?', function () {
-                  for (var i = 0; i < filteredRows.length; i++) {
-                    WEL.schematics.editAccess(filteredRows[i], 0);
-                  }
-                });
-              },
+                return '-';
+              }
             },
             {
-              title: 'Internal',
-              icon: 'fas fa-unlock-alt',
-              click: function (rows) {
-                var filteredRows = [];
-                for (var i = 0; i < rows.length; i++) {
-                  if (rows[i].write) {
-                    filteredRows.push(rows[i]);
-                  }
+              title: '', func: function (item) {
+                if (item.write) {
+                  return '<span class="actionhub">' +
+                    '<i title="Copy FAWE load command" class="fas fa-link" data-clipboard="//schematic load url:' + item.uuid + '"></i>' +
+                    '<i title="Download" class="fas fa-arrow-down" data-href="<%= data.baseURL %>/dl/s/' + item.uuid + '"></i>' +
+                    '<i title="Delete" class="fas fa-trash-alt" data-delete-schematic="' + item.uuid + '"></i>' +
+                    '<i title="Edit" class="fas fa-wrench" data-edit-schematic=\'' + JSON.stringify({
+                      uuid: item.uuid,
+                      name: item.name,
+                      category: item.category,
+                      access: item.access,
+                    }) + '\'></i>' +
+                    '</span>';
+                } else {
+                  return '<span class="actionhub">' +
+                    '<i title="Copy FAWE load command" class="fas fa-link" data-clipboard="//schematic load url:' + item.uuid + '"></i>' +
+                    '<i title="Download" class="fas fa-arrow-down" data-href="<%= data.baseURL %>/dl/s/' + item.uuid + '"></i>' +
+                    '</span>';
                 }
-
-                WEL.openConfirmModal('Do you really want to change access from ' + filteredRows.length + ' schematics to internal?', function () {
-                  for (var i = 0; i < filteredRows.length; i++) {
-                    WEL.schematics.editAccess(filteredRows[i], 1);
-                  }
-                });
               },
             },
-            {
-              title: 'Private',
-              icon: 'fas fa-lock',
-              click: function (rows) {
-                var filteredRows = [];
-                for (var i = 0; i < rows.length; i++) {
-                  if (rows[i].write) {
-                    filteredRows.push(rows[i]);
-                  }
-                }
-
-                WEL.openConfirmModal('Do you really want to change access from ' + filteredRows.length + ' schematics to private?', function () {
-                  for (var i = 0; i < filteredRows.length; i++) {
-                    WEL.schematics.editAccess(filteredRows[i], 2);
-                  }
-                });
-              },
-            }
           ],
-        },
-        <% } %>
-      });
-      <% if (header.username) { %>
-      WEL.schematics.dragDrop(collectionSchematic.dom, schematicCategories);
-      <% } %>
-      collectionSchematic.setData(data.table);
+          clickHandler: function (event) {
+            if (event.target === undefined) {
+              return;
+            }
+            var dataset = event.target.dataset;
+
+            if (dataset.clipboard !== undefined) {
+              WEL.copyToClipboard(dataset.clipboard);
+            } else if (dataset.href !== undefined) {
+              location.href = dataset.href;
+            } else if (dataset.notification !== undefined) {
+              WEL.sendNotification(dataset.notification, dataset.notificationStatus, dataset.notificationDuration);
+            } else if (dataset.deleteSchematic !== undefined) {
+              WEL.openConfirmModal('Do you really want to delete the schematic?', function () {
+                WEL.schematics.delete(dataset.deleteSchematic);
+              });
+            } else if (dataset.editSchematic !== undefined) {
+              WEL.schematics.edit(dataset.editSchematic, schematicCategories);
+            }
+          },
+            <% if (header.username) { %>
+          massActions: {
+            selector: '.schematic-quick-actions',
+            actions: [
+              {
+                title: 'Delete',
+                icon: 'fas fa-trash-alt',
+                click: function (rows) {
+                  var filteredRows = [];
+                  for (var i = 0; i < rows.length; i++) {
+                    if (rows[i].write) {
+                      filteredRows.push(rows[i]);
+                    }
+                  }
+
+                  WEL.openConfirmModal('Do you really want to delete ' + filteredRows.length + ' schematics?', function () {
+                    for (var i = 0; i < filteredRows.length; i++) {
+                      WEL.schematics.delete(filteredRows[i].uuid);
+                    }
+                  });
+                },
+              },
+              {
+                title: 'Public',
+                icon: 'fas fa-unlock',
+                click: function (rows) {
+                  var filteredRows = [];
+                  for (var i = 0; i < rows.length; i++) {
+                    if (rows[i].write) {
+                      filteredRows.push(rows[i]);
+                    }
+                  }
+
+                  WEL.openConfirmModal('Do you really want to publish ' + filteredRows.length + ' schematics?', function () {
+                    for (var i = 0; i < filteredRows.length; i++) {
+                      WEL.schematics.editAccess(filteredRows[i], 0);
+                    }
+                  });
+                },
+              },
+              {
+                title: 'Internal',
+                icon: 'fas fa-unlock-alt',
+                click: function (rows) {
+                  var filteredRows = [];
+                  for (var i = 0; i < rows.length; i++) {
+                    if (rows[i].write) {
+                      filteredRows.push(rows[i]);
+                    }
+                  }
+
+                  WEL.openConfirmModal('Do you really want to change access from ' + filteredRows.length + ' schematics to internal?', function () {
+                    for (var i = 0; i < filteredRows.length; i++) {
+                      WEL.schematics.editAccess(filteredRows[i], 1);
+                    }
+                  });
+                },
+              },
+              {
+                title: 'Private',
+                icon: 'fas fa-lock',
+                click: function (rows) {
+                  var filteredRows = [];
+                  for (var i = 0; i < rows.length; i++) {
+                    if (rows[i].write) {
+                      filteredRows.push(rows[i]);
+                    }
+                  }
+
+                  WEL.openConfirmModal('Do you really want to change access from ' + filteredRows.length + ' schematics to private?', function () {
+                    for (var i = 0; i < filteredRows.length; i++) {
+                      WEL.schematics.editAccess(filteredRows[i], 2);
+                    }
+                  });
+                },
+              }
+            ],
+          },
+            <% } %>
+        });
+          <% if (header.username) { %>
+        WEL.schematics.dragDrop(collectionSchematic.dom, schematicCategories);
+          <% } %>
+        collectionSchematic.setData(runtimeData.table);
+      })();
     </script>
 </div>
 <%- include('partials/foot'); %>
