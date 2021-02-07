@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('partials/head'); %>
+</head>
+<body>
+<header class="header">
+    <%- include('partials/header'); %>
+    <%- include('partials/management-header'); %>
+</header>
+
+<div class="container mx-auto py-6">
+    <h1 class="text-3xl py-4 border-b mb-10"><%= data.title %></h1>
+    <div class="mb-4 flex justify-between items-center">
+        <div class="categories-quick-actions"></div>
+        <div>
+            <button class="rounded-lg inline-flex items-center bg-green-600 text-white hover:bg-green-700 py-2 px-2 md:px-4"
+                    onclick="WEL.categories.create('<%= data.type %>')">
+                <span>Create New Category</span>
+            </button>
+        </div>
+    </div>
+    <div id="category-collection" class="collection-table"></div>
+    <script>
+      (function () {
+        var collectionCategories = WEL.newCollection('#category-collection', 'table', {
+          rowKey: 'id',
+          columns: [
+            {title: 'Name', key: 'name'},
+            {
+              title: '', func: function (item) {
+                return '<span class="actionhub">' +
+                  '<i title="Delete" class="fas fa-trash-alt" data-delete-category="'+ item.id +'"></i>' +
+                  '<i title="Edit" class="fas fa-wrench" data-edit-category=\''+ JSON.stringify({
+                    id: item.id,
+                    name: item.name,
+                  }) +'\'></i>' +
+                  '</span>';
+              },
+            },
+          ],
+          clickHandler: function (event) {
+            if (event.target === undefined) {
+              return;
+            }
+            var data = event.target.dataset;
+
+            if (data.deleteCategory !== undefined) {
+              WEL.openConfirmModal('Do you really want to delete the category?', function () {
+                WEL.categories.delete(parseInt(data.deleteCategory, 10), '<%= data.type %>');
+              });
+            } else if (data.editCategory !== undefined) {
+              WEL.categories.edit(data.editCategory, '<%= data.type %>');
+            }
+          },
+          massActions: {
+            selector: '.categories-quick-actions',
+            actions: [
+              {
+                title: 'Delete',
+                icon: 'fas fa-trash-alt',
+                click: function (rows) {
+                  WEL.openConfirmModal('Do you really want to delete ' + rows.length + ' categories?', function () {
+                    for (var i = 0; i < rows.length; i++) {
+                      WEL.categories.delete(rows[i].id, '<%= data.type %>');
+                    }
+                  });
+                },
+              },
+            ],
+          },
+        });
+        collectionCategories.setData(JSON.parse('<%- data.rows %>'));
+      })();
+    </script>
+</div>
+
+<%- include('partials/foot'); %>
+</body>
+</html>

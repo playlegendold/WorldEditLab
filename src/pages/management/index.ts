@@ -9,11 +9,16 @@ import {
 import { Role, User } from '../../shared/models';
 import { asyncHandler, HTTPErrorResponse, HTTPStatus } from '../../shared/helpers/errorHandler';
 import {
-  handleCategoryCreateRequest,
-  handleCategoryDeleteRequest,
-  handleCategoryIndexView,
-  handleCategoryPatchRequest,
+  handleSchematicCategoryCreateRequest,
+  handleSchematicCategoryDeleteRequest,
+  handleSchematicCategoryIndexView,
+  handleSchematicCategoryPatchRequest,
 } from './schematicCategory';
+import {
+  handleHeightmapCategoryCreateRequest,
+  handleHeightmapCategoryDeleteRequest,
+  handleHeightmapCategoryIndexView, handleHeightmapCategoryPatchRequest,
+} from './heightmapCategory';
 
 export const handleIndexView = async (req: Request, res: Response) => {
   const user = req.user as User;
@@ -33,10 +38,15 @@ export default () => {
   router.put('/users/:id', asyncHandler(handleUserPatchRequest));
   router.get('/users/:id/pw-reset', asyncHandler(handleUserPasswordResetRequest));
 
-  router.get('/schematic-categories', asyncHandler(handleCategoryIndexView));
-  router.post('/schematic-categories', asyncHandler(handleCategoryCreateRequest));
-  router.delete('/schematic-categories/:id', asyncHandler(handleCategoryDeleteRequest));
-  router.put('/schematic-categories/:id', asyncHandler(handleCategoryPatchRequest));
+  router.get('/schematic-categories', asyncHandler(handleSchematicCategoryIndexView));
+  router.post('/schematic-categories', asyncHandler(handleSchematicCategoryCreateRequest));
+  router.delete('/schematic-categories/:id', asyncHandler(handleSchematicCategoryDeleteRequest));
+  router.put('/schematic-categories/:id', asyncHandler(handleSchematicCategoryPatchRequest));
+
+  router.get('/heightmap-categories', asyncHandler(handleHeightmapCategoryIndexView));
+  router.post('/heightmap-categories', asyncHandler(handleHeightmapCategoryCreateRequest));
+  router.delete('/heightmap-categories/:id', asyncHandler(handleHeightmapCategoryDeleteRequest));
+  router.put('/heightmap-categories/:id', asyncHandler(handleHeightmapCategoryPatchRequest));
 
   return router;
 };

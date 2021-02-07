@@ -1,41 +1,19 @@
-import { sendNotification } from './notification';
-import { copyToClipboard } from './clipboard';
-import {
-  openSchematicUploadModal,
-  deleteSchematic,
-  openSchematicEditModal,
-  updateSchematicAccess,
-  registerDragAndDropOnSchematicTable,
-} from './schematic';
+import { sendNotification } from './shared/notification';
+import { copyToClipboard } from './shared/clipboard';
 import { openConfirmModal } from './defaultModals';
-import { newTable } from './table';
-import {
-  openSchematicCategoryCreateModal,
-  deleteSchematicCategory,
-  openSchematicCategoryEditModal,
-} from './managementCategory';
-import {
-  deleteUser,
-  openUserCreateModal,
-  openUserEditModal,
-  resetPasswordFromUser,
-} from './managementUser';
+import { newCollection } from './collection';
+import schematics from './schematic';
+import categories from './managementCategory';
+import users from './managementUser';
+import heightmaps from './heightmap';
 
 global.WEL = {
-  openSchematicUploadModal,
-  openSchematicCategoryCreateModal,
-  openUserCreateModal,
-  openSchematicEditModal,
-  openSchematicCategoryEditModal,
-  openUserEditModal,
-  updateSchematicAccess,
-  deleteSchematic,
-  deleteSchematicCategory,
-  deleteUser,
-  resetPasswordFromUser,
   copyToClipboard,
   sendNotification,
   openConfirmModal,
-  newTable,
-  registerDragAndDropOnSchematicTable,
+  newCollection,
+  schematics,
+  categories,
+  users,
+  heightmaps,
 };

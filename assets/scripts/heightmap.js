@@ -7,20 +7,19 @@ import { openModal } from './modal';
 import { api } from './shared/api';
 import { registerDragAndDrop } from './shared/dragAndDrop';
 
-const handleSchematicUpload = (file, name, access, category, modal) => {
+const handleHeightmapUpload = (file, name, access, category, modal) => {
   const formData = new FormData();
-  formData.append('schematic', file, `${name}.${file.name.split('.').pop()}`);
+  formData.append('heightmap', file, name);
   formData.append('access', access);
   formData.append('category', category);
-
   api({
     method: 'POST',
-    path: '/schematics'
+    path: '/heightmaps'
   }, (res, err) => {
     if (res.status === 200) {
       sendSuccessNotification('Successfully uploaded');
       modal.close();
-      collectionSchematic.addItem(JSON.parse(res.data).row);
+      collectionHeightmaps.addItem(JSON.parse(res.data).row);
     } else {
       sendErrorNotification(`Upload failed: ${JSON.parse(res.data).message}`);
     }
@@ -48,11 +47,12 @@ const onClickUpload = (modal, event) => {
   }
   if (failed)
     return;
+
   const access = parseInt(modal.access.value);
   const category = parseInt(modal.category.value);
   sendNotification('Upload started...', 'info', 2000);
-  handleSchematicUpload(modal.file.files[0], modal.name.value, access, category, modal);
-};
+  handleHeightmapUpload(modal.file.files[0], modal.name.value, access, category, modal);
+}
 
 const buildModalOptions = (categories, onclick, currentData, hideFileInput = false) => {
   const accessOptions = currentData === null ?
@@ -72,7 +72,7 @@ const buildModalOptions = (categories, onclick, currentData, hideFileInput = fal
   });
 
   const options = {
-    title: currentData ? 'Schematic' : 'Upload new schematic',
+    title: currentData ? 'Heightmap' : 'Upload new heightmap',
     content: [
       {
         type: 'label',
@@ -85,14 +85,14 @@ const buildModalOptions = (categories, onclick, currentData, hideFileInput = fal
         type: 'input',
         attr: {
           maxLength: 32,
-          placeholder: 'Schematic name',
+          placeholder: 'Heightmap name',
           value: currentData ? currentData.name : '',
         },
       },
       {
         type: 'label',
         attr: {
-          innerText: 'Category',
+          innerText: 'Heightmap',
         },
       },
       {
@@ -114,7 +114,7 @@ const buildModalOptions = (categories, onclick, currentData, hideFileInput = fal
         attr: {
           innerHTML: accessOptions
         },
-      }
+      },
     ],
     buttons: [
       {
@@ -125,33 +125,50 @@ const buildModalOptions = (categories, onclick, currentData, hideFileInput = fal
         name: currentData ? 'Save' : 'Upload',
         primary: true,
         click: onclick,
-      },
+      }
     ],
   };
-
-  if (currentData == null && !hideFileInput) {
-    options.content.push({
-      type: 'label',
-      attr: {
-        innerText: 'Schematic file',
-      },
-    }, {
+  if (currentData === null && !hideFileInput) {
+    options.content.push(
+      {
+        type: 'label',
+        attr: {
+          innerText: 'Heightmap file',
+        },
+      }, {
       key: 'file',
       type: 'input',
       attr: {
         type: 'file',
-        accept: '.schem,.schematic',
+        accept: '.png',
       },
     });
   }
   return options;
 };
 
-export const openSchematicUploadModal = (categories) => {
+export const openHeightmapUploadModal = (categories) => {
   openModal(buildModalOptions(categories, onClickUpload, null));
 };
 
-export const openSchematicEditModal = (infoJSON, categories) => {
+export const deleteHeightmap = (uuid) => {
+  api({
+    method: 'DELETE',
+    path: `/heightmaps/${uuid}`,
+  }, (res, err) => {
+    if (res.status === 200) {
+      const result = JSON.parse(res.data);
+      if (result.success) {
+        sendSuccessNotification('Heightmap successfully deleted!');
+        collectionHeightmaps.deleteItem(uuid);
+      } else {
+        sendErrorNotification('Heightmap deletion failed! ' + result.message);
+      }
+    }
+  });
+};
+
+export const openHeightmapEditModal = (infoJSON, categories) => {
   const info = JSON.parse(infoJSON);
   openModal(buildModalOptions(categories, (modal, event) => {
     let failed = false;
@@ -172,14 +189,14 @@ export const openSchematicEditModal = (infoJSON, categories) => {
 
     api({
       method: 'PUT',
-      path: `/schematics/${info.uuid}`,
+      path: `/heightmaps/${info.uuid}`,
       contentType: 'application/json',
     }, (res, err) => {
       if (res.status === 200) {
         const result = JSON.parse(res.data);
         if (result.success) {
-          sendSuccessNotification('Schematic successfully updated!');
-          collectionSchematic.updateItem({
+          sendSuccessNotification('Heightmap successfully updated!');
+          collectionHeightmaps.updateItem({
             uuid: info.uuid,
             name: patch.name,
             access: patch.access,
@@ -187,7 +204,7 @@ export const openSchematicEditModal = (infoJSON, categories) => {
           });
           modal.close();
         } else {
-          sendErrorNotification('Schematic update failed! ' + result.message);
+          sendErrorNotification('Heightmap update failed! ' + result.message);
         }
       } else {
         sendErrorNotification(`Request Error: ${res.status} ${res.statusText}`);
@@ -196,76 +213,30 @@ export const openSchematicEditModal = (infoJSON, categories) => {
   }, info));
 };
 
-export const updateSchematicAccess = (row, access) => {
-  const patch = {
-    name: row.name,
-    access: access,
-    category: row.category,
-  };
-
-  api({
-    method: 'PUT',
-    path: `/schematics/${info.uuid}`,
-    contentType: 'application/json',
-  }, (res, err) => {
-    if (res.status === 200) {
-      const result = JSON.parse(res.data);
-      if (result.success) {
-        sendSuccessNotification('Schematic successfully updated!');
-        collectionSchematic.updateItem({
-          uuid: info.uuid,
-          access: patch.access,
-        });
-      } else {
-        sendErrorNotification('Schematic update failed! ' + result.message);
-      }
-    } else {
-      sendErrorNotification(`Request Error: ${res.status} ${res.statusText}`);
-    }
-  }, JSON.stringify(patch));
-};
-
-export const deleteSchematic = (uuid) => {
-  api({
-    method: 'DELETE',
-    path: `/schematics/${uuid}`,
-  }, (res, err) => {
-    if (res.status === 200) {
-      const result = JSON.parse(res.data);
-      if (result.success) {
-        sendSuccessNotification('Schematic successfully deleted!');
-        collectionSchematic.deleteItem(uuid);
-      } else {
-        sendErrorNotification('Schematic deletion failed! ' + result.message);
-      }
-    }
-  });
-};
-
-export const registerDragAndDropOnSchematicTable = (collectionDOM, categories) => {
+export const registerDragAndDropOnHeightmapCollection = (collectionDOM, categories) => {
   registerDragAndDrop(collectionDOM, (event) => {
     const files = event.dataTransfer.files;
+
     if (files[0].size >= 5 * 1024 * 1024) {
-      sendNotification('File is too big', 'error', 4000);
+      sendErrorNotification('File is too big');
       return;
     }
 
-    if (!(files[0].name.endsWith('.schematic') || files[0].name.endsWith('.schem'))) {
-      sendNotification('Invalid file type', 'error', 4000);
+    if (!files[0].name.endsWith('.png')) {
+      sendErrorNotification('Invalid file type');
       return;
     }
-
     openModal(buildModalOptions(categories, (modal, event) => {
       modal.file = { files };
       onClickUpload(modal, event);
-    }, null, true))
+    }, null, true));
   });
 };
 
 export default {
-  create: openSchematicUploadModal,
-  delete: deleteSchematic,
-  edit: openSchematicEditModal,
-  editAccess: updateSchematicAccess,
-  dragDrop: registerDragAndDropOnSchematicTable,
+  create: openHeightmapUploadModal,
+  delete: deleteHeightmap,
+  edit: openHeightmapEditModal,
+  dragDrop: registerDragAndDropOnHeightmapCollection,
 };
+

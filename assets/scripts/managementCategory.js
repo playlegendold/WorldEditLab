@@ -1,37 +1,38 @@
 import { openModal } from './modal';
-import { sendNotification } from './notification';
+import { sendErrorNotification, sendSuccessNotification } from './shared/notification';
+import { api } from './shared/api';
 
-const sendCategoryCreateRequest = (name, onFinished, onFail = null, onProgress = null) => {
-  const request = new XMLHttpRequest();
-  request.open('POST', '/management/schematic-categories');
-  request.onload = onFinished;
-  request.onerror = onFail;
-  request.onabort = onFail;
-  request.onprogress = onProgress;
-  request.setRequestHeader('Content-Type', 'application/json');
-  request.send(JSON.stringify({name}));
-};
-
-export const deleteSchematicCategory = (id) => {
-  const request = new XMLHttpRequest();
-  request.open('DELETE', `/management/schematic-categories/${id}`);
-  request.onload = (event) => {
-    if (request.status === 200) {
-      const result = JSON.parse(request.response);
+export const deleteCategory = (id, type) => {
+  api({
+    method: 'DELETE',
+    path: `/management/${type}-categories/${id}`,
+  }, (res, err) => {
+    if (res.status === 200) {
+      const result = JSON.parse(res.data);
       if (result.success) {
-        sendNotification('Schematic category successfully deleted!', 'success', 2000);
-        tableCategories.deleteRow(id);
+        sendSuccessNotification('Schematic category successfully deleted!');
+        collectionCategories.deleteItem(id);
       } else {
-        sendNotification('Schematic category deletion failed! ' + result.message, 'error', 4000);
+        sendErrorNotification('Schematic category deletion failed! ' + result.message);
       }
     } else {
-      sendNotification('Error: ' + request.statusText, 'error', 4000);
+      sendErrorNotification('Error: ' + res.statusText);
     }
-  };
-  request.send();
+  });
 };
 
-export const openSchematicCategoryCreateModal = () => {
+const isValid = (modal) => {
+  modal.name.style.background = null;
+
+  if (modal.name.value.length <= 3 || modal.name.value.length > 32) {
+    modal.name.style.background = '#ffc1c1';
+    return false;
+  }
+
+  return true;
+};
+
+export const openCategoryCreateModal = (type) => {
   openModal({
     title: 'Create New Category',
     content: [
@@ -59,41 +60,29 @@ export const openSchematicCategoryCreateModal = () => {
         name: 'Create',
         primary: true,
         click: (modal, event) => {
-          let failed = false;
-          modal.name.style.background = null;
-
-          if (modal.name.value.length <= 3 || modal.name.value.length > 32) {
-            modal.name.style.background = '#ffc1c1';
-            failed = true;
-          }
-          if (failed)
+          if (!isValid(modal))
             return;
 
-          sendCategoryCreateRequest(modal.name.value, (event) => {
-            if (event.target.status === 200) {
-              sendNotification(
-                'Successfully created',
-                'success',
-                1000);
+          api({
+            method: 'POST',
+            path: `/management/${type}-categories`,
+            contentType: 'application/json'
+          }, (res, err) => {
+            if (res.status === 200) {
+              sendSuccessNotification('Successfully created');
               modal.close();
-              tableCategories.addRow(JSON.parse(event.target.response).row);
+              collectionCategories.addItem(JSON.parse(res.data).row);
             } else {
-              sendNotification(
-                `Creation failed: ${JSON.parse(event.target.response).message}`,
-                'error');
+              sendErrorNotification(`Creation failed: ${JSON.parse(res.data).message}`);
             }
-          }, () => {
-            sendNotification(
-              'Creation failed: Connection aborted!',
-              'error');
-          });
+          }, JSON.stringify({ name: modal.name.value }));
         },
       },
     ],
   });
 };
 
-export const openSchematicCategoryEditModal = (infoJSON) => {
+export const openCategoryEditModal = (infoJSON, type) => {
   const info = JSON.parse(infoJSON);
   openModal({
     title: 'Category',
@@ -123,41 +112,40 @@ export const openSchematicCategoryEditModal = (infoJSON) => {
         name: 'Save',
         primary: true,
         click: (modal, event) => {
-          let failed = false;
-          modal.name.style.background = null;
-
-          if (modal.name.value.length <= 3 || modal.name.value.length > 32) {
-            modal.name.style.background = '#ffc1c1';
-            failed = true;
-          }
-          if (failed)
+          if (!isValid(modal))
             return;
 
-          const request = new XMLHttpRequest();
-          request.open('PUT', `/management/schematic-categories/${info.id}`);
-          request.setRequestHeader('Content-Type', 'application/json');
-          request.onload = (event) => {
-            if (request.status === 200) {
-              const result = JSON.parse(request.response);
+          api({
+            method: 'PUT',
+            path: `/management/${type}-categories/${info.id}`,
+            contentType: 'application/json',
+          }, (res, err) => {
+            if (res.status === 200) {
+              const result = JSON.parse(res.data);
               if (result.success) {
-                sendNotification('Category successfully updated!', 'success', 2000);
-                tableCategories.updateRow({
+                sendSuccessNotification('Category successfully updated!');
+                collectionCategories.updateItem({
                   id: info.id,
                   name: modal.name.value,
                 });
                 modal.close();
               } else {
-                sendNotification('Category update failed! ' + result.message, 'error', 4000);
+                sendErrorNotification('Category update failed! ' + result.message);
               }
             } else {
-              sendNotification(`Request Error: ${request.status} ${request.statusText}`, 'error', 4000);
+              sendErrorNotification(`Request Error: ${res.status} ${res.statusText}`);
             }
-          };
-          request.send(JSON.stringify({
+          }, JSON.stringify({
             name: modal.name.value,
           }));
         },
       },
     ],
   });
+};
+
+export default {
+  create: openCategoryCreateModal,
+  delete: deleteCategory,
+  edit: openCategoryEditModal,
 };

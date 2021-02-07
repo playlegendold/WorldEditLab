@@ -35,3 +35,11 @@ export const sendNotification = (message, status, duration) => {
     notification.remove();
   }, duration ? duration : 6000);
 };
+
+export const sendSuccessNotification = (message) => {
+  sendNotification(message, 'success', 2000);
+}
+
+export const sendErrorNotification = (message) => {
+  sendNotification(message, 'error', 4000);
+}

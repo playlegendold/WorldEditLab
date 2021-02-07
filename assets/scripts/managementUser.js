@@ -1,53 +1,54 @@
 import { openModal } from './modal';
-import { sendNotification } from './notification';
-
-const sendUserCreateRequest = ({name, role}, onFinished, onFail = null, onProgress = null) => {
-  const request = new XMLHttpRequest();
-  request.open('POST', '/management/users');
-  request.onload = onFinished;
-  request.onerror = onFail;
-  request.onabort = onFail;
-  request.onprogress = onProgress;
-  request.setRequestHeader('Content-Type', 'application/json');
-  request.send(JSON.stringify({name, role}));
-};
+import { sendErrorNotification, sendSuccessNotification } from './shared/notification';
+import { api } from './shared/api';
 
 export const deleteUser = (id) => {
-  const request = new XMLHttpRequest();
-  request.open('DELETE', `/management/users/${id}`);
-  request.onload = (event) => {
-    if (request.status === 200) {
-      const result = JSON.parse(request.response);
+  api({
+    method: 'DELETE',
+    path: `/management/users/${id}`,
+  }, (res, err) => {
+    if (res.status === 200) {
+      const result = JSON.parse(res.data);
       if (result.success) {
-        sendNotification('User successfully deleted!', 'success', 2000);
-        tableUsers.deleteRow(id);
+        sendSuccessNotification('User successfully deleted!');
+        collectionUsers.deleteItem(id);
       } else {
-        sendNotification('User deletion failed! ' + result.message, 'error', 4000);
+        sendErrorNotification('User deletion failed! ' + result.message);
       }
     } else {
-      sendNotification('Error: ' + request.statusText, 'error', 4000);
+      sendErrorNotification('Error: ' + res.statusText);
     }
-  };
-  request.send();
+  });
 };
 
 export const resetPasswordFromUser = (id) => {
-  const request = new XMLHttpRequest();
-  request.open('GET', `/management/users/${id}/pw-reset`);
-  request.onload = (event) => {
-    if (request.status === 200) {
-      const result = JSON.parse(request.response);
+  api({
+    method: 'GET',
+    path: `/management/users/${id}/pw-reset`,
+  }, (res, err) => {
+    if (res.status === 200) {
+      const result = JSON.parse(res.data);
       if (result.success) {
-        sendNotification('User password was reset!', 'success', 2000);
-        tableUsers.updateRow(result.row);
+        sendSuccessNotification('User password was reset!');
+        collectionUsers.updateItem(result.row);
       } else {
-        sendNotification('User password reset failed! ' + result.message, 'error', 4000);
+        sendErrorNotification('User password reset failed! ' + result.message);
       }
     } else {
-      sendNotification('Error: ' + request.statusText, 'error', 4000);
+      sendErrorNotification('Error: ' + res.statusText);
     }
-  };
-  request.send();
+  });
+};
+
+const isValid = (modal) => {
+  modal.name.style.background = null;
+
+  if (modal.name.value.length <= 3 || modal.name.value.length > 32) {
+    modal.name.style.background = '#ffc1c1';
+    return false;
+  }
+
+  return true;
 };
 
 export const openUserCreateModal = () => {
@@ -94,38 +95,24 @@ export const openUserCreateModal = () => {
         name: 'Create',
         primary: true,
         click: (modal, event) => {
-          let failed = false;
-          modal.name.style.background = null;
-
-          if (modal.name.value.length <= 3 || modal.name.value.length > 32) {
-            modal.name.style.background = '#ffc1c1';
-            failed = true;
-          }
-          if (failed)
+          if (!isValid(modal))
             return;
 
           const role = parseInt(modal.role.value);
-          sendUserCreateRequest({
-            name: modal.name.value,
-            role: role,
-          }, (event) => {
-            if (event.target.status === 200) {
-              sendNotification(
-                'Successfully created',
-                'success',
-                1000);
+
+          api({
+            method: 'POST',
+            path: '/management/users',
+            contentType: 'application/json',
+          }, (res, err) => {
+            if (res.status === 200) {
+              sendSuccessNotification('Successfully created');
               modal.close();
-              tableUsers.addRow(JSON.parse(event.target.response).row);
+              collectionUsers.addItem(JSON.parse(res.data).row);
             } else {
-              sendNotification(
-                `Creation failed: ${JSON.parse(event.target.response).message}`,
-                'error');
+              sendErrorNotification(`Creation failed: ${JSON.parse(event.target.response).message}`);
             }
-          }, () => {
-            sendNotification(
-              'Creation failed: Connection aborted!',
-              'error');
-          });
+          }, JSON.stringify({name: modal.name.value, role}));
         },
       },
     ],
@@ -179,40 +166,33 @@ export const openUserEditModal = (infoJSON) => {
         name: 'Save',
         primary: true,
         click: (modal, event) => {
-          let failed = false;
-          modal.name.style.background = null;
-
-          if (modal.name.value.length <= 3 || modal.name.value.length > 32) {
-            modal.name.style.background = '#ffc1c1';
-            failed = true;
-          }
-          if (failed)
+          if (!isValid(modal))
             return;
 
           const role = parseInt(modal.role.value);
 
-          const request = new XMLHttpRequest();
-          request.open('PUT', `/management/users/${info.id}`);
-          request.setRequestHeader('Content-Type', 'application/json');
-          request.onload = (event) => {
-            if (request.status === 200) {
-              const result = JSON.parse(request.response);
+          api({
+            method: 'PUT',
+            path: `/management/users/${info.id}`,
+            contentType: 'application/json',
+          }, (res, err) => {
+            if (res.status === 200) {
+              const result = JSON.parse(res.data);
               if (result.success) {
-                sendNotification('User successfully updated!', 'success', 2000);
-                tableUsers.updateRow({
+                sendSuccessNotification('User successfully updated!');
+                collectionUsers.updateItem({
                   id: info.id,
                   name: modal.name.value,
                   role,
                 });
                 modal.close();
               } else {
-                sendNotification('User update failed! ' + result.message, 'error', 4000);
+                sendErrorNotification('User update failed! ' + result.message);
               }
             } else {
-              sendNotification(`Request Error: ${request.status} ${request.statusText}`, 'error', 4000);
+              sendErrorNotification('Error: ' + res.statusText);
             }
-          };
-          request.send(JSON.stringify({
+          }, JSON.stringify({
             name: modal.name.value,
             role,
           }));
@@ -220,4 +200,11 @@ export const openUserEditModal = (infoJSON) => {
       },
     ],
   });
+};
+
+export default {
+  create: openUserCreateModal,
+  delete: deleteUser,
+  edit: openUserEditModal,
+  resetPassword: resetPasswordFromUser,
 };

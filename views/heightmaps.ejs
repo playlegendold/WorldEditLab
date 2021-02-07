@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('partials/head'); %>
+</head>
+<body>
+<header class="header">
+    <%- include('partials/header'); %>
+</header>
+
+<div class="container mx-auto py-6">
+    <h1 class="text-3xl py-4 border-b mb-10">Heightmaps</h1>
+    <% if (header.username) { %>
+        <div class="mb-4 flex justify-between items-center">
+            <div class="schematic-quick-actions"></div>
+            <div>
+                <button class="rounded-lg inline-flex items-center bg-green-600 text-white hover:bg-green-700 py-2 px-2 md:px-4"
+                        onclick="WEL.heightmaps.create(heightmapCategories)">
+                    <span>Upload</span>
+                </button>
+            </div>
+        </div>
+    <% } %>
+    <div id="heightmap-collection" class="collection-grid"></div>
+    <% if (header.username) { %><span class="text-xs">Just drop your Heightmap on the table to upload it</span><% } %>
+    <script>
+      var heightmapCategories = [];
+      (function () {
+        var runtimeData = JSON.parse('<%- data.runtimeData %>');
+        heightmapCategories = runtimeData.categories;
+
+        var collectionHeightmaps = WEL.newCollection('#heightmap-collection', 'grid', {
+          rowKey: 'uuid',
+          columns: [
+            {
+              title: 'Image',
+              render: function (item) {
+                return '<img src="<%= data.baseURL %>/dl/h/' + item.uuid + '">';
+              },
+            },
+            {
+              title: 'Name',
+              render: function (item) {
+                return '<p><i class="fas fa-tag"></i>' + item.name + '</p>';
+              },
+            },
+            {
+              title: 'Category',
+              render: function (item) {
+                for (var i = 0; i < heightmapCategories.length; i++) {
+                  var category = heightmapCategories[i];
+                  if (category.id === item.category) {
+                    return '<p><i class="fas fa-map"></i>' + category.name + '</p>';
+                  }
+                }
+                return '<p><i class="fas fa-map"></i>-</p>';
+              },
+            },
+            {
+              title: 'Metadata',
+              render: function (item) {
+                var access = '-';
+                switch (item.access) {
+                  case 0:
+                    access = 'Public';
+                    break;
+                  case 1:
+                    access = 'Internal';
+                    break;
+                  case 2:
+                    access = 'Private';
+                    break;
+                }
+                return '<p><i class="fas fa-eye"></i>' + access + (item.uploadedBy ?  ' ('+ item.uploadedBy + ')' : '') + '</p>';
+              },
+            },
+            {
+              title: '',
+              render: function (item) {
+                if (item.write) {
+                  return '<span class="actionhub">' +
+                    '<i title="Copy brush command" class="fas fa-link" data-clipboard="//brush height <%= data.baseURL %>/dl/h/' + item.uuid + '"></i>' +
+                    '<i title="Download" class="fas fa-arrow-down" data-href="<%= data.baseURL %>/dl/h/' + item.uuid + '"></i>' +
+                    '<i title="Delete" class="fas fa-trash-alt" data-delete="' + item.uuid + '"></i>' +
+                    '<i title="Edit" class="fas fa-wrench" data-edit=\'' + JSON.stringify({
+                      uuid: item.uuid,
+                      name: item.name,
+                      category: item.category,
+                      access: item.access,
+                    }) + '\'></i>' +
+                    '</span>';
+                } else {
+                  return '<span class="actionhub">' +
+                    '<i title="Copy brush command" class="fas fa-link" data-clipboard="//brush height <%= data.baseURL %>/dl/h/' + item.uuid + '"></i>' +
+                    '<i title="Download" class="fas fa-arrow-down" data-href="<%= data.baseURL %>/dl/h/' + item.uuid + '"></i>' +
+                    '</span>';
+                }
+              },
+            },
+          ],
+          clickHandler: function (event) {
+            if (event.target === undefined) {
+              return;
+            }
+            var dataset = event.target.dataset;
+
+            if (dataset.clipboard !== undefined) {
+              WEL.copyToClipboard(dataset.clipboard);
+            } else if (dataset.href !== undefined) {
+              location.href = dataset.href;
+            } else if (dataset.delete !== undefined) {
+              WEL.openConfirmModal('Do you really want to delete the heightmap?', function () {
+                WEL.heightmaps.delete(dataset.delete);
+              });
+            } else if (dataset.edit !== undefined) {
+              WEL.heightmaps.edit(dataset.edit, heightmapCategories);
+            }
+          },
+        });
+          <% if (header.username) { %>
+        WEL.heightmaps.dragDrop(collectionHeightmaps.dom, heightmapCategories);
+          <% } %>
+        collectionHeightmaps.setData(runtimeData.coll);
+      })();
+    </script>
+</div>
+<%- include('partials/foot'); %>
+</body>
+</html>

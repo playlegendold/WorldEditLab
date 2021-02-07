@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
-import { Role, Schematic, User } from '../../shared/models';
+import { Role, User } from '../../shared/models';
 import { HTTPErrorResponse, HTTPStatus } from '../../shared/helpers/errorHandler';
+import { Heightmap } from '../../shared/models/heightmap';
 
 export const handleDeleteRequest = async (req: Request, res: Response) => {
   const user = req.user as User;
@@ -10,13 +11,13 @@ export const handleDeleteRequest = async (req: Request, res: Response) => {
   let count: number = 0;
 
   if (user.role === Role.ADMIN) {
-    count = await Schematic.destroy({
+    count = await Heightmap.destroy({
       where: {
         uuid: req.params.uuid,
       },
     });
   } else if (user.role === Role.USER) {
-    count = await Schematic.destroy({
+    count = await Heightmap.destroy({
       where: {
         uuid: req.params.uuid,
         uploadedById: user.id,
