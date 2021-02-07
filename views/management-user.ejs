@@ -27,6 +27,7 @@
         collectionUsers = WEL.newCollection('#users-collection', 'table', {
           rowKey: 'id',
           columns: [
+            {title: 'ID', key: 'id'},
             {title: 'Name', key: 'name'},
             {
               title: 'Role', func: function (item) {
