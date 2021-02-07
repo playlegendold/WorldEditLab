@@ -8,9 +8,11 @@ export const handleFAWEUpload = async (req: Request, res: Response) => {
   const faweAllowedAddresses = (process.env.FAWE_UPLOAD_ACCESS as string).split(',');
   if (req.header('X-Forwarded-For')) {
     if (!faweAllowedAddresses.includes(req.header('X-Forwarded-For') as string)) {
+      console.log(`Unauthorized upload attempt by ${req.header('X-Forwarded-For')}!`);
       throw new HTTPErrorResponse(HTTPStatus.FORBIDDEN, 'Forbidden');
     }
   } else if (!faweAllowedAddresses.includes(req.ip)) {
+    console.log(`Unauthorized upload attempt by ${req.ip}!`);
     throw new HTTPErrorResponse(HTTPStatus.FORBIDDEN, 'Forbidden');
   }
 
