@@ -25,11 +25,12 @@
     <% if (header.username) { %><span class="text-xs">Just drop your Schematic on the table to upload it</span><% } %>
     <script>
       var schematicCategories = [];
+      var collectionSchematic = null;
       (function () {
         var runtimeData = JSON.parse('<%- data.runtimeData %>');
         schematicCategories = runtimeData.categories;
 
-        var collectionSchematic = WEL.newCollection('#schematic-collection', 'table', {
+        collectionSchematic = WEL.newCollection('#schematic-collection', 'table', {
           rowKey: 'uuid',
           columns: [
             {title: 'Name', key: 'name'},
