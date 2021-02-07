@@ -22,8 +22,9 @@
     </div>
     <div id="users-collection" class="collection-table"></div>
     <script>
+      var collectionUsers = null;
       (function () {
-        var collectionUsers = WEL.newCollection('#users-collection', 'table', {
+        collectionUsers = WEL.newCollection('#users-collection', 'table', {
           rowKey: 'id',
           columns: [
             {title: 'Name', key: 'name'},

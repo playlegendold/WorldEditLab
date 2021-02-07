@@ -25,11 +25,12 @@
     <% if (header.username) { %><span class="text-xs">Just drop your Heightmap on the table to upload it</span><% } %>
     <script>
       var heightmapCategories = [];
+      var collectionHeightmaps = null;
       (function () {
         var runtimeData = JSON.parse('<%- data.runtimeData %>');
         heightmapCategories = runtimeData.categories;
 
-        var collectionHeightmaps = WEL.newCollection('#heightmap-collection', 'grid', {
+        collectionHeightmaps = WEL.newCollection('#heightmap-collection', 'grid', {
           rowKey: 'uuid',
           columns: [
             {
