@@ -1,4 +1,4 @@
-name: WorldEditLab
+name: WorldEditLab Build
 on:
   push:
     branches:
@@ -39,8 +39,8 @@ jobs:
       - name: Login to DockerHub
         uses: docker/login-action@v1
         with:
-          username: ${{ secrets.dockerHubUser }}
-          password: ${{ secrets.dockerHubToken }}
+          username: ${{ secrets.DOCKERHUB_USER }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Build and push
         id: docker_build
         uses: docker/build-push-action@v2
