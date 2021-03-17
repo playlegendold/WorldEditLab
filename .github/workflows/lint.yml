@@ -1,4 +1,4 @@
-name: WorldEditLab
+name: WorldEditLab Lint
 on:
   push:
     branches:
@@ -8,13 +8,13 @@ on:
 jobs:
   lint_css:
     name: Lint CSS
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
-          node-version: 14
+          node-version: 15
       - name: Install Yarn
         run: npm install -g yarn
       - name: Install modules
@@ -23,13 +23,13 @@ jobs:
         run: yarn run lint:css
   lint_ts:
     name: Lint TS
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
-          node-version: 14
+          node-version: 15
       - name: Install Yarn
         run: npm install -g yarn
       - name: Install modules
