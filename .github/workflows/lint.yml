@@ -8,7 +8,7 @@ on:
 jobs:
   lint_css:
     name: Lint CSS
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -23,7 +23,7 @@ jobs:
         run: yarn run lint:css
   lint_ts:
     name: Lint TS
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2
