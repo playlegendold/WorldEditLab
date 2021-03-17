@@ -4,12 +4,13 @@ on:
     branches:
       - dev
       - prod
+      - bugfix/*
     tags:
       - 'v*.*.*'
 jobs:
   release:
     name: Release
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2
