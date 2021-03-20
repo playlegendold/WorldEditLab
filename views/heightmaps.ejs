@@ -123,14 +123,17 @@
           },
         });
 
-        document.querySelector(".searchbar").addEventListener("keyup", (e) => {
-          e.preventDefault();
-          
-          if(collectionHeightmaps) {
-            const value = e.target.value;
-            collectionHeightmaps.applyFilter(value);
-          }
-        });
+        const searchBar = document.querySelector(".searchbar");
+        if(searchBar) {
+          searchBar.addEventListener("keyup", (e) => {
+            e.preventDefault();
+            
+            if(collectionHeightmaps) {
+              const value = e.target.value;
+              collectionHeightmaps.applyFilter(value);
+            }
+          });
+        }
       
           <% if (header.username) { %>
         WEL.heightmaps.dragDrop(collectionHeightmaps.dom, heightmapCategories);

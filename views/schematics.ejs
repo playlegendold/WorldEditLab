@@ -119,7 +119,7 @@
             selector: '.schematic-quick-actions',
             actions: [
               {
-                title: 'Delete',
+                title: 'Delete all selected schematics',
                 icon: 'fas fa-trash-alt',
                 click: function (rows) {
                   var filteredRows = [];
@@ -137,7 +137,7 @@
                 },
               },
               {
-                title: 'Public',
+                title: "Mark all selected schematics as public.",
                 icon: 'fas fa-unlock',
                 click: function (rows) {
                   var filteredRows = [];
@@ -155,7 +155,7 @@
                 },
               },
               {
-                title: 'Internal',
+                title: "Set selected schematics to internal usage only.",
                 icon: 'fas fa-unlock-alt',
                 click: function (rows) {
                   var filteredRows = [];
@@ -173,7 +173,7 @@
                 },
               },
               {
-                title: 'Private',
+                title: "Set selected schematics to private.",
                 icon: 'fas fa-lock',
                 click: function (rows) {
                   var filteredRows = [];
@@ -195,14 +195,17 @@
             <% } %>
         });
 
-        document.querySelector(".searchbar").addEventListener("keyup", (e) => {
-          e.preventDefault();
-          
-          if(collectionSchematic) {
-            const value = e.target.value;
-            collectionSchematic.applyFilter(value);
-          }
-        });
+        const searchBar = document.querySelector(".searchbar");
+        if(searchBar) {
+          searchBar.addEventListener("keyup", (e) => {
+            e.preventDefault();
+            
+            if(collectionSchematic) {
+              const value = e.target.value;
+              collectionSchematic.applyFilter(value);
+            }
+          });
+        }
 
           <% if (header.username) { %>
         WEL.schematics.dragDrop(collectionSchematic.dom, schematicCategories);
