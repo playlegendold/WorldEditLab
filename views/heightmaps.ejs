@@ -10,21 +10,20 @@
 
 <div class="container mx-auto py-6">
     <h1 class="text-3xl py-4 border-b mb-10">Heightmaps</h1>
-    <% if (header.username) { %>
-        <div class="mb-4 flex justify-between items-center">
-            <div class="schematic-quick-actions"></div>
-            <div>
-                <span class="mr-4 border-solid border border-gray-300 px-1 py-1 rounded-lg">
-                  <input type="text" class="searchbar"/>
-                  <i class="fas fa-search"></i>
-                </span>
-                <button class="rounded-lg inline-flex items-center bg-green-600 text-white hover:bg-green-700 py-2 px-2 md:px-4"
-                        onclick="WEL.heightmaps.create(heightmapCategories)">
-                    <span>Upload</span>
-                </button>
-            </div>
-        </div>
-    <% } %>
+    <div class="mb-4 flex justify-between items-center">
+      <div class="schematic-quick-actions"></div>
+      <div>
+        <span class="border-solid border border-gray-300 px-1 py-1 rounded-lg">
+          <input type="text" class="searchbar"/>
+          <i class="fas fa-search"></i>
+        </span>
+        <% if (header.username) { %>
+          <button class="ml-4 rounded-lg inline-flex items-center bg-green-600 text-white hover:bg-green-700 py-2 px-2 md:px-4" onclick="WEL.heightmaps.create(heightmapCategories)">
+            <span>Upload</span>
+          </button>
+        <% } %>
+      </div>
+    </div>
     <div id="heightmap-collection" class="collection-grid"></div>
     <% if (header.username) { %><span class="text-xs">Just drop your Heightmap on the table to upload it</span><% } %>
     <script>
