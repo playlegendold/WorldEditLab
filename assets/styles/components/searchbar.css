@@ -1,0 +1,15 @@
+.searchbar-wrapper {
+
+}
+
+.searchbar {
+    border: none;
+    text-decoration: none;
+    outline: none;
+}
+
+.searchbar:hover, .searchbar:focus {
+    border: none;
+    text-decoration: none;
+    outline: none;
+  }

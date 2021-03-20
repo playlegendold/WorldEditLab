@@ -14,6 +14,10 @@
         <div class="mb-4 flex justify-between items-center">
             <div class="schematic-quick-actions"></div>
             <div>
+                <span class="mr-4 border-solid border border-gray-300 px-1 py-1 rounded-lg">
+                  <input type="text" class="searchbar"/>
+                  <i class="fas fa-search"></i>
+                </span>
                 <button class="rounded-lg inline-flex items-center bg-green-600 text-white hover:bg-green-700 py-2 px-2 md:px-4"
                         onclick="WEL.heightmaps.create(heightmapCategories)">
                     <span>Upload</span>
@@ -118,6 +122,16 @@
             }
           },
         });
+
+        document.querySelector(".searchbar").addEventListener("keyup", (e) => {
+          e.preventDefault();
+          
+          if(collectionHeightmaps) {
+            const value = e.target.value;
+            collectionHeightmaps.applyFilter(value);
+          }
+        });
+      
           <% if (header.username) { %>
         WEL.heightmaps.dragDrop(collectionHeightmaps.dom, heightmapCategories);
           <% } %>

@@ -238,7 +238,23 @@ export const newCollection = (selector, type, setup) => {
     });
   };
 
+  const applyFilter = (filterStr) => {
+    const multiWhitespacesRgx = new RegExp(/\s+/g);
+    filterStr = filterStr || "";
+    const cleanFilterStr = filterStr.trim().replace(multiWhitespacesRgx).toLowerCase();
+
+    collection.data.forEach((element) => {
+      const row = element.row;
+      const cleanName = row.name.trim().replace(multiWhitespacesRgx).toLowerCase();
+
+      element.visible = cleanName.includes(cleanFilterStr);
+    });
+
+    render();
+  }
+
   return {
+    applyFilter,
     setData,
     updateItem,
     deleteItem,
