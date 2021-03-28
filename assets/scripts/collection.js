@@ -207,7 +207,7 @@ export const newCollection = (selector, type, setup) => {
     const box = document.querySelector(selector);
     collection.body.innerHTML = '';
     box.append(collection.dom);
-    console.log(areAllVisible());
+    
     if(areAllVisible()) {
       collection.data.forEach((row) => {
         if (row.visible) {
