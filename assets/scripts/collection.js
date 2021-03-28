@@ -72,11 +72,22 @@ const createDOM = (collection) => {
     collection.dom = tableDOM;
     collection.head = theadDOM;
     collection.body = tbodyDOM;
+
+    const emptyDOM = document.createElement('td');
+    emptyDOM.colSpan = 7;
+    emptyDOM.style.textAlign = 'center';
+    emptyDOM.style.padding = '10px';
+    emptyDOM.innerHTML = 'No schematics found. You can sign up and upload your own schematics.';
+    collection.emptyElement = emptyDOM;
   } else if (collection.type === GRID) {
     const gridBody = document.createElement('div');
     gridBody.className = 'flex flex-wrap';
     collection.dom = gridBody;
     collection.body = gridBody;
+
+    const emptyDOM = document.createElement('div');
+    emptyDOM.innerHTML = 'No heightmaps found. You can sign up and upload your own heightmaps.';
+    collection.emptyElement = emptyDOM;
   }
 };
 
@@ -184,16 +195,28 @@ export const newCollection = (selector, type, setup) => {
     collection.dom.addEventListener('click', setup.clickHandler);
   }
 
+  const areAllVisible = () => {
+    if(collection.data.length === 0) {
+      return false;
+    }
+
+    return collection.data.every((row) => row.visible);
+  }
+
   const render = () => {
     const box = document.querySelector(selector);
     collection.body.innerHTML = '';
     box.append(collection.dom);
-
-    collection.data.forEach((row) => {
-      if (row.visible) {
-        collection.body.append(row.dom);
-      }
-    });
+    console.log(areAllVisible());
+    if(areAllVisible()) {
+      collection.data.forEach((row) => {
+        if (row.visible) {
+          collection.body.append(row.dom);
+        }
+      });
+    } else {
+      collection.body.append(collection.emptyElement);
+    }
   };
 
   const setData = (data) => {
