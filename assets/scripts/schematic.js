@@ -203,9 +203,11 @@ export const updateSchematicAccess = (row, access) => {
     category: row.category,
   };
 
+  console.log(row);
+  console.log(access);
   api({
     method: 'PUT',
-    path: `/schematics/${info.uuid}`,
+    path: `/schematics/${row.uuid}`,
     contentType: 'application/json',
   }, (res, err) => {
     if (res.status === 200) {
@@ -213,7 +215,7 @@ export const updateSchematicAccess = (row, access) => {
       if (result.success) {
         sendSuccessNotification('Schematic successfully updated!');
         collectionSchematic.updateItem({
-          uuid: info.uuid,
+          uuid: row.uuid,
           access: patch.access,
         });
       } else {
