@@ -22,7 +22,11 @@ const handleSchematicUpload = (file, name, access, category, modal) => {
       modal.close();
       collectionSchematic.addItem(JSON.parse(res.data).row);
     } else {
-      sendErrorNotification(`Upload failed: ${JSON.parse(res.data).message}`);
+      if (res.status === 0) {
+        sendErrorNotification(`Upload failed: File is too big!`);
+      } else {
+        sendErrorNotification(`Upload failed: ${JSON.parse(res.data).message}`);
+      }
     }
   }, formData);
 };
@@ -34,9 +38,6 @@ const onClickUpload = (modal, event) => {
     modal.file.style.background = null;
 
     if (modal.file.files.length === 0) {
-      modal.file.style.background = '#ffc1c1';
-      failed = true;
-    } else if (modal.file.files[0].size >= 5 * 1024 * 1024) {
       modal.file.style.background = '#ffc1c1';
       failed = true;
     }
