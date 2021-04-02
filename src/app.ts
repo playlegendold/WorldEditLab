@@ -26,10 +26,17 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 app.use(express.static('public'));
+
+let uploadLimit = 5 * 1024 * 1024;
+if (process.env.UPLOAD_LIMIT) {
+  uploadLimit = parseInt(process.env.UPLOAD_LIMIT, 10);
+}
+
 app.use(fileUpload({
   abortOnLimit: true,
+  responseOnLimit: 'File is too big',
   limits: {
-    fileSize: 5 * 1024 * 1024,
+    fileSize: uploadLimit,
   },
 }));
 app.use(urlencoded({ extended: true }));
