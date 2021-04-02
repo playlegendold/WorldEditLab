@@ -34,6 +34,7 @@
     <a href="#getting-started">Getting Started</a>
     <ul>
       <li><a href="#usage-with-docker-compose">Usage with docker-compose</a></li>
+      <li><a href="#environment-variables">Environment Variables</a></li>
     </ul>
     <li><a href="#dev-environment">Dev Environment</a></li>
   </li>
@@ -90,9 +91,21 @@ services:
 To make WorldEditLab compatible with FastAsyncWorldEdit, please add the following environments: 
 ````yaml
     environment:
-      - FAWE_UPLOAD_ACCESS=::ffff:127.0.0.1 # IP Whitelist (separated through ',')
-      - FAWE_USER_ID=1 # Owner of all uploaded content
+      - FAWE_UPLOAD_ACCESS=::ffff:127.0.0.1
+      - FAWE_USER_ID=1
 ````
+
+### Environment Variables
+| Name                | Type | Required | Description | Default |
+|---------------------|:----:|:--------:|-------------|---------|
+|COOKIE_SECRET        |string|yes       | This is the secret used to sign the session ID cookie | null |
+|BASE_URL             |string|yes       | Base URL from WorldEditLab | null |
+|FAWE_UPLOAD_ACCESS   |string|no        | IP Whitelist (separated through ',') | null |
+|FAWE_USER_ID         |int   |no        | Owner of all uploaded content | null |
+|UPLOAD_LIMIT         |int   |no        | File upload limit | 5,242,880 |
+
+
+
 ## Dev Environment
 
 ### Prerequirements
