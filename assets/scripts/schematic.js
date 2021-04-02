@@ -245,10 +245,6 @@ export const deleteSchematic = (uuid) => {
 export const registerDragAndDropOnSchematicTable = (collectionDOM, categories) => {
   registerDragAndDrop(collectionDOM, (event) => {
     const files = event.dataTransfer.files;
-    if (files[0].size >= 5 * 1024 * 1024) {
-      sendNotification('File is too big', 'error', 4000);
-      return;
-    }
 
     if (!(files[0].name.endsWith('.schematic') || files[0].name.endsWith('.schem'))) {
       sendNotification('Invalid file type', 'error', 4000);
