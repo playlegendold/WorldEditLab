@@ -1,6 +1,6 @@
 {
   "name": "worldeditlab",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A fancy and simple UI for up- & downloading schematics and heightmaps",
   "main": "dist/app.js",
   "scripts": {

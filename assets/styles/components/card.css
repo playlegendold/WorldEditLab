@@ -1,5 +1,9 @@
+.card-wrapper {
+  @apply flex flex-wrap;
+}
+
 .card {
-  @apply mb-4 mr-4 bg-gray-100 p-2 rounded-lg text-center;
+  @apply mb-4 mx-3 bg-gray-100 p-2 rounded-lg text-center;
 }
 
 .card img {
