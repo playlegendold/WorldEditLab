@@ -74,7 +74,7 @@ const createDOM = (collection) => {
     collection.body = tbodyDOM;
   } else if (collection.type === GRID) {
     const gridBody = document.createElement('div');
-    gridBody.className = 'flex flex-wrap';
+    gridBody.className = 'card-wrapper';
     collection.dom = gridBody;
     collection.body = gridBody;
   }
