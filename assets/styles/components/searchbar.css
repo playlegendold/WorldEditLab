@@ -1,11 +1,7 @@
 .searchbar {
-    border: none;
-    text-decoration: none;
-    outline: none;
+  @apply border-solid border border-gray-300 p-2 rounded-lg;
 }
 
-.searchbar:hover, .searchbar:focus {
-    border: none;
-    text-decoration: none;
-    outline: none;
-  }
+.searchbar input {
+  @apply border-none no-underline focus:outline-none;
+}

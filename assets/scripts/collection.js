@@ -195,12 +195,12 @@ export const newCollection = (selector, type, setup) => {
     collection.dom.addEventListener('click', setup.clickHandler);
   }
 
-  const areAllVisible = () => {
+  const areSomeVisible = () => {
     if(collection.data.length === 0) {
       return false;
     }
 
-    return collection.data.every((row) => row.visible);
+    return collection.data.some((row) => row.visible);
   }
 
   const render = () => {
@@ -208,7 +208,7 @@ export const newCollection = (selector, type, setup) => {
     collection.body.innerHTML = '';
     box.append(collection.dom);
     
-    if(areAllVisible()) {
+    if(areSomeVisible()) {
       collection.data.forEach((row) => {
         if (row.visible) {
           collection.body.append(row.dom);
