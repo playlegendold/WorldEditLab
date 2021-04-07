@@ -195,8 +195,12 @@ export const newCollection = (selector, type, setup) => {
     collection.dom.addEventListener('click', setup.clickHandler);
   }
 
+  const hasData = () => {
+    return collection.data.length > 0;
+  }
+
   const areSomeVisible = () => {
-    if(collection.data.length === 0) {
+    if(!hasData()) {
       return false;
     }
 
@@ -214,7 +218,10 @@ export const newCollection = (selector, type, setup) => {
           collection.body.append(row.dom);
         }
       });
-    } else {
+      return;
+    }
+
+    if(!hasData()) {
       collection.body.append(collection.emptyElement);
     }
   };
