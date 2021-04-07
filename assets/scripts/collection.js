@@ -62,6 +62,10 @@ const createItem = (collection, setup, item) => {
   };
 };
 
+const getEmptyElementMsg = (tag) => {
+  return `No ${tag} found. You can sign up and upload your own ${tag}.`
+}
+
 const createDOM = (collection) => {
   if (collection.type === TABLE) {
     const tableDOM = document.createElement('table');
@@ -77,7 +81,7 @@ const createDOM = (collection) => {
     emptyDOM.colSpan = 7;
     emptyDOM.style.textAlign = 'center';
     emptyDOM.style.padding = '10px';
-    emptyDOM.innerHTML = 'No schematics found. You can sign up and upload your own schematics.';
+    emptyDOM.innerHTML = getEmptyElementMsg('schematics');
     collection.emptyElement = emptyDOM;
   } else if (collection.type === GRID) {
     const gridBody = document.createElement('div');
@@ -86,7 +90,7 @@ const createDOM = (collection) => {
     collection.body = gridBody;
 
     const emptyDOM = document.createElement('div');
-    emptyDOM.innerHTML = 'No heightmaps found. You can sign up and upload your own heightmaps.';
+    emptyDOM.innerHTML = getEmptyElementMsg('heightmaps');
     collection.emptyElement = emptyDOM;
   }
 };
