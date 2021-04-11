@@ -213,9 +213,6 @@ export const newCollection = (selector, type, setup) => {
     const box = document.querySelector(selector);
     collection.body.innerHTML = '';
     box.append(collection.dom);
-    
-    
-    console.log(collection);
 
     if(areSomeVisible()) {
       collection.data.forEach((row) => {
