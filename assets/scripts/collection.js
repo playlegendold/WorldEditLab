@@ -62,10 +62,6 @@ const createItem = (collection, setup, item) => {
   };
 };
 
-const getEmptyElementMsg = (tag) => {
-  return `No ${tag} found. You can sign up and upload your own ${tag}.`
-}
-
 const createDOM = (collection) => {
   if (collection.type === TABLE) {
     const tableDOM = document.createElement('table');
@@ -81,7 +77,7 @@ const createDOM = (collection) => {
     emptyDOM.colSpan = 7;
     emptyDOM.style.textAlign = 'center';
     emptyDOM.style.padding = '10px';
-    emptyDOM.innerHTML = getEmptyElementMsg('schematics');
+    emptyDOM.innerHTML = collection.noDataMessage;
     collection.emptyElement = emptyDOM;
   } else if (collection.type === GRID) {
     const gridBody = document.createElement('div');
@@ -90,7 +86,7 @@ const createDOM = (collection) => {
     collection.body = gridBody;
 
     const emptyDOM = document.createElement('div');
-    emptyDOM.innerHTML = getEmptyElementMsg('heightmaps');
+    emptyDOM.innerHTML = collection.noDataMessage;
     collection.emptyElement = emptyDOM;
   }
 };
@@ -183,7 +179,9 @@ export const newCollection = (selector, type, setup) => {
     data: [],
     selectedCount: 0,
     rowCount: 0,
+    noDataMessage: setup.noDataMessage ?? "No data available."
   };
+  
   registerMassActions(collection, setup);
   createDOM(collection);
 
@@ -216,6 +214,9 @@ export const newCollection = (selector, type, setup) => {
     collection.body.innerHTML = '';
     box.append(collection.dom);
     
+    
+    console.log(collection);
+
     if(areSomeVisible()) {
       collection.data.forEach((row) => {
         if (row.visible) {

@@ -26,6 +26,7 @@
       (function () {
         collectionCategories = WEL.newCollection('#category-collection', 'table', {
           rowKey: 'id',
+          noDataMessage: 'No categories found. Please create a new category first.',
           columns: [
             {title: 'Name', key: 'name'},
             {
