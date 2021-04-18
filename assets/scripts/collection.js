@@ -211,10 +211,6 @@ export const newCollection = (selector, type, setup) => {
     return collection.data.some((row) => row.visible);
   }
 
-  const rerenderNeeded = () => {
-    return collection.rowCount === 0 || collection.rowCount === 1;
-  }
-
   const clearDOM = () => {
     const box = document.querySelector(selector);
     collection.body.innerHTML = '';
