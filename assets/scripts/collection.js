@@ -74,6 +74,7 @@ const createDOM = (collection) => {
     collection.body = tbodyDOM;
 
     const emptyDOM = document.createElement('td');
+    emptyDOM.id = "empty-dom";
     emptyDOM.colSpan = 7;
     emptyDOM.style.textAlign = 'center';
     emptyDOM.style.padding = '10px';
@@ -86,6 +87,7 @@ const createDOM = (collection) => {
     collection.body = gridBody;
 
     const emptyDOM = document.createElement('div');
+    emptyDOM.id = "empty-dom";
     emptyDOM.innerHTML = collection.noDataMessage;
     collection.emptyElement = emptyDOM;
   }
@@ -209,10 +211,27 @@ export const newCollection = (selector, type, setup) => {
     return collection.data.some((row) => row.visible);
   }
 
-  const render = () => {
+  const rerenderNeeded = () => {
+    return collection.rowCount === 0 || collection.rowCount === 1;
+  }
+
+  const clearDOM = () => {
     const box = document.querySelector(selector);
     collection.body.innerHTML = '';
     box.append(collection.dom);
+  }
+
+  const removeEmptyDOMIfExists = () => {
+    const selection = document.querySelector('#empty-dom');
+    selection?.parentElement?.removeChild(selection);
+  }
+
+  const appendEmptyDOM = () => {
+    collection.body.append(collection.emptyElement);
+  }
+
+  const render = () => {
+    clearDOM();
 
     if(areSomeVisible()) {
       collection.data.forEach((row) => {
@@ -224,7 +243,7 @@ export const newCollection = (selector, type, setup) => {
     }
 
     if(!hasData()) {
-      collection.body.append(collection.emptyElement);
+      appendEmptyDOM();
     }
   };
 
@@ -244,6 +263,10 @@ export const newCollection = (selector, type, setup) => {
         item.remove();
       }
     });
+
+    if(collection.rowCount === 0) {
+      appendEmptyDOM();
+    }
   };
 
   const addItem = (row) => {
@@ -251,6 +274,10 @@ export const newCollection = (selector, type, setup) => {
     const newItem = createItem(collection, setup, row);
     collection.data.push(newItem);
     collection.body.append(newItem.dom);
+
+    if(hasData()) { 
+      removeEmptyDOMIfExists();
+    }
   };
 
   const updateItem = (item) => {
