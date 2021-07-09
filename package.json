@@ -55,7 +55,7 @@
     "tsc-watch": "^4.2.9",
     "typescript": "^4.2.4",
     "webpack-cli": "^4.6.0",
-    "webpack": "^5.35.0"
+    "webpack": "^5.44.0"
   },
   "dependencies": {
     "bcrypt": "^5.0.1",
